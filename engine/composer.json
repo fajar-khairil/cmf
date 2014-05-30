@@ -1,0 +1,35 @@
+{
+    "minimum-stability": "dev",
+    "name": "unikacreative/cmf",
+    "description": "The Modern Content Management Framework",
+    "keywords": ["cmf"],
+    "homepage": "http://unikacreative.com",
+    "license": "BSD 2",
+    "authors": [
+        {
+            "name": "Fajar Khairil",
+            "email": "fajar.khairil@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0" : {
+            "Unika" : "unika/cmf" 
+        }
+    },
+    "require": {
+        "silex/silex": "1.2",
+        "symfony/console": "dev-master",
+        "symfony/security": "dev-master",
+        "ircmaxell/password-compat": "dev-master",
+        "symfony/finder": "dev-master",
+        "Respect/Validation": "dev-master",
+        "Respect/Validation": "dev-master",
+        "illuminate/view": "@stable",
+        "illuminate/database": "@stable",
+        "monolog/monolog": "@stable",
+        "symfony/translation": "@stable",
+        "symfony/yaml": "@stable",
+        "illuminate/cache": "@stable",
+        "illuminate/redis": "@stable"
+    }
+}
