@@ -17,20 +17,22 @@
         }
     },
     "require": {
-        "silex/silex": "1.2",
-        "symfony/console": "dev-master",
-        "symfony/security": "dev-master",
-        "ircmaxell/password-compat": "dev-master",
-        "symfony/finder": "dev-master",
+        "silex/silex": "@stable",
+        "ircmaxell/password-compat": "@stable",       
         "Respect/Validation": "dev-master",
-        "Respect/Validation": "dev-master",
-        "illuminate/view": "@stable",
-        "illuminate/database": "@stable",
         "monolog/monolog": "@stable",
+        "swiftmailer/swiftmailer": "@stable",
+        "twig/twig": "@stable",
+        "symfony/twig-bridge": "@stable",
+        "symfony/templating": "@stable",
+        "symfony/console": "@stable",
+        "symfony/security": "@stable",
         "symfony/translation": "@stable",
+        "symfony/finder": "@stable",
         "symfony/yaml": "@stable",
+        "illuminate/database": "@stable",
         "illuminate/cache": "@stable",
         "illuminate/redis": "@stable",
-        "swiftmailer/swiftmailer": "dev-master"
+        "silex/web-profiler": "@stable"
     }
 }

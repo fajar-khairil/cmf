@@ -14,7 +14,7 @@ require 'vendor/autoload.php';
 
 $configs = require 'config/app.php';
 
-$app = new Unika\Application($configs);
+$app = new \Unika\Application($configs);
 
 require 'routes.php';
 

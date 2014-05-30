@@ -5,7 +5,7 @@ return array(
 	'base_url'			=> 'http://unikacmf.dev/',
     'charset' 			=> 'UTF-8',
     'locale' 			=> 'en',
-    'tmp_dir'			=> '../tmp',
+    'tmp_dir'			=> ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',
     //valid File/Database
     'logger_type'		=> 'File',
     //valid Native/Database
