@@ -1,6 +1,5 @@
 <?php
 
-$app->get('/',function(){	
-	//return 'Hello World';
+$app->get('/',function(){
 	return new \Symfony\Component\HttpFoundation\Response('hello world!');
 });

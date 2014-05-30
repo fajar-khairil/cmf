@@ -32,19 +32,17 @@ class Application extends \Silex\Application
 
     protected function init()
     {
-        /*if( $this['debug'] === True )
+        if( $this['debug'] === True )
         {
-            \Symfony\Component\Debug\Debug::enable('E-ALL');
-            \Symfony\Component\Debug\ErrorHandler::register('E-ALL');
-            \Symfony\Component\Debug\ExceptionHandler::register('E-ALL');
-        }*/
+            \Symfony\Component\Debug\Debug::enable('E_ALL');
+        }
 
     	$this['helper.array'] = $this->share(function(){
     		return new Helper\Arr(); 
     	});
 
     	$this['config_loader'] = $this->share(function($app){
-    		return new ConfigLoader(ENGINE_PATH.DIRECTORY_SEPARATOR.'config');
+    		return new ConfigLoader(ENGINE_PATH.DIRECTORY_SEPARATOR.'config',$app);
     	});
 
 		$this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(

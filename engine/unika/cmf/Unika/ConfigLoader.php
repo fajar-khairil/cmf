@@ -12,14 +12,16 @@ class ConfigLoader
 {
 	protected $_base_path;
 	protected $_cache;//local cache
+	protected $app;//App instance
 
-	public function __construct($path)
+	public function __construct($path,Application $app)
 	{
 		if ( !is_dir($path) )
 		{
 			throw new \RuntimeException('Argument must be valid directory.');
 		}
 
+		$this->_app = $app;
 		$this->_base_path = realpath($path);  
 	}
 
@@ -28,9 +30,11 @@ class ConfigLoader
 		if( !isset( $this->_cache[$keys] ) )
 		{
 			$paths = explode('.',$keys);
+
 			$tmp = array();
 			$idx = 0;
 			$tmp_file = '';
+
 			foreach ($paths as $key => $value) 
 			{   
 				$x = $this->resolve($tmp_file.$value);
@@ -42,6 +46,11 @@ class ConfigLoader
 					break;
 				}
 				$tmp_file .= $value.DIRECTORY_SEPARATOR;
+			}
+
+			if( empty($tmp) )
+			{
+				throw new \RuntimeException('ConfigLoader cannot load '.$keys);
 			}
 
 			$key = array();
@@ -57,6 +66,10 @@ class ConfigLoader
 			else
 				$this->_cache[$keys] = $tmp;			
 		}
+		if( !$this->_cache[$keys] )
+		{
+			throw new \RuntimeException('Config Loader cannot load '.$keys);
+		}
 
 		return $this->_cache[$keys];
 	}
@@ -67,7 +80,7 @@ class ConfigLoader
 		{
 			return False;
 		}
-		//print_r($value.'.yml<br>');
+
 		if( is_file($this->_base_path.DIRECTORY_SEPARATOR.$value.'.php') )
 		{
 			return \Unika\Config\NativeReader::resolve($this->_base_path.DIRECTORY_SEPARATOR.$value.'.php');
@@ -77,5 +90,7 @@ class ConfigLoader
 		{
 			return \Unika\Config\YmlReader::resolve($this->_base_path.DIRECTORY_SEPARATOR.$value.'.yml');
 		}		
+
+		return False;
 	}
 }
