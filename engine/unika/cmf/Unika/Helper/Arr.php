@@ -7,6 +7,8 @@
  * @author     Kohana Team
  * @copyright  (c) 2007-2012 Kohana Team
  * @license    http://kohanaframework.org/license
+ *
+ *	modified by Fajar Khairil
  */
 
 namespace Unika\Helper;

@@ -1,5 +1,11 @@
 <?php
-
+/**
+ *
+ *  CacheServiceProvider cache made easy
+ *
+ *  @license : MIT 
+ *  @author  : Fajar Khairil
+ */
 namespace Unika\Provider;
 
 use Silex\ServiceProviderInterface;

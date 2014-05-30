@@ -1,5 +1,11 @@
 <?php
-
+/**
+ *
+ *  Config Loader
+ *
+ *  @license : MIT 
+ *  @author  : Fajar Khairil
+ */
 namespace Unika;
 
 class ConfigLoader
@@ -24,15 +30,18 @@ class ConfigLoader
 			$paths = explode('.',$keys);
 			$tmp = array();
 			$idx = 0;
+			$tmp_file = '';
 			foreach ($paths as $key => $value) 
 			{   
-				$x = $this->resolve($value);
+				$x = $this->resolve($tmp_file.$value);
 				if( $x !== False )
 				{
+					unset($tmp_file);
 					$idx = $key + 1;
 					$tmp = $x;
 					break;
 				}
+				$tmp_file .= $value.DIRECTORY_SEPARATOR;
 			}
 
 			$key = array();
@@ -43,7 +52,10 @@ class ConfigLoader
 
 			$helper = new Helper\Arr();
 
-			$this->_cache[$keys] = $helper->path($tmp,implode('.',$key),$default);			
+			if( !empty($key) )
+				$this->_cache[$keys] = $helper->path($tmp,implode('.',$key),$default);
+			else
+				$this->_cache[$keys] = $tmp;			
 		}
 
 		return $this->_cache[$keys];
@@ -55,10 +67,15 @@ class ConfigLoader
 		{
 			return False;
 		}
-
+		//print_r($value.'.yml<br>');
 		if( is_file($this->_base_path.DIRECTORY_SEPARATOR.$value.'.php') )
 		{
-			return require $this->_base_path.DIRECTORY_SEPARATOR.$value.'.php';
+			return \Unika\Config\NativeReader::resolve($this->_base_path.DIRECTORY_SEPARATOR.$value.'.php');
 		}
+
+		if( is_file($this->_base_path.DIRECTORY_SEPARATOR.$value.'.yml') )
+		{
+			return \Unika\Config\YmlReader::resolve($this->_base_path.DIRECTORY_SEPARATOR.$value.'.yml');
+		}		
 	}
 }

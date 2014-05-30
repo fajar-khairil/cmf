@@ -1,4 +1,11 @@
 <?php
+/**
+ *
+ *  Unika\Application Extending \Silex\Application
+ *
+ *  @license : MIT 
+ *  @author  : Fajar Khairil
+ */
 namespace Unika;
 
 class Application extends \Silex\Application
@@ -6,7 +13,7 @@ class Application extends \Silex\Application
     use \Silex\Application\SecurityTrait;
     use \Silex\Application\FormTrait;
     use \Silex\Application\UrlGeneratorTrait;
-    //use Application\SwiftmailerTrait;
+    use \Silex\Application\SwiftmailerTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\TranslationTrait;	
 
@@ -25,12 +32,12 @@ class Application extends \Silex\Application
 
     protected function init()
     {
-        if( $this['debug'] === True )
+        /*if( $this['debug'] === True )
         {
             \Symfony\Component\Debug\Debug::enable('E-ALL');
             \Symfony\Component\Debug\ErrorHandler::register('E-ALL');
             \Symfony\Component\Debug\ExceptionHandler::register('E-ALL');
-        }
+        }*/
 
     	$this['helper.array'] = $this->share(function(){
     		return new Helper\Arr(); 
@@ -85,5 +92,9 @@ class Application extends \Silex\Application
 		$this->register(new \Silex\Provider\UrlGeneratorServiceProvider);      	
         
         $this->register(new \Unika\Provider\CacheServiceProvider);
+
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
+
+        $this['swiftmailer.options'] = $this['config_loader']->get('email');
     }
 }

@@ -4,7 +4,7 @@
     "description": "The Modern Content Management Framework",
     "keywords": ["cmf"],
     "homepage": "http://unikacreative.com",
-    "license": "BSD 2",
+    "license": "MIT",
     "authors": [
         {
             "name": "Fajar Khairil",
@@ -30,6 +30,7 @@
         "symfony/translation": "@stable",
         "symfony/yaml": "@stable",
         "illuminate/cache": "@stable",
-        "illuminate/redis": "@stable"
+        "illuminate/redis": "@stable",
+        "swiftmailer/swiftmailer": "dev-master"
     }
 }
