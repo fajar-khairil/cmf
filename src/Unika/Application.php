@@ -122,31 +122,20 @@ class Application extends \Silex\Application
     {
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
-        if( $this['config']['session_default'] == 'Database' )
+        $this['SessionManager'] = $this->share(function(){
+            return new \Unika\Provider\SessionManager();
+        });
+
+        $this->app['session.storage.save_path'] = $this['config']->get('session.File.path');
+        if( !in_array($this['config']['app.session_default'], array('Database','Mongodb','Memcached') ) )
         {
-            $this['session.storage.handler'] = $this->share(function($app){
-                $session_pdo = new \PDO(
-                    $this['config']->get('session.Database.dsn'),
-                    $this['config']->get('session.Database.user'),
-                    $this['config']->get('session.Database.password')
-                );            
-                $session_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-                $session_dboptions = array(
-                    'db_table'      => $this['config']->get('session.Database.table'),
-                    'db_id_col'     => 'session_id',
-                    'db_data_col'   => 'session_value',
-                    'db_time_col'   => 'session_time'               
-                );
-                return new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
-                    $session_pdo,
-                    $session_dboptions
-                );
-            });
+            return True;
         }
-        else
+
+        $this['session.storage.handler'] = $this->share(function($app)
         {
-            $this['session.storage.save_path'] = $this['config']->get('session.Native.path');
-        }
+            return $app['SessionManager']->getSession($this['config']['app.session_default']);
+        });
     }
 
     public static function detectEnvirontment(array $environtments = null)

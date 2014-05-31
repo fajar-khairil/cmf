@@ -9,7 +9,7 @@ return array(
     'log_dir'           => \Unika\Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'logs',
     
     //valid Native/Database
-    'session_default'          => 'Database', 
+    'session_default'          => 'File', 
 
     //valid Apc,Memcached,File,Array,Redis
     'cache_default'     => 'Apc'
