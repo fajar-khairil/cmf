@@ -1,3 +1,2 @@
-engine/vendor
-engine/composer.lock
-public/access.log
+vendor
+composer.lock
