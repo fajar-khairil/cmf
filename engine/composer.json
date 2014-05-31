@@ -35,13 +35,12 @@
         "silex/web-profiler": "@stable",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
-        "ohanzee/helpers": "dev-master",
-        "zfr/rbac" : "dev-master"
+        "ohanzee/helpers": "dev-master"
     },
     "repositories": [
        {
-         "type": "vcs",
-         "url": "https://github.com/zf-fr/rbac.git"
+         "type": "composer",
+         "url": "http://localhost/repos"
        }
-      ]
+    ]
 }

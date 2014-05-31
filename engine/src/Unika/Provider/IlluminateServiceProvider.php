@@ -39,17 +39,17 @@ class IlluminateServiceProvider implements ServiceProviderInterface
         });          
 
         // BEGIN Cache
-        if( !isset($app['cache.default']) )
+        if( !isset($app['config']['app.cache_default']) )
         {
             if( APC_PRESENT === TRUE )
-                $app['cache.default'] = 'Apc';
+                $app['config']['app.cache_default'] = 'Apc';
             else
-                $app['cache.default'] = 'File';
+                $app['config']['app.cache_default'] = 'File';
         }
 
         $app['CacheManager'] = $app->share(function($app) use($container){
 
-            $container['config']['cache.path'] = $app['tmp_dir'].DIRECTORY_SEPARATOR.'cache';
+            $container['config']['cache.path'] = $app['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache';
             
             if( class_exists('\\Memcached') )
             {
@@ -61,9 +61,13 @@ class IlluminateServiceProvider implements ServiceProviderInterface
             $CacheManager = new \Illuminate\Cache\CacheManager( $container );
         
             $CacheManager->setPrefix( $app['config']->get('cache.prefix') );
-            $CacheManager->setDefaultDriver( $app['cache.default'] );
+            $CacheManager->setDefaultDriver( $app['config']['app.cache_default'] );
 
             return $CacheManager;
+        });
+
+        $app['cache'] = $app->share(function($app){
+            return $app['CacheManager']->driver();
         });
         //END Cache
 

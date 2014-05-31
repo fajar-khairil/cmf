@@ -9,13 +9,12 @@
 namespace Unika;
 
 class Application extends \Silex\Application
-{
-    public static $BACKEND_URI = 'administrator';
-    public static $ENGINE_PATH = '/';
-    public static $BASE_URL = '/';
+{    
+    protected static $_environtment = 'production';
+    protected static $_environtmentDetected = False;
 
+ 
     protected $_packages = array();
-    protected $_environtment = 'production';
 
     use \Silex\Application\FormTrait;
     use \Silex\Application\UrlGeneratorTrait;
@@ -34,13 +33,11 @@ class Application extends \Silex\Application
     public function __construct(array $values = array())
     {
     	parent::__construct();
-    	$this->init($values);
+        $this->init();
     }
 
-    protected function init($values)
-    {
-        $this->_detectEnvirontment($values['environtments']);
-
+    protected function init()
+    {        
         //Illuminate\Filesystem
         $this['Illuminate.files'] = $this->share(function(){
             return new \Illuminate\Filesystem\Filesystem();
@@ -50,18 +47,15 @@ class Application extends \Silex\Application
             return new \Illuminate\Config\Repository( 
                 new \Illuminate\Config\FileLoader( 
                     $app['Illuminate.files'],
-                    self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
+                    Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
                 ), 
-                $this->_environtment
+                static::detectEnvirontment()
             );
-        }); 
+        });
 
-        foreach( $values as $key=>$value )
-        {
-            $this['config'][$key] = $value;
-        }
+        $this['config']['engine_path'] = Bag::$ENGINE_PATH;
 
-        $this['debug'] = $this['config']->get('debug',True);
+        $this['debug'] = $this['config']->get('app.debug',True);
 
         if( $this['debug'] === True )
         {
@@ -82,11 +76,11 @@ class Application extends \Silex\Application
         $this->register(new \Unika\Provider\IlluminateServiceProvider());
 
         $this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
-            'http_cache.cache_dir'  => $this['config']['tmp_dir'].DIRECTORY_SEPARATOR.'cache'
+            'http_cache.cache_dir'  => $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache'
         ));
         
         $this->register(new \Silex\Provider\MonologServiceProvider(),array(
-            'monolog.logfile'   => $this['config']->get('log.'.$this['config']['logger_type'])
+            'monolog.logfile'   => $this['config']->get('app.log_dir').DIRECTORY_SEPARATOR.'access.log'
         ));
 
         $this->register(new \Silex\Provider\TranslationServiceProvider);
@@ -100,7 +94,7 @@ class Application extends \Silex\Application
         
         $this->register(new \Silex\Provider\WebProfilerServiceProvider);
 
-        $this['profiler.cache_dir'] = $this['config']['tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+        $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
     }
 
     protected function initTwig()
@@ -112,23 +106,25 @@ class Application extends \Silex\Application
             return new \Twig_Environment($loader, $app['twig.options']);          
         });
 
-        $this['config']['theme_backend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
-        $this['config']['theme_frontend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
-        $this['config']['module_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
+        $this['config']['theme_backend_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
+        $this['config']['theme_frontend_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
+        $this['config']['module_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
 
-        $this['twig.path'] = [$this['config']['theme_backend_path'],$this['config']['theme_frontend_path']];
+        $this['twig.path'] = [ $this['config']['theme_backend_path'],$this['config']['theme_frontend_path'] ];
 
-        $this['twig.options'] = $this['config']->get('twig');
+        $this['twig.options'] = array(
+            'charset'          => $this['config']['app.charset'],
+            'debug'            => $this['config']['app.debug']
+        );
     }
 
     protected function initSessions()
     {
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
-        if( $this['config']['session_type'] == 'Database' )
+        if( $this['config']['session_default'] == 'Database' )
         {
             $this['session.storage.handler'] = $this->share(function($app){
-
                 $session_pdo = new \PDO(
                     $this['config']->get('session.Database.dsn'),
                     $this['config']->get('session.Database.user'),
@@ -153,22 +149,26 @@ class Application extends \Silex\Application
         }
     }
 
-    public function detectEnvirontment()
+    public static function detectEnvirontment(array $environtments = null)
     {
-        return $this->_environtment;
-    }
+        if( $environtments === null )
+        {
+            return static::$_environtment;
+        }
 
-    protected function _detectEnvirontment(array $environtments)
-    {
+        if( static::$_environtmentDetected ) return static::$_environtment;
+
         foreach( $environtments as $env=>$machine )
         {
             if( in_array(gethostname(), $machine) )
             {
-                $this->_environtment = $env;
+                static::$_environtment = $env;
+                static::$_environtmentDetected = True;
                 break;
             }
         }
-    }    
+        return static::$_environtment;
+    }  
 
     /**
      *

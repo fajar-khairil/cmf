@@ -8,5 +8,9 @@ return array(
 		'user'		=> 'root',
 		'password'	=> 'masterkey',
 		'table' 	=> 'sessions'
+	),
+	//not yet implemented let it blank
+	'Memcached'	=> array(
+
 	)
 );

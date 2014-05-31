@@ -7,9 +7,12 @@
  *  @author  : Fajar Khairil
  */
 
-$configs = require_once 'bootstrap.php';
+require_once 'bootstrap.php';
 
-$app = new \Unika\Application($configs);
+\Unika\Bag::$BACKEND_URI = 'administrator';
+\Unika\Bag::$BASE_URL = 'http://unikacmf.dev/';
+
+$app = \Unika\Bag::instance();
 
 require 'routes.php';
 
