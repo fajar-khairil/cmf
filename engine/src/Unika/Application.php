@@ -12,11 +12,11 @@ class Application extends \Silex\Application
 {
     public static $BACKEND_URI = 'administrator';
     public static $ENGINE_PATH = '/';
+    public static $BASE_URL = '/';
 
     protected $_packages = array();
     protected $_environtment = 'production';
 
-    use \Silex\Application\SecurityTrait;
     use \Silex\Application\FormTrait;
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
@@ -70,30 +70,60 @@ class Application extends \Silex\Application
 
         $this->registerPackage('Unika');
 
+        $this->initSessions();
+
+        $this->initTwig();
+
+        $this->initCommonProviders();              
+    }
+
+    public function initCommonProviders()
+    {
         $this->register(new \Unika\Provider\IlluminateServiceProvider());
 
-		$this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
+        $this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
             'http_cache.cache_dir'  => $this['config']['tmp_dir'].DIRECTORY_SEPARATOR.'cache'
         ));
         
-		$this->register(new \Silex\Provider\MonologServiceProvider(),array(
-			'monolog.logfile'	=> $this['config']->get('log.'.$this['config']['logger_type'])
-		));
-		
-        $security_configs = $this['config']['security'];
+        $this->register(new \Silex\Provider\MonologServiceProvider(),array(
+            'monolog.logfile'   => $this['config']->get('log.'.$this['config']['logger_type'])
+        ));
+
+        $this->register(new \Silex\Provider\TranslationServiceProvider);
+
+        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider);       
+
+        $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
+        $this['swiftmailer.options'] = $this['config']->get('email');      
+
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
         
-        foreach( $security_configs as $key=>$value )
-        {
-            $this['security.'.$key] = $value;
-        }
+        $this->register(new \Silex\Provider\WebProfilerServiceProvider);
 
-        unset($security_configs);
+        $this['profiler.cache_dir'] = $this['config']['tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+    }
 
-		$this->register(new \Silex\Provider\SecurityServiceProvider());
+    protected function initTwig()
+    {
+        $this->register(new \Silex\Provider\TwigServiceProvider);
 
-        $this->register(new \Silex\Provider\RememberMeServiceProvider());
+        $this['twig.string'] = $this->share(function ($app) {
+            $loader = new \Twig_Loader_String();
+            return new \Twig_Environment($loader, $app['twig.options']);          
+        });
 
-		$this->register(new \Silex\Provider\SessionServiceProvider());
+        $this['config']['theme_backend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
+        $this['config']['theme_frontend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
+        $this['config']['module_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
+
+        $this['twig.path'] = [$this['config']['theme_backend_path'],$this['config']['theme_frontend_path']];
+
+        $this['twig.options'] = $this['config']->get('twig');
+    }
+
+    protected function initSessions()
+    {
+        $this->register(new \Silex\Provider\SessionServiceProvider());
 
         if( $this['config']['session_type'] == 'Database' )
         {
@@ -121,34 +151,11 @@ class Application extends \Silex\Application
         {
             $this['session.storage.save_path'] = $this['config']->get('session.Native.path');
         }
+    }
 
-		$this->register(new \Silex\Provider\TranslationServiceProvider);
-
-		$this->register(new \Silex\Provider\UrlGeneratorServiceProvider);      	
-
-        $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
-        $this['swiftmailer.options'] = $this['config']->get('email');
-
-        $this->register(new \Silex\Provider\TwigServiceProvider);
-
-        $this['twig.string'] = $this->share(function ($app) {
-            $loader = new \Twig_Loader_String();
-            return new \Twig_Environment($loader, $app['twig.options']);          
-        });
-
-        $this['config']['theme_backend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
-        $this['config']['theme_frontend_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
-        $this['config']['module_path'] = self::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
-
-        $this['twig.path'] = [$this['config']['theme_backend_path'],$this['config']['theme_frontend_path']];
-
-        $this['twig.options'] = $this['config']->get('twig');
-
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
-        
-        $this->register(new \Silex\Provider\WebProfilerServiceProvider);
-
-        $this['profiler.cache_dir'] = $this['config']['tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+    public function detectEnvirontment()
+    {
+        return $this->_environtment;
     }
 
     protected function _detectEnvirontment(array $environtments)
@@ -161,12 +168,7 @@ class Application extends \Silex\Application
                 break;
             }
         }
-    }
-
-    public function detectEnvirontment()
-    {
-        return $this->_environtment;
-    }
+    }    
 
     /**
      *

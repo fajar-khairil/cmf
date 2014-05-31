@@ -5,4 +5,4 @@ $app->get('/',function() use($app) {
 });
 
 //mounting Backend URI
-$app->mount('/'.$app['config']['backend_uri'],new \Unika\BackendControllerProvider());
+$app->mount('/'.$app['config']['backend_uri'],new \Unika\Controller\BackendControllerProvider());

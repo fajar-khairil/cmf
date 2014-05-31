@@ -13,6 +13,7 @@ require 'vendor/autoload.php';
 
 \Unika\Application::$BACKEND_URI = 'administrator';
 \Unika\Application::$ENGINE_PATH = __DIR__;
+\Unika\Application::$BASE_URL = 'http://unikacmf.dev/';
 
 $configs = require 'config/app.php';
 

@@ -1,9 +1,8 @@
 <?php
-$base_url = 'http://unikacmf.dev/';
 return array(
 	'debug' 			=> False,
     'backend_uri'       => \Unika\Application::$BACKEND_URI,
-	'base_url'			=> $base_url,
+	'base_url'			=> \Unika\Application::$BASE_URL,
     'charset' 			=> 'utf-8',
     'locale' 			=> 'en',
     'tmp_dir'			=> \Unika\Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',

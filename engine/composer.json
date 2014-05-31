@@ -12,8 +12,8 @@
         }
     ],
     "autoload": {
-        "psr-0" : {
-            "Unika" : "unika/cmf" 
+        "psr-0" : { 
+            "Unika" : "src"
         }
     },
     "require": {
@@ -26,7 +26,6 @@
         "symfony/twig-bridge": "@stable",
         "symfony/templating": "@stable",
         "symfony/console": "@stable",
-        "symfony/security": "@stable",
         "symfony/translation": "@stable",
         "symfony/finder": "@stable",
         "symfony/yaml": "@stable",
@@ -36,6 +35,13 @@
         "silex/web-profiler": "@stable",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
-        "ohanzee/helpers": "dev-master"
-    }
+        "ohanzee/helpers": "dev-master",
+        "zfr/rbac" : "dev-master"
+    },
+    "repositories": [
+       {
+         "type": "vcs",
+         "url": "https://github.com/zf-fr/rbac.git"
+       }
+      ]
 }

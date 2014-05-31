@@ -7,7 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika;
+namespace Unika\Controller;
 
 use Silex\ControllerProviderInterface;
 use Unika\Application;
