@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * Array helper.
  *
@@ -8,17 +8,16 @@
  * @copyright  (c) 2007-2012 Kohana Team
  * @license    http://kohanaframework.org/license
  *
- *	modified by Fajar Khairil
+ * modified by Fajar Khairil
  */
 
-namespace Unika\Helper;
+namespace Unika\Kohana;
 
 class Arr {
-
 	/**
 	 * @var  string  default delimiter for path()
 	 */
-	public  static $delimiter = '.';
+	public  $delimiter = '.';
 
 	/**
 	 * Tests if an array is associative or not.
@@ -93,7 +92,7 @@ class Arr {
 	 */
 	public  function path($array, $path, $default = NULL, $delimiter = NULL)
 	{
-		if ( ! Arr::is_array($array))
+		if ( ! self::is_array($array))
 		{
 			// This is not an array!
 			return $default;
@@ -115,7 +114,7 @@ class Arr {
 			if ($delimiter === NULL)
 			{
 				// Use the default delimiter
-				$delimiter = Arr::$delimiter;
+				$delimiter = self::$delimiter;
 			}
 
 			// Remove starting delimiters and spaces
@@ -142,7 +141,7 @@ class Arr {
 			{
 				if ($keys)
 				{
-					if (Arr::is_array($array[$key]))
+					if (self::is_array($array[$key]))
 					{
 						// Dig down into the next part of the path
 						$array = $array[$key];
@@ -166,7 +165,7 @@ class Arr {
 				$values = array();
 				foreach ($array as $arr)
 				{
-					if ($value = Arr::path($arr, implode('.', $keys)))
+					if ($value = self::path($arr, implode('.', $keys)))
 					{
 						$values[] = $value;
 					}
@@ -198,7 +197,7 @@ class Arr {
 	/**
 	* Set a value on an array by path.
 	*
-	* @see Arr::path()
+	* @see self::path()
 	* @param array   $array     Array to update
 	* @param string  $path      Path
 	* @param mixed   $value     Value to set
@@ -209,7 +208,7 @@ class Arr {
 		if ( ! $delimiter)
 		{
 			// Use the default delimiter
-			$delimiter = Arr::$delimiter;
+			$delimiter = self::$delimiter;
 		}
 
 		// The path has already been separated into keys
@@ -308,7 +307,7 @@ class Arr {
 		$found = array();
 		foreach ($paths as $path)
 		{
-			Arr::set_path($found, $path, Arr::path($array, $path, $default));
+			self::set_path($found, $path, self::path($array, $path, $default));
 		}
 
 		return $found;
@@ -392,7 +391,7 @@ class Arr {
 		{
 			if (is_array($val))
 			{
-				$array[$key] = Arr::map($callbacks, $array[$key]);
+				$array[$key] = self::map($callbacks, $array[$key]);
 			}
 			elseif ( ! is_array($keys) OR in_array($key, $keys))
 			{
@@ -424,7 +423,7 @@ class Arr {
 	 *     $mary = array('name' => 'mary', 'children' => array('jane'));
 	 *
 	 *     // John and Mary are married, merge them together
-	 *     $john = Arr::merge($john, $mary);
+	 *     $john = self::merge($john, $mary);
 	 *
 	 *     // The output of $john will now be:
 	 *     array('name' => 'mary', 'children' => array('fred', 'paul', 'sally', 'jane'))
@@ -435,7 +434,7 @@ class Arr {
 	 */
 	public  function merge($array1, $array2)
 	{
-		if (Arr::is_assoc($array2))
+		if (self::is_assoc($array2))
 		{
 			foreach ($array2 as $key => $value)
 			{
@@ -444,7 +443,7 @@ class Arr {
 					AND is_array($array1[$key])
 				)
 				{
-					$array1[$key] = Arr::merge($array1[$key], $value);
+					$array1[$key] = self::merge($array1[$key], $value);
 				}
 				else
 				{
@@ -467,7 +466,7 @@ class Arr {
 		{
 			foreach (array_slice(func_get_args(), 2) as $array2)
 			{
-				if (Arr::is_assoc($array2))
+				if (self::is_assoc($array2))
 				{
 					foreach ($array2 as $key => $value)
 					{
@@ -476,7 +475,7 @@ class Arr {
 							AND is_array($array1[$key])
 						)
 						{
-							$array1[$key] = Arr::merge($array1[$key], $value);
+							$array1[$key] = self::merge($array1[$key], $value);
 						}
 						else
 						{
@@ -508,7 +507,7 @@ class Arr {
 	 *     $a2 = array('name' => 'jack', 'food' => 'tacos', 'drink' => 'beer');
 	 *
 	 *     // Overwrite the values of $a1 with $a2
-	 *     $array = Arr::overwrite($a1, $a2);
+	 *     $array = self::overwrite($a1, $a2);
 	 *
 	 *     // The output of $array will now be:
 	 *     array('name' => 'jack', 'mood' => 'happy', 'food' => 'tacos')
@@ -603,14 +602,14 @@ class Arr {
 	 */
 	public  function flatten($array)
 	{
-		$is_assoc = Arr::is_assoc($array);
+		$is_assoc = self::is_assoc($array);
 
 		$flat = array();
 		foreach ($array as $key => $value)
 		{
 			if (is_array($value))
 			{
-				$flat = array_merge($flat, Arr::flatten($value));
+				$flat = array_merge($flat, self::flatten($value));
 			}
 			else
 			{
@@ -642,8 +641,8 @@ class Arr {
 			return count($array, $mode);
 		}
 
-		throw new Kohana_Exception(
-			"Parameter 1 for Arr::count() must be array or object of type Countable, :type given.",
+		throw new \RuntimeException(
+			"Parameter 1 for self::count() must be array or object of type Countable, :type given.",
 			array(":type" => is_object($array) ? get_class($array) : gettype($array))
 		);
 	}

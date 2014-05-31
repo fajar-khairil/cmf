@@ -1,3 +1,3 @@
 <?php
-	require '../engine/bootstrap.php';
+	require_once'../engine/web.php';
 ?>
