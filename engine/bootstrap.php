@@ -14,6 +14,16 @@ require 'vendor/autoload.php';
 
 $configs = require 'config/app.php';
 
+$configs['environtments'] = array
+(
+	'local'	=> array(
+		'manjaro','fajardev'
+	),
+	'staging'	=>	array(
+		'your-machine'
+	)
+);
+
 $app = new \Unika\Application($configs);
 
 require 'routes.php';

@@ -22,7 +22,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 
 		$controllers->get('/', function (Application $app) {
 			return $app['twig']->render('default/layout.twig',array('page_title' => "Dashboard"));
-		});
+		})->bind('backend');
 
 		$controllers->get('/login', function (Application $app) {
 			return $app['twig']->render('default/login.twig',array('page_title' => "Signin"));
@@ -34,7 +34,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 
 		$controllers->post('/login_check', function (Application $app) {
 			$request = $app['request'];
-			return $request->request->all();
+			return $request->request->get('_username');
 		});
 
 		return $controllers;	

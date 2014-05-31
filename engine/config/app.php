@@ -1,9 +1,10 @@
 <?php
 $backend_uri = 'administrator';
+$base_url = 'http://unikacmf.dev/';
 return array(
-	'debug' 			=> True,
+	'debug' 			=> False,
     'backend_uri'       => $backend_uri,
-	'base_url'			=> 'http://unikacmf.dev/',
+	'base_url'			=> $base_url,
     'charset' 			=> 'UTF-8',
     'locale' 			=> 'en',
     'tmp_dir'			=> ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',
@@ -21,9 +22,9 @@ return array(
     	'backend'		=> array(
     		'pattern'	=> '^/'.$backend_uri.'$',
     		'form' => array(
-                'login_path' => '/'.$backend_uri.'/login',
-                'check_path' => '/'.$backend_uri.'/login_check' ,
-                'logout_path' => '/'.$backend_uri.'/logout'
+                'login_path' => $base_url.$backend_uri.'/login',
+                'check_path' => $base_url.$backend_uri.'/login_check' ,
+                'logout_path' => $base_url.$backend_uri.'/logout'
             ),
     		'remember_me' => array(
     			'key'	=> 'HbD(Y&*yihd78UIjdjks77hndsfsdFGsd4',

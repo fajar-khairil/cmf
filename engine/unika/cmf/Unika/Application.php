@@ -11,6 +11,7 @@ namespace Unika;
 class Application extends \Silex\Application
 {
     protected $_packages = array();
+    protected $_environtment = 'production';
 
     use \Silex\Application\SecurityTrait;
     use \Silex\Application\FormTrait;
@@ -35,6 +36,8 @@ class Application extends \Silex\Application
 
     protected function init()
     {
+        $this->_detectEnvirontment();
+
         if( $this['debug'] === True )
         {
             \Symfony\Component\Debug\Debug::enable('E_ALL');
@@ -51,7 +54,7 @@ class Application extends \Silex\Application
                     $app['Illuminate.files'],
                     ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
                 ), 
-                'local'
+                $this->_environtment
             );
         });      
 
@@ -133,6 +136,25 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\WebProfilerServiceProvider);
 
         $this['profiler.cache_dir'] = $this['tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+    }
+
+    protected function _detectEnvirontment()
+    {
+        $envs = $this['environtments'];
+
+        foreach( $envs as $env=>$machine )
+        {
+            if( in_array(gethostname(), $machine) )
+            {
+                $this->_environtment = $env;
+                break;
+            }
+        }
+    }
+
+    public function detectEnvirontment()
+    {
+        return $this->_environtment;
     }
 
     /**
