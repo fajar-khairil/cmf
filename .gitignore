@@ -1,2 +1,5 @@
 engine/vendor
-composer.lock
+engine/tmp/profiler/*
+engine/tmp/cache/*
+engine/tmp/view/*
+engine/tmp/sessions/*

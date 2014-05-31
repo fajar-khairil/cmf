@@ -40,22 +40,35 @@ class Application extends \Silex\Application
             \Symfony\Component\Debug\Debug::enable('E_ALL');
         }
 
+        //Illuminate\Filesystem
+        $this['Illuminate.files'] = $this->share(function(){
+            return new \Illuminate\Filesystem\Filesystem();
+        });   
+
+        $this['config'] = $this->share(function($app){
+            return new \Illuminate\Config\Repository( 
+                new \Illuminate\Config\FileLoader( 
+                    $app['Illuminate.files'],
+                    ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
+                ), 
+                'local'
+            );
+        });      
+
         $this->registerPackage('Unika');
 
     	$this['helper.array'] = $this->share(function(){
     		return new Helper\Arr(); 
-    	});
+    	});        
 
-    	$this['config_loader'] = $this->share(function($app){
-    		return new ConfigLoader(ENGINE_PATH.DIRECTORY_SEPARATOR.'config',$app);
-    	});
+        $this->register(new \Unika\Provider\IlluminateServiceProvider());
 
 		$this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
             'http_cache.cache_dir'  => $this['tmp_dir'].DIRECTORY_SEPARATOR.'cache'
         ));
         
 		$this->register(new \Silex\Provider\MonologServiceProvider(),array(
-			'monolog.logfile'	=> $this['config_loader']->get('log.'.$this['logger_type'])
+			'monolog.logfile'	=> $this['config']->get('log.'.$this['logger_type'])
 		));
 		
 		$this->register(new \Silex\Provider\SecurityServiceProvider());
@@ -70,13 +83,13 @@ class Application extends \Silex\Application
             $this['session.storage.handler'] = $this->share(function($app){
 
                 $session_pdo = new \PDO(
-                    $this['config_loader']->get('session.Database.dsn'),
-                    $this['config_loader']->get('session.Database.user'),
-                    $this['config_loader']->get('session.Database.password')
+                    $this['config']->get('session.Database.dsn'),
+                    $this['config']->get('session.Database.user'),
+                    $this['config']->get('session.Database.password')
                 );            
                 $session_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $session_dboptions = array(
-                    'db_table'      => $this['config_loader']->get('session.Database.table'),
+                    'db_table'      => $this['config']->get('session.Database.table'),
                     'db_id_col'     => 'session_id',
                     'db_data_col'   => 'session_value',
                     'db_time_col'   => 'session_time'               
@@ -89,17 +102,15 @@ class Application extends \Silex\Application
         }
         else
         {
-            $this['session.storage.save_path'] = $this['config_loader']->get('session.Native.path');
+            $this['session.storage.save_path'] = $this['config']->get('session.Native.path');
         }
 
 		$this->register(new \Silex\Provider\TranslationServiceProvider);
 
 		$this->register(new \Silex\Provider\UrlGeneratorServiceProvider);      	
-        
-        $this->register(new \Unika\Provider\CacheServiceProvider);
 
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
-        $this['swiftmailer.options'] = $this['config_loader']->get('email');
+        $this['swiftmailer.options'] = $this['config']->get('email');
 
         $this->register(new \Silex\Provider\TwigServiceProvider);
 
@@ -115,7 +126,7 @@ class Application extends \Silex\Application
 
         $this['twig.path'] = [$this['theme_backend_path'],$this['theme_frontend_path']];
 
-        $this['twig.options'] = $this['config_loader']->get('twig');
+        $this['twig.options'] = $this['config']->get('twig');
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
         

@@ -5,8 +5,6 @@ return array(
 		'path'	=> '../tmp/cache'
 	),
 	'Memcached'	=> array(
-			  //host,port,weight
-	    array('mem1.domain.com', 11211, 33),
-	    array('mem2.domain.com', 11211, 67)
+		array('host' => '127.0.0.1', 'port' => 11211, 'weight' => 100)
 	)
 );

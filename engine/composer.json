@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "silex/silex": "@stable",
+        "silex/silex": "1.2.x-dev",
         "ircmaxell/password-compat": "@stable",       
         "Respect/Validation": "dev-master",
         "monolog/monolog": "@stable",
@@ -33,6 +33,8 @@
         "illuminate/database": "@stable",
         "illuminate/cache": "@stable",
         "illuminate/redis": "@stable",
-        "silex/web-profiler": "@stable"
+        "silex/web-profiler": "@stable",
+        "illuminate/filesystem": "@stable",
+        "illuminate/config": "@stable"
     }
 }
