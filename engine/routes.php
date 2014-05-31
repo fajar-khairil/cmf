@@ -1,7 +1,7 @@
 <?php
 
 $app->get('/',function() use($app) {
-	return $app['Kohana.text']->censor('lo boker semabarangan aja tai!',array('tai','boker'));
+	return \Ohanzee\Helper\Arr::path(array('one' => 'satu','two' => 'dua'),'two');
 });
 
 //mounting Backend URI

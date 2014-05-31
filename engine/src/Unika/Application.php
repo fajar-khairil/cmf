@@ -41,9 +41,6 @@ class Application extends \Silex\Application
     {
         $this->_detectEnvirontment($values['environtments']);
 
-        //Load several kohana component
-        $this->register(new \Unika\Provider\KohanaServiceProvider);
-
         //Illuminate\Filesystem
         $this['Illuminate.files'] = $this->share(function(){
             return new \Illuminate\Filesystem\Filesystem();

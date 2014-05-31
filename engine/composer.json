@@ -35,6 +35,7 @@
         "illuminate/redis": "@stable",
         "silex/web-profiler": "@stable",
         "illuminate/filesystem": "@stable",
-        "illuminate/config": "@stable"
+        "illuminate/config": "@stable",
+        "ohanzee/helpers": "dev-master"
     }
 }
