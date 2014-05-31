@@ -7,4 +7,4 @@
  *	@author Fajar Khairil
  */
 
-$configs = require_once 'bootstrap.php';
+require_once 'bootstrap.php';

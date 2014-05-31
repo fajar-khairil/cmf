@@ -7,7 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Auth;
+namespace Unika\Security\Authentication;
 
 interface AuthRememberUserInterface
 {

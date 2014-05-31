@@ -7,6 +7,6 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Auth;
+namespace Unika\Security\Authentication;
 
 class AuthException extends Exception{}

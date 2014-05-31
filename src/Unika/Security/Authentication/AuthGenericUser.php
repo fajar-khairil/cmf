@@ -7,7 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Auth;
+namespace Unika\Security\Authentication;
 
 class AuthGenericUser extends \Illuminate\Support\Fluent implements AuthUserInterface,AuthRememberUserInterface
 {

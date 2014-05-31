@@ -1,15 +1,22 @@
 <?php
 /**
  *	Unika-CMF Project
- *	Auth Service Interface
+ *	default Auth Service Implementation
  *	
  *	@license MIT
  *	@author Fajar Khairil
  */
-namespace Unika\Security\Auth;
+namespace Unika\Security\Authentication;
 
-interface AuthInterface
+class Auth implements AuthInterface
 {
+	protected $app;
+
+	public function __constructor(\Unika\Application $app)
+	{
+		$this->app = $app;
+	}
+
 	/**
 	 *
 	 *	login attempt
@@ -18,7 +25,10 @@ interface AuthInterface
 	 * 	@return boolean
 	 * 	throw AuthException if failed
 	 */
-	public function attempt(array $credentials ,$remember = False,$expired = 0);
+	public function attempt(array $credentials ,$remember = False,$expired = 0)
+	{
+		
+	}
 
 	/**
 	 *
@@ -26,26 +36,44 @@ interface AuthInterface
 	 *
 	 *	@return boolean
 	 */
-	public function validate(array $credentials);
+	public function validate(array $credentials)
+	{
+
+	}
 
 	/**
 	 *
 	 *	single request login no session or cookie
 	 */
-	public function once(array $credentials);
+	public function once(array $credentials)
+	{
+
+	}
 
 	//determine if user already loggedin
-	public function check();
+	public function check()
+	{
+
+	}
 
 	//logout user
-	public function logout();
+	public function logout()
+	{
+
+	}
 
 	//login user manually
-	public function forceLogin(AuthUserInterface $user);
+	public function forceLogin(AuthUserInterface $user)
+	{
+
+	}
 
 	/**
 	 *
 	 *	@return User Object null if user not already loggedin
 	 */
-	public function user();
+	public function user()
+	{
+
+	}
 }
