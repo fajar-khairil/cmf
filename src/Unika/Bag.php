@@ -10,7 +10,7 @@
 namespace Unika;
 
 class Bag
-{
+{	
     public static $BACKEND_URI = 'administrator';
     public static $ENGINE_PATH = '/';
     public static $BASE_URL = '/';

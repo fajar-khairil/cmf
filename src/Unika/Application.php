@@ -37,6 +37,10 @@ class Application extends \Silex\Application
         if( static::$_environtment === 'production' )
             $this['debug'] = False;
         
+        $this['security.util'] = $this->share(function($app){
+            return new \Unika\Security\Util($app);
+        });
+
         //Illuminate\Filesystem
         $this['Illuminate.files'] = $this->share(function(){
             return new \Illuminate\Filesystem\Filesystem();
@@ -62,6 +66,10 @@ class Application extends \Silex\Application
         }     
 
         $this->registerPackage('Unika');
+
+        $this['response'] = function($app){
+            return new \Symfony\Component\HttpFoundation\Response();
+        };
 
         $this->initSessions();
 
@@ -143,6 +151,15 @@ class Application extends \Silex\Application
         $this['cookie'] = function($app){
             return new \Unika\Common\CookieWrapper($app);
         };
+
+        /*$this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE,function($request,$response,$third){
+            dd(get_class( $four ));
+        });*/
+
+        /*if( $this['config']['auth.enabled_remember_me'] === True )
+        {
+
+        }*/
     }
 
     public static function detectEnvirontment(array $environtments = null)

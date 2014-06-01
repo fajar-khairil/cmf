@@ -9,7 +9,14 @@
 namespace Unika\Security\Authentication;
 
 interface AuthInterface
-{
+{	
+	CONST VIA_NORMAL_LOGIN = 'normal';
+	CONST VIA_REMEMBER_ME = 'remember_me';
+	CONST VIA_FORCE_LOGIN = 'force';
+	CONST VIA_ONCE		= 'once';
+	//ex : OAUTH,OPENID or reserved for future, actual info can be retrieve via session_info
+	CONST VIA_CUSTOM = 'custom';
+	
 	/**
 	 *
 	 *	login attempt
@@ -17,7 +24,7 @@ interface AuthInterface
 	 *	@param $credentials array, ussualy its username and password but it can be anything
 	 * 	@return boolean
 	 */
-	public function attempt(array $credentials ,$remember = False/*,$restrict_ip = False*/,$expired = 0);
+	public function attempt(array $credentials ,$remember = False,$expired = null);
 
 	/**
 	 *
@@ -40,11 +47,18 @@ interface AuthInterface
 	public function logout();
 
 	//login user manually
-	public function forceLogin(AuthUserInterface $user);
+	public function forceLogin(array $user);
 
 	/**
 	 *
 	 *	@return User Object null if user not already loggedin
 	 */
 	public function user();
+
+	
+	/**
+	 *	valid return value see CONST
+	 *	@return mixed
+	 */
+	public function signinMethod();
 }

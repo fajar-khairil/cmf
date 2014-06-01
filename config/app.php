@@ -5,6 +5,12 @@ return array(
     'secret_key'        => 'HfhdsknliUIHH89j9B3hnKNKJB',
     'backend_uri'       => \Unika\Bag::$BACKEND_URI,
 	'base_url'			=> \Unika\Bag::$BASE_URL,
+	/**
+     *  
+     *  name of algorithm to sign and unsign sensitive data
+     *  valid value http://www.php.net/manual/en/function.hash-algos.php
+     */
+	'sign_algo'			=> 'ripemd160',
     'charset' 			=> 'utf-8',
     'locale' 			=> 'en',  
     'tmp_dir'			=> \Unika\Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',

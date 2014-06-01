@@ -9,11 +9,10 @@
 
  namespace Unika\Common;
 
- class PdoSessionHandler extends \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
+ class PdoSessionHandler extends \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
  {
 
  	protected $session_info_table;
- 	protected $app;
 
      /**
      * Constructor.
@@ -31,34 +30,10 @@
      */
     public function __construct(\PDO $pdo, array $dbOptions = array())
     {
-    	parent::__construct();
-    	$this->app = \Unika\Bag::instance();
+    	parent::__construct($pdo,$dbOptions);
+    	$app = \Unika\Bag::instance();
     	$this->session_info_table = $this->app['config']['session.Database.session_info.table'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function write($sessionId, $data)
-    {
-		parent::write($sessionId,$data);
-
-		//get current request
-		/*$crequest = $this->app['request_stack']->getCurrentRequest();
-
-        $insertStmt = $this->pdo->prepare(
-            "INSERT INTO session_info (session_token,user_agent,ip_address,remember_token, session_time) 
-            VALUES (:session_token,:user_agent,:ip_address,:remember_token,:session_time)"
-        );
-
-        $remember_cookie_name = $this->app['config'][ 'cookie.'.$this->app['config']['auth.cookie_remember'] ];
-
-        $insertStmt->bindParam(':session_token', $sessionId, \PDO::PARAM_STR);
-        $insertStmt->bindParam(':user_agent', $crquest->headers->get('HTTP_USER_AGENT','Unknown'), \PDO::PARAM_STR);
-        $insertStmt->bindParam(':ip_address', $crquest->getClientIp(), \PDO::PARAM_STR);
-        $insertStmt->bindParam(':remember_token', $crquest->cookies->get( $remember_cookie_name ), \PDO::PARAM_STR);
-        $insertStmt->bindValue(':session_time', time(), \PDO::PARAM_INT);
-        $insertStmt->execute();*/
+    	unset($app);
     }
 
      /**

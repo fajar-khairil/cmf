@@ -51,10 +51,22 @@ class SessionWrapper
 	                'db_data_col'   => 'session_value',
 	                'db_time_col'   => 'session_time'               
 	            );
-	            return new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
-	                $session_pdo,
-	                $session_dboptions
-	            );
+	            
+	            if( $this->app['config']['auth.restrict_ip'] === True )
+	            {	//use our own PdoSessionHandler
+		            return new PdoSessionHandler(
+		                $session_pdo,
+		                $session_dboptions
+		            );
+		        }
+		        else
+		        {
+		            return new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
+		                $session_pdo,
+		                $session_dboptions
+		            );		        	
+		        }
+	            
 	            break;
 	        case 'Mongodb' : 
 	                $mongo = null;

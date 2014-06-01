@@ -3,7 +3,7 @@ return array(
 	'default'	=>	array(
 		'name'		=> 	'unika_',
 		'domain'	=> 	null,
-		'expired'	=> 	'600',
+		'expired'	=> 	\utilphp\util::SECONDS_IN_A_DAY,
 		'path'		=>	'/',
 		'secure'	=>	False,
 		'httpOnly'	=>  True 
@@ -11,9 +11,10 @@ return array(
 	'remember'	=>	array(
 		'name'		=> 	'_remember',
 		'domain'	=> 	'unikacmf.dev',
-		'expired'	=> 	'600',
+		//in second
+		'expired'	=> 	\utilphp\util::SECONDS_IN_A_DAY,
 		'path'		=>	'/',
 		'secure'	=>	False,
-		'httpOnly'	=>  True 		
+		'httpOnly'	=>  False 		
 	)
 );
