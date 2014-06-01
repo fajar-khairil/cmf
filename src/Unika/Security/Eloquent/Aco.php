@@ -8,7 +8,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security;
+namespace Unika\Security\Eloquent;
 
 use Unika\Securit\Authorization\AcoInterface;
 use Unika\Securit\Authorization\PermissionInterface;

@@ -9,6 +9,8 @@
 
 define('APC_PRESENT',extension_loaded('apc') AND (boolean)ini_get('apc.enabled'));
 
+date_default_timezone_set('Asia/Jakarta');
+
 require 'vendor/autoload.php';
 
 \Unika\Bag::$ENGINE_PATH = __DIR__;

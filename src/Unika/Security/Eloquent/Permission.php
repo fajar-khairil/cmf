@@ -8,13 +8,12 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security;
+namespace Unika\Security\Eloquent;
 
 use Unika\Securit\Authorization\PermissionInterface;
-use Unika\Securit\Authorization\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model implements AcoInterface
+class Permission extends Model implements PermissionInterface
 {
 
 	protected $table = 'permissions';

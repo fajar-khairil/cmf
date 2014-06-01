@@ -1,5 +1,7 @@
 <?php
 return array(
+	//valid Apc,Memcached,File,Array,Redis
+    'default'   => 'Apc',
 	'prefix'	=> 'cmf_',
 	'File' 		=> array(
 		'path'	=> \Unika\Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'cache'

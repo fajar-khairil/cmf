@@ -16,9 +16,8 @@ interface AuthInterface
 	 *
 	 *	@param $credentials array, ussualy its username and password but it can be anything
 	 * 	@return boolean
-	 * 	throw AuthException if failed
 	 */
-	public function attempt(array $credentials ,$remember = False,$expired = 0);
+	public function attempt(array $credentials ,$remember = False/*,$restrict_ip = False*/,$expired = 0);
 
 	/**
 	 *

@@ -95,6 +95,10 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\WebProfilerServiceProvider);
 
         $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+
+        $this['PasswordLib'] = $this->share(function(){
+            return new \PasswordLib\PasswordLib();
+        });
     }
 
     protected function initTwig()
@@ -123,19 +127,23 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
         $this['SessionManager'] = $this->share(function(){
-            return new \Unika\Provider\SessionManager();
+            return new \Unika\Common\SessionWrapper();
         });
 
         $this->app['session.storage.save_path'] = $this['config']->get('session.File.path');
-        if( !in_array($this['config']['app.session_default'], array('Database','Mongodb','Memcached') ) )
+        if( !in_array($this['config']['session.default'], array('Database','Mongodb','Memcached') ) )
         {
             return True;
         }
 
         $this['session.storage.handler'] = $this->share(function($app)
         {
-            return $app['SessionManager']->getSession($this['config']['app.session_default']);
+            return $app['SessionManager']->getSession($this['config']['session.default']);
         });
+
+        $this['cookie'] = function($app){
+            return new \Unika\Common\CookieWrapper($app);
+        };
     }
 
     public static function detectEnvirontment(array $environtments = null)

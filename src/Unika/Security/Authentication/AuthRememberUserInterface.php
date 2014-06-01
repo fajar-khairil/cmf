@@ -12,6 +12,4 @@ namespace Unika\Security\Authentication;
 interface AuthRememberUserInterface
 {
 	public function getRememberMeToken();
-
-	public function getRememberMeTokenName();
 }

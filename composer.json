@@ -17,8 +17,7 @@
         }
     },
     "require": {
-        "silex/silex": "1.2.x-dev",
-        "ircmaxell/password-compat": "@stable",       
+        "silex/silex": "1.2.x-dev",  
         "Respect/Validation": "dev-master",
         "monolog/monolog": "@stable",
         "swiftmailer/swiftmailer": "@stable",
@@ -35,6 +34,7 @@
         "silex/web-profiler": "@stable",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
-        "brandonwamboldt/utilphp": "1.0.6"
+        "brandonwamboldt/utilphp": "1.0.6",
+        "PasswordLib/PasswordLib": "*"
     }
 }

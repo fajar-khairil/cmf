@@ -7,7 +7,9 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Authorization;
+namespace Unika\Security\Eloquent;
+
+use Unika\Security\Authorization\AroInterface;
 
 class Acl implements AclInterface 
 {

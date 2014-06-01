@@ -7,7 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security;
+namespace Unika\Security\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 use Unika\Security\Authorization\AroInterface;

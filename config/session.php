@@ -1,6 +1,8 @@
 <?php
 //supported session.handler ['Database','File','Mongodb','Memcached']
 return array(
+    //valid File/Database
+    'default'		=> 'Database', 
 	'File' => array(
 		'path' 	=> '../tmp/sessions'
 	),

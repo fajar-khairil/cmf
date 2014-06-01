@@ -1,7 +1,20 @@
 <?php
 
-$app->get('/',function() use($app) {
-	return \Ohanzee\Helper\Arr::path(array('one' => 'satu','two' => 'dua'),'two');
+$app = \Unika\Bag::instance();
+
+$app->get('/',function() use($app){
+	$auth = new \Unika\Security\Eloquent\Auth();
+
+	if( $auth->attempt(['username' => 'sysadmin','pass' => 'masterkey'],True,5) )
+	{
+		return 'successfully loggedin';
+	}
+	else
+	{
+		return 'failed to loggedin';
+	}
+	
+	return 'Hello World';
 });
 
 //mounting Backend URI

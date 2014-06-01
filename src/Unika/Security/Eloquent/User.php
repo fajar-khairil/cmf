@@ -8,7 +8,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security;
+namespace Unika\Security\Eloquent;
 
 use Unika\Security\Authentication\AuthUserInterface;
 use Unika\Security\Authentication\AuthRememberUserInterface;
@@ -45,10 +45,5 @@ class User extends Model implements
 	public function getRememberMeToken()
 	{
 		return $this->remember_token;
-	}
-
-	public function getRememberMeTokenName()
-	{
-		return $this->rememberme_token_name;
 	}	
 }
