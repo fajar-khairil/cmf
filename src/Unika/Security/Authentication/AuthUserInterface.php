@@ -12,7 +12,7 @@ namespace Unika\Security\Authentication;
 interface AuthUserInterface
 {
 	//it can be username/email or whatever
-	public function getIdentifier();
+	public function getAuthIdentifier();
 
 	public function getPassword();
 

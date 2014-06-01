@@ -35,12 +35,6 @@
         "silex/web-profiler": "@stable",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
-        "ohanzee/helpers": "dev-master"
-    },
-    "repositories": [
-       {
-         "type": "composer",
-         "url": "http://localhost/repos"
-       }
-    ]
+        "brandonwamboldt/utilphp": "1.0.6"
+    }
 }

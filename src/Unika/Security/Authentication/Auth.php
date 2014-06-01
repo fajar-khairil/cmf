@@ -12,9 +12,9 @@ class Auth implements AuthInterface
 {
 	protected $app;
 
-	public function __constructor(\Unika\Application $app)
+	public function __constructor()
 	{
-		$this->app = $app;
+		$this->app = Unika\Bag::instance();
 	}
 
 	/**
