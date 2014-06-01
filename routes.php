@@ -3,6 +3,9 @@
 $app = \Unika\Bag::instance();
 
 $app->get('/',function() use($app){
+	/*$crequest = $app['request'];
+	dd(get_class($crequest));*/
+
 	$auth = new \Unika\Security\Eloquent\Auth();
 
 	if( $auth->attempt(['username' => 'sysadmin','pass' => 'masterkey'],True,5) )

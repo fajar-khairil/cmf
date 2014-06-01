@@ -32,12 +32,11 @@ class Application extends \Silex\Application
      */
     public function __construct(array $values = array())
     {
-    	parent::__construct();
-        $this->init();
-    }
+    	parent::__construct($values);
 
-    protected function init()
-    {        
+        if( static::$_environtment === 'production' )
+            $this['debug'] = False;
+        
         //Illuminate\Filesystem
         $this['Illuminate.files'] = $this->share(function(){
             return new \Illuminate\Filesystem\Filesystem();
@@ -68,7 +67,7 @@ class Application extends \Silex\Application
 
         $this->initTwig();
 
-        $this->initCommonProviders();              
+        $this->initCommonProviders();  
     }
 
     public function initCommonProviders()
@@ -148,7 +147,8 @@ class Application extends \Silex\Application
 
     public static function detectEnvirontment(array $environtments = null)
     {
-        if( $environtments === null )
+        //prevent user to detect environtment more than once
+        if( $environtments === null OR static::$_environtmentDetected === True )
         {
             return static::$_environtment;
         }

@@ -7,10 +7,14 @@ return array(
 		'path' 	=> '../tmp/sessions'
 	),
 	'Database' => array(
-		'dsn'		=> 'mysql:dbname=cmf',
-		'user'		=> 'root',
-		'password'	=> 'masterkey',
-		'table' 	=> 'sessions'
+		'dsn'			=> 'mysql:dbname=cmf',
+		'user'			=> 'root',
+		'password'		=> 'masterkey',
+		'table' 		=> 'sessions',
+		'session_info'	=> array(
+			'enabled'	=> False,
+			'table'		=> 'session_info'
+		)
 	),
 	//depending on your installed extending it can be Memcached or Memcache , Memcached take first priority
 	'Memcached'	=> array(

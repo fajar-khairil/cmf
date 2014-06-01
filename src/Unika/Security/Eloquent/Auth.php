@@ -54,10 +54,10 @@ class Auth implements AuthInterface
 				$this->_updateUser($result['id'],[
 					'remember_token'		=>	$remember_token,
 					'last_failed_count'		=>  0
-				]);
+				]);				
 
 				$this->app->after(function($request,$response) use($remember_cookie){
-					$response->headers->setCookie( $remember_cookie );
+					$response->headers->setCookie($remember_cookie);
 				});
 			}
 		}	
