@@ -186,4 +186,14 @@ class Application extends \Silex\Application
         }
         return static::$_environtment;
     }  
+
+    public static function isWindows()
+    {
+        return (DIRECTORY_SEPARATOR === '\\');
+    }
+
+    public static function isUnix()
+    {
+        return (DIRECTORY_SEPARATOR === '/');
+    }
 }
