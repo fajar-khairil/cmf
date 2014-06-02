@@ -12,8 +12,11 @@
         }
     ],
     "autoload": {
+        "classmap": [
+            "src/classes"
+        ],
         "psr-0" : { 
-            "Unika" : "src"
+            "Unika" : "src/engine"
         }
     },
     "require": {

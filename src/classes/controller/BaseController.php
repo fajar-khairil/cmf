@@ -7,9 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Controller;
-
-class BaseController
+class Controller_BaseController
 {
 	
 }

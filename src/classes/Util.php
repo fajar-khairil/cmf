@@ -7,8 +7,6 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika;
-
  class Util
  {
  	public static function isWindows()

@@ -2,7 +2,7 @@
 /**
  *	This file is part of the Unika-CMF project.
  *
- *	ACO(Access Control Object) implementation using Illuminate\Database\Eloquent\Model
+ *	Aco Permission implementation using Illuminate\Database\Eloquent\Model
  *	
  *	@license MIT
  *	@author Fajar Khairil

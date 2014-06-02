@@ -47,7 +47,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
                 $app['config']['cache.default'] = 'File';
         }
 
-        $app['CacheManager'] = $app->share(function($app) use($container){
+        $app['cache_manager'] = $app->share(function($app) use($container){
 
             $container['config']['cache.path'] = $app['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache';
             
@@ -73,7 +73,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
 
         //BEGIN Eqloquent
 
-		$app['Capsule'] = $app->share(function($app){
+		$app['capsule'] = $app->share(function($app){
 			$Capsule = new Capsule();
 			$Capsule->setAsGlobal();
 			$Capsule->addConnection(
@@ -83,7 +83,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
 			$dispatcher = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
 			$Capsule->setEventDispatcher($dispatcher);
 
-			$Capsule->setCacheManager( $app['CacheManager'] );
+			$Capsule->setCacheManager( $app['cache_manager'] );
 
 			return $Capsule;
 		});      

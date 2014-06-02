@@ -13,7 +13,7 @@ class CookieWrapper
 {
 	protected $pp;
 
-	public function __construct(\Unika\Application $app)
+	public function __construct(\Application $app)
 	{
 		$this->app = $app;
 	}

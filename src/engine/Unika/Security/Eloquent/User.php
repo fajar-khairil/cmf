@@ -1,7 +1,7 @@
 <?php
 /**
  *	Unika-CMF Project
- *	User class implementing important authentication and authorization interface
+ *	User class implementing important authentication interface
  *	using Illuminate\Database\Eloquent\Model
  *	
  *	@license MIT

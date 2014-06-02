@@ -17,7 +17,7 @@ class SessionWrapper
 
 	function __construct( )
 	{
-		$this->app = \Unika\Bag::instance();
+		$this->app = \Application::instance();
 	}
 
 	public function getSession( $session_name )

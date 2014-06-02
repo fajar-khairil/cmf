@@ -31,7 +31,7 @@
     public function __construct(\PDO $pdo, array $dbOptions = array())
     {
     	parent::__construct($pdo,$dbOptions);
-    	$app = \Unika\Bag::instance();
+    	$app = \Application::instance();
     	$this->session_info_table = $this->app['config']['session.Database.session_info.table'];
     	unset($app);
     }

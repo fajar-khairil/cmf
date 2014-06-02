@@ -7,13 +7,10 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Controller;
-
 use Silex\ControllerProviderInterface;
-use Unika\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class BackendControllerProvider implements ControllerProviderInterface
+class Controller_BackendControllerProvider implements ControllerProviderInterface
 {
 	public function connect(\Silex\Application $app)
 	{

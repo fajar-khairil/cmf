@@ -21,7 +21,7 @@ class Auth implements AuthInterface
 	protected $app;
 	protected $sign_method = AuthInterface::VIA_NORMAL_LOGIN;
 
-	public function __construct(\Unika\Application $app)
+	public function __construct(\Application $app)
 	{
 		$this->app = $app;
 	}
@@ -45,17 +45,16 @@ class Auth implements AuthInterface
 
 		if( $result )
 		{
-			return $this->sign($result,$remember,$expired);
+			return $this->sign($result,AuthInterface::VIA_NORMAL_LOGIN,$remember,$expired);
 		}
 
 		return (boolean)$result;	
 	}
 
 	/**
-	 *
-	 *
+	 *	store to session
 	 */
-	protected function sign($user, $remember = False, $expired = null)
+	protected function sign($user, $signMethod,$remember = False, $expired = null)
 	{
 		unset($user['pass']);unset($user['salt']);
 		$this->app['session']->set( $this->app['config']['auth.session_key'] , $user );
@@ -72,15 +71,13 @@ class Auth implements AuthInterface
 
 			$request = $this->app['request'];
 
-			$signer = $this->app['security.util'];
-
 			$secret_data = serialize(array(
 				'_token'		=>	$this->app['PasswordLib']->getRandomToken(32),
 				'user_id'		=>	$user['id'],
 				'ip_address'	=>	$request->getClientIp()
 			));
 
-			$cookies['value'] = $signer->encrypt( $secret_data );
+			$cookies['value'] = $this->app['security.util']->encrypt( $secret_data );
 
 			$remember_cookie = $this->app['cookie']->cookie($cookies);
 
@@ -95,7 +92,7 @@ class Auth implements AuthInterface
 			});
 
 
-			if( ($this->app['config']['auth.restrict_ip']) === True OR ($this->app['config']['auth.enabled_session_info'] === True) )
+			if( ($this->app['config']['auth.restrict_ip'] === True) OR ($this->app['config']['auth.enabled_session_info'] === True) )
 			{
 				//prepare values
 				$values = array(
@@ -108,7 +105,7 @@ class Auth implements AuthInterface
 				$this->_updateSessionInfo($values);				
 			}
 
-			$this->sign_method = AuthInterface::VIA_NORMAL_LOGIN;
+			$this->sign_method = $signMethod;
 		}
 
 		return True;
@@ -121,7 +118,7 @@ class Auth implements AuthInterface
 	protected function _updateUser($id,array $values)
 	{
 		//if return is False log
-		$capsule = $this->app['Capsule'];
+		$capsule = $this->app['capsule'];
 		$values['last_login'] = date('Y-m-d H:i:s',time());
 		return $capsule::table($this->app['config']['auth.Eloquent.user_table'])
 				->where('id',$id)
@@ -135,7 +132,7 @@ class Auth implements AuthInterface
 	 */
 	protected function _checkCredentials( array $credentials )
 	{
-		$capsule = $this->app['Capsule'];
+		$capsule = $this->app['capsule'];
 		$query = $capsule::table($this->app['config']['auth.Eloquent.user_table'])
 				->select('*');
 
@@ -171,7 +168,7 @@ class Auth implements AuthInterface
 	{
 		$session_info_table = $this->app['config']['auth.session_info_table'];
 
-		$capsule = $this->app['Capsule'];
+		$capsule = $this->app['capsule'];
 		$qGet = $capsule::table($session_info_table)
 				->select('*')
 				->where('session_token',$values['session_token'])
@@ -204,6 +201,7 @@ class Auth implements AuthInterface
 	/**
 	 *
 	 *	single request login no session or cookie
+	 *	AuthInterface::VIA_ONCE
 	 *	@return boolean
 	 */
 	public function once(array $credentials)
@@ -240,7 +238,7 @@ class Auth implements AuthInterface
 		if( $this->check() === True )
 			return True;
 
-		return $this->sign($user);
+		return $this->sign($user,AuthInterface::VIA_FORCE_LOGIN);
 	}
 
 	/**

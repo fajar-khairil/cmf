@@ -9,11 +9,11 @@
 
 require_once 'bootstrap.php';
 
-\Unika\Bag::$BACKEND_URI = 'administrator';
-\Unika\Bag::$BASE_URL = 'http://unikacmf.dev/';
+Application::$BACKEND_URI = 'administrator';
+Application::$BASE_URL = 'http://unikacmf.dev/';
 
-$app = \Unika\Bag::instance();
+$app = Application::instance();
 
-require 'routes.php';
+require '../routes.php';
 
 $app->run();

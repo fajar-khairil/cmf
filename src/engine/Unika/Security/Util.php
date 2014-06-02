@@ -30,7 +30,7 @@ class Util
 
 	public function verifySign()
 	{
-		
+		throw new \RuntimeException('not yet implemented');
 	}
 
 	function encrypt($secret_data, $key = null) 

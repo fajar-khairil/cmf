@@ -13,7 +13,7 @@ date_default_timezone_set('Asia/Jakarta');
 
 require 'vendor/autoload.php';
 
-\Unika\Bag::$ENGINE_PATH = __DIR__;
+Application::$ENGINE_PATH = __DIR__;
 
 //environtment detection source
 $environtments = array(
@@ -25,4 +25,4 @@ $environtments = array(
     )
 );
 
-\Unika\Application::detectEnvirontment( $environtments );
+Application::detectEnvirontment( $environtments );

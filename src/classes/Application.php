@@ -6,22 +6,36 @@
  *  @license : MIT 
  *  @author  : Fajar Khairil
  */
-namespace Unika;
 
 class Application extends \Silex\Application
 {    
     protected static $_environtment = 'production';
     protected static $_environtmentDetected = False;
 
- 
-    protected $_packages = array();
+    public static $BACKEND_URI = 'administrator';
+    public static $ENGINE_PATH = '/';
+    public static $BASE_URL = '/';
+    
+    protected static $instance = null;
 
-    use \Silex\Application\FormTrait;
+    protected $_modules = array();
+
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
     use \Silex\Application\MonologTrait;
     use \Silex\Application\TranslationTrait;
     use \Silex\Application\TwigTrait;	
+
+    //return Unika\Application
+    public static function instance()
+    {
+        if( static::$instance === null )
+        {
+            static::$instance = new Application();
+        }
+
+        return static::$instance;
+    }
 
     /**
      * Instantiate a new Application.
@@ -50,13 +64,13 @@ class Application extends \Silex\Application
             return new \Illuminate\Config\Repository( 
                 new \Illuminate\Config\FileLoader( 
                     $app['Illuminate.files'],
-                    Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
+                    Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
                 ), 
                 static::detectEnvirontment()
             );
         });
 
-        $this['config']['engine_path'] = Bag::$ENGINE_PATH;
+        $this['config']['engine_path'] = Application::$ENGINE_PATH;
 
         $this['debug'] = $this['config']->get('app.debug',True);
 
@@ -64,8 +78,6 @@ class Application extends \Silex\Application
         {
             \Symfony\Component\Debug\Debug::enable('E_ALL');
         }     
-
-        $this->registerPackage('Unika');
 
         $this['response'] = function($app){
             return new \Symfony\Component\HttpFoundation\Response();
@@ -117,9 +129,9 @@ class Application extends \Silex\Application
             return new \Twig_Environment($loader, $app['twig.options']);          
         });
 
-        $this['config']['theme_backend_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
-        $this['config']['theme_frontend_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
-        $this['config']['module_path'] = Bag::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
+        $this['config']['theme_backend_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'backend';
+        $this['config']['theme_frontend_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.DIRECTORY_SEPARATOR.'frontend';
+        $this['config']['module_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
 
         $this['twig.path'] = [ $this['config']['theme_backend_path'],$this['config']['theme_frontend_path'] ];
 
@@ -151,15 +163,6 @@ class Application extends \Silex\Application
         $this['cookie'] = function($app){
             return new \Unika\Common\CookieWrapper($app);
         };
-
-        /*$this->on(\Symfony\Component\HttpKernel\KernelEvents::RESPONSE,function($request,$response,$third){
-            dd(get_class( $four ));
-        });*/
-
-        /*if( $this['config']['auth.enabled_remember_me'] === True )
-        {
-
-        }*/
     }
 
     public static function detectEnvirontment(array $environtments = null)
@@ -183,13 +186,4 @@ class Application extends \Silex\Application
         }
         return static::$_environtment;
     }  
-
-    /**
-     *
-     *  Registering Module/Theme namespace
-     */
-    public function registerPackage($namespace)
-    {
-        $this->_packages[] = $namespace;
-    }
 }
