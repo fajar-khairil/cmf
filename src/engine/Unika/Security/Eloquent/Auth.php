@@ -11,8 +11,8 @@
 namespace Unika\Security\Eloquent;
 
 use Unika\Security\Authentication\AuthInterface;
+use Unika\Security\Authentication\AuthException;
 use Unika\Security\Authentication\AuthUserInterface;
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder as hash;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,18 +35,14 @@ class Auth implements AuthInterface
 	 */
 	public function attempt(array $credentials , $remember = False, $expired = null )
 	{
-		if( $this->check() === True )
-		{
-			$this->app['session']->migrate();
-			return True;
-		}
-
+		if( $this->check() ) return True;
 		$result = $this->_checkCredentials( $credentials );
 
 		if( $result )
 		{
 			return $this->sign($result,AuthInterface::VIA_NORMAL_LOGIN,$remember,$expired);
 		}
+
 
 		return (boolean)$result;	
 	}
@@ -71,26 +67,27 @@ class Auth implements AuthInterface
 
 			$request = $this->app['request'];
 
+			$remember_token = $this->app['PasswordLib']->getRandomToken(32);
 			$secret_data = serialize(array(
-				'_token'		=>	$this->app['PasswordLib']->getRandomToken(32),
-				'user_id'		=>	$user['id'],
-				'ip_address'	=>	$request->getClientIp()
+				'remember_token' => $remember_token,
+				'user_id'		=> $user['id']
 			));
 
-			$cookies['value'] = $this->app['security.util']->encrypt( $secret_data );
+			$cookies['value'] = $this->app['signer']->sign( base64_encode($secret_data) );
 
 			$remember_cookie = $this->app['cookie']->cookie($cookies);
 
 			//update user
 			$this->_updateUser($user['id'],[
-				'remember_token'		=>	$cookies['value'],
+				'last_login'			=> date('Y-m-d H:i:s',time()),
+				'remember_token'		=>	$remember_token,
 				'last_failed_count'		=>  0
 			]);			
 
 			$this->app->after(function($request,$response) use($remember_cookie){
+				//dd('here');
 				$response->headers->setCookie( $remember_cookie );
 			});
-
 
 			if( ($this->app['config']['auth.restrict_ip'] === True) OR ($this->app['config']['auth.enabled_session_info'] === True) )
 			{
@@ -99,7 +96,7 @@ class Auth implements AuthInterface
 					'session_token'		=>	$this->app['session']->getId(),
 					'user_agent'		=>	$request->headers->get('user-agent'),
 					'ip_address'		=>	$request->getClientIp(),
-					'remember_token'	=>	$cookies['value'],
+					'remember_token'	=>	$remember_token,
 					'session_time'		=>	time()
 				);
 				$this->_updateSessionInfo($values);				
@@ -119,7 +116,6 @@ class Auth implements AuthInterface
 	{
 		//if return is False log
 		$capsule = $this->app['capsule'];
-		$values['last_login'] = date('Y-m-d H:i:s',time());
 		return $capsule::table($this->app['config']['auth.Eloquent.user_table'])
 				->where('id',$id)
 				->update($values);	
@@ -155,7 +151,13 @@ class Auth implements AuthInterface
 		if( !empty($row) )
 		{	
 			if( $this->app['PasswordLib']->verifyPasswordHash($pass.$row[0]['salt'],$row[0]['pass']) )
+			{
 				$result = $row[0];
+			}
+			else
+			{
+				$this->_updateUser($row[0]['id'],['last_failed_count' => (int)$row[0]['last_failed_count']+1]);
+			}
 		}
 
 		return $result;
@@ -206,14 +208,79 @@ class Auth implements AuthInterface
 	 */
 	public function once(array $credentials)
 	{
-		//this implementation still wrong , i need to implement flash_session
-		/*$result = $this->_checkCredentials($credentials);
+		if( $this->check() ) return True;
+
+		$result = $this->_checkCredentials($credentials);
 		if( $result )
-			$this->app['session']->getFlashBag()->set('test',$result);
+		{
+			$this->app['session']->getFlashBag()->set($this->app['config']['auth.session_key'],$result);
+			$this->sign_method = AuthInterface::VIA_ONCE;
+		}
 
-		return (boolean) $result;*/
+		return (boolean) $result;
+	}
 
-		throw new \RuntimeException('not yet implemented');
+	/** 
+	 *	check if remember_me cookie is present
+	 *
+	 *	@param $asUser if True return value will be user
+	 *	@return mixed
+	 */
+	protected function checkRemembermePresent($asUser = False)
+	{
+		$cookies = $this->app['config'][ 'cookie.'.$this->app['config']['auth.cookie_remember'] ];
+		$request = $this->app['request'];
+		$result = $request->cookies->has($cookies['name']);
+		
+		if( !$result ) return False;
+		
+		$result = $this->app['signer']->check($request->cookies->get($cookies['name']));
+			
+
+		if( $result === False ){
+			throw new AuthException('token was broken');
+		}
+
+		if( $result )
+		{
+			$tokens = $this->app['security.util']->extractSign($request->cookies->get($cookies['name']));
+
+			$secret_data = unserialize(base64_decode($tokens['secret_data']));
+		
+			$capsule = $this->app['capsule'];
+
+			$session_info = $capsule::table($this->app['config']['auth.session_info_table'])
+							->select('*')
+							->where('remember_token',$secret_data['remember_token'])
+							->take(1)
+							->get();
+
+			if( empty($session_info) ) return False;				
+				
+			//compare user_agent and and ip_address
+			if( 
+				( $request->headers->get('user-agent') == $session_info[0]['user_agent'] ) 
+				AND 
+				( $request->getClientIp() == $session_info[0]['ip_address'] )
+			)
+			{						
+				$user = $capsule::table($this->app['config']['auth.Eloquent.user_table'])
+						->select('*')
+						->where('id',$secret_data['user_id'])
+						->take(1)->get();
+
+				if( !empty($user) AND $user[0]['remember_token'] == $session_info[0]['remember_token'] )
+				{
+					$result = ( $asUser === True ) ? $user[0] : (boolean)$user;
+				}
+				else
+				{
+					return False;
+				}
+			}
+		}		
+
+		return $result;
 	}
 
 	/**
@@ -223,13 +290,33 @@ class Auth implements AuthInterface
 	 */
 	public function check()
 	{
-		return (boolean)$this->app['session']->has($this->app['config']['auth.session_key']);
+		$result = $this->app['session']->has($this->app['config']['auth.session_key']);
+		
+		if( $result === False )
+		{
+			$user = $this->checkRemembermePresent(True);
+
+			if( is_array($user) ){
+				$this->app['session']->set($this->app['config']['auth.session_key'],$user);
+				$result = True;
+			}
+		}
+
+		return (boolean)$result;
 	}
 
 	//logout user
 	public function logout()
 	{
-		return $this->app['session']->remove($this->app['config']['auth.session_key']);
+		$result = $this->app['session']->remove($this->app['config']['auth.session_key']);
+		$this->app['session']->invalidate();		
+		
+		$cookies = $this->app['config'][ 'cookie.'.$this->app['config']['auth.cookie_remember'] ];
+		$this->app->after(function($request,$response) use($cookies){
+			$response->headers->clearCookie( $cookies['name'],$cookies['path'],$cookies['domain'] );
+		});		
+		
+		return $result;
 	}
 
 	//login user manually

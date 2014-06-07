@@ -9,4 +9,4 @@
 
 namespace Unika\Security\Authentication;
 
-class AuthException extends Exception{}
+class AuthException extends \Exception{}

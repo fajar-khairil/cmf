@@ -14,7 +14,7 @@ class Util
 
 	protected $app;
 
-	public function __construct(\Unika\Application $app)
+	public function __construct(\Application $app)
 	{
 		$this->app = $app;
 	}
@@ -23,14 +23,26 @@ class Util
 	 *
 	 *	hash using HMAC with algo
 	 */
-	public function sign($secret_data,$raw = False)
+	public function sign($secret_data)
 	{
-		return hash_hmac($app['config']['app.sign_algo'],$secret_data,$this->app['config']['app.secret_key'],$raw);
+		return $app['signer']->sign($secret_data);
 	}
 
-	public function verifySign()
+	public function checkSign($hashes_data)
 	{
-		throw new \RuntimeException('not yet implemented');
+		return $app['signer']->check($hashes_data);
+	}
+
+	public function extractSign($hashes_data)
+	{
+        if (!preg_match('/^(.*)(?:\?|&)_hash=(.+?)$/', $hashes_data, $matches)) {
+            return false;
+        }
+
+        return array(
+        	'secret_data' 	=>  $matches[1],
+        	'secret_key'	=>	$matches[2]		
+        );
 	}
 
 	function encrypt($secret_data, $key = null) 

@@ -5,6 +5,13 @@
 </head>
 <body>
 	<h1>Welcome to Unika-CMF</h1>
+
+	{% if app.session.getFlashBag().get('notice') is empty %}
+	    {% for flash in app.session.getFlashBag().get('notice') %}
+	        <li>{{ flash }}</li>
+	    {% endfor %}
+    {% endif %}
+
 	{% block content %}
 
 	{% endblock %}

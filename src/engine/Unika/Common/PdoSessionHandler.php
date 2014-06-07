@@ -32,7 +32,7 @@
     {
     	parent::__construct($pdo,$dbOptions);
     	$app = \Application::instance();
-    	$this->session_info_table = $this->app['config']['session.Database.session_info.table'];
+    	$this->session_info_table = $app['config']['session.Database.session_info.table'];
     	unset($app);
     }
 

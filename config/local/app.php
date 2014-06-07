@@ -1,6 +1,6 @@
 <?php
 return array(
-    'debug'             => True,
+    'debug'             => False,
     'backend_uri'       => Application::$BACKEND_URI,
     'base_url'          => Application::$BASE_URL,
     'charset'           => 'utf-8',

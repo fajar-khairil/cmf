@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fa55a924c011782d5685fbd42862c14d",
+    "hash": "805095107a6068bb1ca0f328f3394484",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
@@ -51,35 +51,34 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v4.1.29",
+            "version": "v4.2.1",
             "target-dir": "Illuminate/Cache",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
-                "reference": "fe78a7cd013cd4a175cad1cfc564e549ac234a6f"
+                "reference": "1f211dcb84f9760a261f161927386aa28f7bdba9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/cache/zipball/fe78a7cd013cd4a175cad1cfc564e549ac234a6f",
-                "reference": "fe78a7cd013cd4a175cad1cfc564e549ac234a6f",
+                "url": "https://api.github.com/repos/illuminate/cache/zipball/1f211dcb84f9760a261f161927386aa28f7bdba9",
+                "reference": "1f211dcb84f9760a261f161927386aa28f7bdba9",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "4.1.*",
-                "nesbot/carbon": "1.*",
-                "php": ">=5.3.0"
+                "illuminate/support": "4.2.*",
+                "nesbot/carbon": "~1.0",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "illuminate/database": "4.1.*",
-                "illuminate/encryption": "4.1.*",
-                "illuminate/filesystem": "4.1.*",
-                "illuminate/redis": "4.1.*",
-                "phpunit/phpunit": "4.0.*"
+                "illuminate/database": "4.2.*",
+                "illuminate/encryption": "4.2.*",
+                "illuminate/filesystem": "4.2.*",
+                "illuminate/redis": "4.2.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -99,35 +98,32 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-05-02 18:11:11"
+            "time": "2014-05-23 16:40:19"
         },
         {
             "name": "illuminate/config",
-            "version": "v4.1.29",
+            "version": "v4.2.1",
             "target-dir": "Illuminate/Config",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
-                "reference": "7492390a13d575e73460e6738ba38a3e41ac0341"
+                "reference": "cd99d3dc2ca192b7b4003b5f6b31a4b1dd3c8167"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/config/zipball/7492390a13d575e73460e6738ba38a3e41ac0341",
-                "reference": "7492390a13d575e73460e6738ba38a3e41ac0341",
+                "url": "https://api.github.com/repos/illuminate/config/zipball/cd99d3dc2ca192b7b4003b5f6b31a4b1dd3c8167",
+                "reference": "cd99d3dc2ca192b7b4003b5f6b31a4b1dd3c8167",
                 "shasum": ""
             },
             "require": {
-                "illuminate/filesystem": "4.1.*",
-                "illuminate/support": "4.1.*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.0.*"
+                "illuminate/filesystem": "4.2.*",
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -147,33 +143,30 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-04-16 00:49:36"
+            "time": "2014-05-23 16:40:19"
         },
         {
             "name": "illuminate/container",
-            "version": "4.1.x-dev",
+            "version": "4.2.x-dev",
             "target-dir": "Illuminate/Container",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "d8260f9fb8d63f91bdbb608a65ada86e4a455765"
+                "reference": "a4c774005acf0eb19bdf607986639bb48e00579e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/d8260f9fb8d63f91bdbb608a65ada86e4a455765",
-                "reference": "d8260f9fb8d63f91bdbb608a65ada86e4a455765",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/a4c774005acf0eb19bdf607986639bb48e00579e",
+                "reference": "a4c774005acf0eb19bdf607986639bb48e00579e",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.0.*"
+                "php": ">=5.4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -193,43 +186,41 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-05-22 21:07:57"
+            "time": "2014-05-23 16:40:19"
         },
         {
             "name": "illuminate/database",
-            "version": "v4.1.29",
+            "version": "v4.2.1",
             "target-dir": "Illuminate/Database",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "00babb09abdb2115c5380c3c1090ca8f533bd30b"
+                "reference": "c5aa973cbe90dbf6150bd6e57c6140f0b79ac33d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/00babb09abdb2115c5380c3c1090ca8f533bd30b",
-                "reference": "00babb09abdb2115c5380c3c1090ca8f533bd30b",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/c5aa973cbe90dbf6150bd6e57c6140f0b79ac33d",
+                "reference": "c5aa973cbe90dbf6150bd6e57c6140f0b79ac33d",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "4.1.*",
-                "illuminate/events": "4.1.*",
-                "illuminate/support": "4.1.*",
-                "nesbot/carbon": "1.*",
-                "php": ">=5.3.0"
+                "illuminate/container": "4.2.*",
+                "illuminate/events": "4.2.*",
+                "illuminate/support": "4.2.*",
+                "nesbot/carbon": "~1.0",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "illuminate/cache": "4.1.*",
-                "illuminate/console": "4.1.*",
-                "illuminate/filesystem": "4.1.*",
-                "illuminate/pagination": "4.1.*",
-                "illuminate/support": "4.1.*",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "4.0.*"
+                "illuminate/cache": "4.2.*",
+                "illuminate/console": "4.2.*",
+                "illuminate/filesystem": "4.2.*",
+                "illuminate/pagination": "4.2.*",
+                "illuminate/support": "4.2.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -255,36 +246,32 @@
                 "orm",
                 "sql"
             ],
-            "time": "2014-05-20 13:21:41"
+            "time": "2014-06-01 01:58:07"
         },
         {
             "name": "illuminate/events",
-            "version": "4.1.x-dev",
+            "version": "4.2.x-dev",
             "target-dir": "Illuminate/Events",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
-                "reference": "ef6ae5962134a35667f24349bc2c9b8ad1e20c8b"
+                "reference": "3442bda43f638237462223132ad48a0636b53190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/ef6ae5962134a35667f24349bc2c9b8ad1e20c8b",
-                "reference": "ef6ae5962134a35667f24349bc2c9b8ad1e20c8b",
+                "url": "https://api.github.com/repos/illuminate/events/zipball/3442bda43f638237462223132ad48a0636b53190",
+                "reference": "3442bda43f638237462223132ad48a0636b53190",
                 "shasum": ""
             },
             "require": {
-                "illuminate/container": "4.1.*",
-                "illuminate/support": "4.1.*",
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "4.0.*"
+                "illuminate/container": "4.2.*",
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -304,35 +291,32 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-03-22 20:12:48"
+            "time": "2014-06-06 13:58:46"
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v4.1.29",
+            "version": "v4.2.1",
             "target-dir": "Illuminate/Filesystem",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
-                "reference": "bae44b67e7bd68ef676c77cdb70eb505a3aff9aa"
+                "reference": "568f829aebe886bbe84bcd726e1509f830d5a1b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/bae44b67e7bd68ef676c77cdb70eb505a3aff9aa",
-                "reference": "bae44b67e7bd68ef676c77cdb70eb505a3aff9aa",
+                "url": "https://api.github.com/repos/illuminate/filesystem/zipball/568f829aebe886bbe84bcd726e1509f830d5a1b0",
+                "reference": "568f829aebe886bbe84bcd726e1509f830d5a1b0",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "4.1.*",
-                "php": ">=5.3.0",
-                "symfony/finder": "2.4.*"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.0.*"
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0",
+                "symfony/finder": "2.5.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -352,36 +336,32 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-03-22 20:12:48"
+            "time": "2014-05-23 16:40:19"
         },
         {
             "name": "illuminate/redis",
-            "version": "v4.1.29",
+            "version": "v4.2.1",
             "target-dir": "Illuminate/Redis",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/redis.git",
-                "reference": "14bb4250205f768cb6bfa8b8ab6f1d3334a8e74f"
+                "reference": "0905d1ddb8a900f6f62c7aeeefcf38c5abeecc66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/redis/zipball/14bb4250205f768cb6bfa8b8ab6f1d3334a8e74f",
-                "reference": "14bb4250205f768cb6bfa8b8ab6f1d3334a8e74f",
+                "url": "https://api.github.com/repos/illuminate/redis/zipball/0905d1ddb8a900f6f62c7aeeefcf38c5abeecc66",
+                "reference": "0905d1ddb8a900f6f62c7aeeefcf38c5abeecc66",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "4.1.*",
-                "php": ">=5.3.0",
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0",
                 "predis/predis": "0.8.*"
-            },
-            "require-dev": {
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -401,36 +381,34 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-03-18 21:30:53"
+            "time": "2014-05-23 16:40:19"
         },
         {
             "name": "illuminate/support",
-            "version": "4.1.x-dev",
+            "version": "4.2.x-dev",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "2fb4a2d7769d295fae9b0587ba0fd726ea475d70"
+                "reference": "fff2f852506b84edcd6fc589f24501d5c30f0ef5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/2fb4a2d7769d295fae9b0587ba0fd726ea475d70",
-                "reference": "2fb4a2d7769d295fae9b0587ba0fd726ea475d70",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/fff2f852506b84edcd6fc589f24501d5c30f0ef5",
+                "reference": "fff2f852506b84edcd6fc589f24501d5c30f0ef5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "jeremeamia/superclosure": "1.0.*",
-                "mockery/mockery": "0.9.*",
-                "patchwork/utf8": "1.1.*",
-                "phpunit/phpunit": "4.0.*"
+                "jeremeamia/superclosure": "~1.0",
+                "patchwork/utf8": "1.1.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -453,20 +431,20 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-05-30 16:22:08"
+            "time": "2014-06-03 16:57:35"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.9.1",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "65026b610f8c19e61d7242f600530677b0466aac"
+                "reference": "25b16e801979098cb2f120e697bfce454b18bf23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/65026b610f8c19e61d7242f600530677b0466aac",
-                "reference": "65026b610f8c19e61d7242f600530677b0466aac",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/25b16e801979098cb2f120e697bfce454b18bf23",
+                "reference": "25b16e801979098cb2f120e697bfce454b18bf23",
                 "shasum": ""
             },
             "require": {
@@ -494,7 +472,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.9.x-dev"
+                    "dev-master": "1.10.x-dev"
                 }
             },
             "autoload": {
@@ -521,7 +499,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-04-24 13:29:03"
+            "time": "2014-06-04 16:30:04"
         },
         {
             "name": "nesbot/carbon",
@@ -672,12 +650,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "c4b592298c8b83e05da3c791a2e0ab26e49708aa"
+                "reference": "a8862f0fdd716f0d99d6cce3b2eacbd1342b0132"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/c4b592298c8b83e05da3c791a2e0ab26e49708aa",
-                "reference": "c4b592298c8b83e05da3c791a2e0ab26e49708aa",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/a8862f0fdd716f0d99d6cce3b2eacbd1342b0132",
+                "reference": "a8862f0fdd716f0d99d6cce3b2eacbd1342b0132",
                 "shasum": ""
             },
             "require": {
@@ -714,7 +692,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-05-30 10:22:12"
+            "time": "2014-06-03 14:57:22"
         },
         {
             "name": "psr/log",
@@ -895,17 +873,17 @@
         },
         {
             "name": "silex/web-profiler",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "target-dir": "Silex/Provider",
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex-WebProfiler.git",
-                "reference": "06bd4fcd563d1e114e5c1768dd87da771846fee6"
+                "reference": "8c62046a16a7b8f229aff9147f842956a1e48a14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/06bd4fcd563d1e114e5c1768dd87da771846fee6",
-                "reference": "06bd4fcd563d1e114e5c1768dd87da771846fee6",
+                "url": "https://api.github.com/repos/silexphp/Silex-WebProfiler/zipball/8c62046a16a7b8f229aff9147f842956a1e48a14",
+                "reference": "8c62046a16a7b8f229aff9147f842956a1e48a14",
                 "shasum": ""
             },
             "require": {
@@ -938,7 +916,7 @@
             ],
             "description": "A WebProfiler for Silex",
             "homepage": "http://silex.sensiolabs.org/",
-            "time": "2013-12-05 21:22:21"
+            "time": "2014-06-04 21:14:30"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -996,32 +974,34 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "24f723436e62598c9dddee2a8573d6992504dc5d"
+                "reference": "ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/24f723436e62598c9dddee2a8573d6992504dc5d",
-                "reference": "24f723436e62598c9dddee2a8573d6992504dc5d",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c",
+                "reference": "ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
+                "psr/log": "~1.0",
                 "symfony/event-dispatcher": "~2.1"
             },
             "suggest": {
+                "psr/log": "For using the console logger",
                 "symfony/event-dispatcher": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1047,7 +1027,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-14 21:48:29"
+            "time": "2014-05-22 08:54:24"
         },
         {
             "name": "symfony/debug",
@@ -1056,12 +1036,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "8c3626a4acd2daee0e6d93af9c5dbc42960d477e"
+                "reference": "88fce721305e8391e83452212a56ee98746cf2d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/8c3626a4acd2daee0e6d93af9c5dbc42960d477e",
-                "reference": "8c3626a4acd2daee0e6d93af9c5dbc42960d477e",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/88fce721305e8391e83452212a56ee98746cf2d6",
+                "reference": "88fce721305e8391e83452212a56ee98746cf2d6",
                 "shasum": ""
             },
             "require": {
@@ -1104,7 +1084,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-26 15:36:48"
+            "time": "2014-06-03 08:31:36"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1167,17 +1147,17 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "46295af1b1e24304b35d5f20f1bf1ec0c2c4934a"
+                "reference": "307aad2c541bbdf43183043645e186ef2cd6b973"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/46295af1b1e24304b35d5f20f1bf1ec0c2c4934a",
-                "reference": "46295af1b1e24304b35d5f20f1bf1ec0c2c4934a",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/307aad2c541bbdf43183043645e186ef2cd6b973",
+                "reference": "307aad2c541bbdf43183043645e186ef2cd6b973",
                 "shasum": ""
             },
             "require": {
@@ -1186,7 +1166,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1212,7 +1192,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-22 13:46:01"
+            "time": "2014-05-22 13:47:45"
         },
         {
             "name": "symfony/http-foundation",
@@ -1221,12 +1201,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "044085422005aa3258fb3f710a7bf0202011f259"
+                "reference": "efa2b935a1305a578aef7fc22a28ad5204969927"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/044085422005aa3258fb3f710a7bf0202011f259",
-                "reference": "044085422005aa3258fb3f710a7bf0202011f259",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/efa2b935a1305a578aef7fc22a28ad5204969927",
+                "reference": "efa2b935a1305a578aef7fc22a28ad5204969927",
                 "shasum": ""
             },
             "require": {
@@ -1267,7 +1247,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-26 19:02:40"
+            "time": "2014-06-06 03:57:03"
         },
         {
             "name": "symfony/http-kernel",
@@ -1276,12 +1256,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "cd30e784de0304fe381cfa7e8f7d005eab934ed5"
+                "reference": "e17c6c3d93070c0a3f0469de025d15201ab7d107"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/cd30e784de0304fe381cfa7e8f7d005eab934ed5",
-                "reference": "cd30e784de0304fe381cfa7e8f7d005eab934ed5",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/e17c6c3d93070c0a3f0469de025d15201ab7d107",
+                "reference": "e17c6c3d93070c0a3f0469de025d15201ab7d107",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1320,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-28 23:33:40"
+            "time": "2014-06-03 15:24:49"
         },
         {
             "name": "symfony/routing",
@@ -1537,12 +1517,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Stopwatch.git",
-                "reference": "13c947fa49491a8b68b00bcf8696fa9815d0e319"
+                "reference": "a9b9d810c3244749252722890de6b56713202c8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Stopwatch/zipball/13c947fa49491a8b68b00bcf8696fa9815d0e319",
-                "reference": "13c947fa49491a8b68b00bcf8696fa9815d0e319",
+                "url": "https://api.github.com/repos/symfony/Stopwatch/zipball/a9b9d810c3244749252722890de6b56713202c8c",
+                "reference": "a9b9d810c3244749252722890de6b56713202c8c",
                 "shasum": ""
             },
             "require": {
@@ -1577,21 +1557,21 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-06 03:26:07"
         },
         {
             "name": "symfony/templating",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Templating",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Templating.git",
-                "reference": "bc13dddde3e542a1bacde4b3c4dd5c9ddab9456d"
+                "reference": "782802d7a72ba9b1dd72dc98a69a5b3768fc18d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Templating/zipball/bc13dddde3e542a1bacde4b3c4dd5c9ddab9456d",
-                "reference": "bc13dddde3e542a1bacde4b3c4dd5c9ddab9456d",
+                "url": "https://api.github.com/repos/symfony/Templating/zipball/782802d7a72ba9b1dd72dc98a69a5b3768fc18d0",
+                "reference": "782802d7a72ba9b1dd72dc98a69a5b3768fc18d0",
                 "shasum": ""
             },
             "require": {
@@ -1606,7 +1586,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1632,21 +1612,21 @@
             ],
             "description": "Symfony Templating Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-16 10:34:31"
+            "time": "2014-04-18 19:44:02"
         },
         {
             "name": "symfony/translation",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Translation",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "9a3941444487ea57acd38f5c61bee1e0c3f69293"
+                "reference": "5f23265dcf8927a84be832608069c9edca3cf5f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/9a3941444487ea57acd38f5c61bee1e0c3f69293",
-                "reference": "9a3941444487ea57acd38f5c61bee1e0c3f69293",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/5f23265dcf8927a84be832608069c9edca3cf5f4",
+                "reference": "5f23265dcf8927a84be832608069c9edca3cf5f4",
                 "shasum": ""
             },
             "require": {
@@ -1663,7 +1643,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1689,21 +1669,21 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-22 13:46:01"
+            "time": "2014-05-22 13:47:45"
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Bridge/Twig",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/TwigBridge.git",
-                "reference": "d74d4d3b3142abba67a003a25964299805641928"
+                "reference": "47881adb360baf02f1004d55311cdd716b4976aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/d74d4d3b3142abba67a003a25964299805641928",
-                "reference": "d74d4d3b3142abba67a003a25964299805641928",
+                "url": "https://api.github.com/repos/symfony/TwigBridge/zipball/47881adb360baf02f1004d55311cdd716b4976aa",
+                "reference": "47881adb360baf02f1004d55311cdd716b4976aa",
                 "shasum": ""
             },
             "require": {
@@ -1712,6 +1692,7 @@
                 "twig/twig": "~1.12"
             },
             "require-dev": {
+                "symfony/console": "~2.2",
                 "symfony/expression-language": "~2.4",
                 "symfony/form": "~2.2",
                 "symfony/http-kernel": "~2.2",
@@ -1736,7 +1717,7 @@
             "type": "symfony-bridge",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1762,7 +1743,7 @@
             ],
             "description": "Symfony Twig Bridge",
             "homepage": "http://symfony.com",
-            "time": "2014-05-12 09:27:48"
+            "time": "2014-05-26 15:36:38"
         },
         {
             "name": "symfony/web-profiler-bundle",
@@ -1771,12 +1752,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/WebProfilerBundle.git",
-                "reference": "551a3408590ecfda7858757fea5712b1f6eba255"
+                "reference": "801d61793c64e6db70ea7cafdb53155ac09f11b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/WebProfilerBundle/zipball/551a3408590ecfda7858757fea5712b1f6eba255",
-                "reference": "551a3408590ecfda7858757fea5712b1f6eba255",
+                "url": "https://api.github.com/repos/symfony/WebProfilerBundle/zipball/801d61793c64e6db70ea7cafdb53155ac09f11b0",
+                "reference": "801d61793c64e6db70ea7cafdb53155ac09f11b0",
                 "shasum": ""
             },
             "require": {
@@ -1819,21 +1800,21 @@
             ],
             "description": "Symfony WebProfilerBundle",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-04 07:22:48"
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.4.5",
+            "version": "v2.5.0",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "fd22bb88c3a6f73c898b39bec185a9e211b06265"
+                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/fd22bb88c3a6f73c898b39bec185a9e211b06265",
-                "reference": "fd22bb88c3a6f73c898b39bec185a9e211b06265",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b4b09c68ec2f2727574544ef0173684281a5033c",
+                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c",
                 "shasum": ""
             },
             "require": {
@@ -1842,7 +1823,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -1868,7 +1849,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-12 09:27:48"
+            "time": "2014-05-16 14:25:18"
         },
         {
             "name": "twig/twig",

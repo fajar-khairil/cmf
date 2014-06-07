@@ -3,6 +3,7 @@
 $app = Application::instance();
 
 $app->get('/',function() use($app){		
+	dd($app['request']->cookies->get('_remember'));
 	return '<p>Hello World</p>';
 });
 

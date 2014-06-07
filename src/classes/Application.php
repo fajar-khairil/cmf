@@ -47,9 +47,6 @@ class Application extends \Silex\Application
     public function __construct(array $values = array())
     {
     	parent::__construct($values);
-
-        if( static::$_environtment === 'production' )
-            $this['debug'] = False;
         
         $this['security.util'] = $this->share(function($app){
             return new \Unika\Security\Util($app);
@@ -73,6 +70,9 @@ class Application extends \Silex\Application
         $this['config']['engine_path'] = Application::$ENGINE_PATH;
 
         $this['debug'] = $this['config']->get('app.debug',True);
+
+        if( static::$_environtment === 'production' )
+            $this['debug'] = False;        
 
         if( $this['debug'] === True )
         {
@@ -111,12 +111,17 @@ class Application extends \Silex\Application
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
         
-        $this->register(new \Silex\Provider\WebProfilerServiceProvider);
+        if( $this['debug'] === True )
+            $this->register(new \Silex\Provider\WebProfilerServiceProvider);
 
         $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
 
         $this['PasswordLib'] = $this->share(function(){
             return new \PasswordLib\PasswordLib();
+        });
+
+        $this['signer'] = $this->share(function($app){
+            return new Symfony\Component\HttpKernel\UriSigner($app['config']['app.secret_key']);
         });
     }
 
@@ -136,8 +141,9 @@ class Application extends \Silex\Application
         $this['twig.path'] = [ $this['config']['theme_backend_path'],$this['config']['theme_frontend_path'] ];
 
         $this['twig.options'] = array(
-            'charset'          => $this['config']['app.charset'],
-            'debug'            => $this['config']['app.debug']
+            'charset'       => $this['config']['app.charset'],
+            'debug'         => $this['config']['app.debug'],
+            'cache'			=> $this['config']['view.twig.cache']
         );
     }
 
