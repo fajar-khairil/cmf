@@ -2,9 +2,8 @@
 
 $app = Application::instance();
 
-$app->get('/',function() use($app){		
-	dd($app['request']->cookies->get('_remember'));
-	return '<p>Hello World</p>';
+$app->get('/',function() use($app){			
+	return \utilphp\util::var_dump_plain($app['session']);
 });
 
 //mounting Backend URI

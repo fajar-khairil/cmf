@@ -179,8 +179,6 @@ class Application extends \Silex\Application
             return static::$_environtment;
         }
 
-        if( static::$_environtmentDetected ) return static::$_environtment;
-
         foreach( $environtments as $env=>$machine )
         {
             if( in_array(gethostname(), $machine) )

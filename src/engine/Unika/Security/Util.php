@@ -21,7 +21,7 @@ class Util
 
 	/**
 	 *
-	 *	hash using HMAC with algo
+	 *	hash using HMAC
 	 */
 	public function sign($secret_data)
 	{

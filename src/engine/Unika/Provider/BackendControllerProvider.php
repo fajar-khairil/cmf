@@ -52,7 +52,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 			$post = $app['request']->request->all();
 
 			$auth = new \Unika\Security\Eloquent\Auth($app);
-			$result = $auth->attempt(['username' => $post['_username'],'pass' => $post['_password'] ],(bool)$post['_remember']);
+			$result = $auth->attempt(['username' => $post['_username'],'pass' => $post['_password'] ],(bool)array_get($post,'_remember'));
 			
 			if( $result )
 			{
@@ -62,6 +62,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 			else
 			{
 				$app['session']->getFlashBag()->add('notice','Wrong Credentials');
+				//dd($app['session']->getFlashBag()->get('notice'));
 				return $app->redirect('/administrator/login');
 			}
 		});

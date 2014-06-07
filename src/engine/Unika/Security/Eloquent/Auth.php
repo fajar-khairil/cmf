@@ -255,7 +255,7 @@ class Auth implements AuthInterface
 							->take(1)
 							->get();
 
-			if( empty($session_info) ) return False;				
+			if( empty($session_info) ) throw new AuthException('invalid token');			
 				
 			//compare user_agent and and ip_address
 			if( 
@@ -275,7 +275,7 @@ class Auth implements AuthInterface
 				}
 				else
 				{
-					return False;
+					throw new AuthException('unmatched token.');
 				}
 			}
 		}		
