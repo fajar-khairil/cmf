@@ -61,4 +61,28 @@ interface AuthInterface
 	 *	@return mixed
 	 */
 	public function signinMethod();
+
+	/**
+	 *
+	 *	fired when remember me cookies is altered 
+	 */
+	public function onTokenMismatch($listener, $priority = 0);
+	
+	public function onTokenAltered($listener, $priority = 0);
+
+	public function onTokenInvalid($listener, $priority = 0);
+
+	public function onBadCredentials($listener, $priority = 0);
+
+	public function onBadPassword($listener, $priority = 0);
+
+	public function onAttemptSuccess($listener, $priority = 0);
+
+	public function beforeAttempt($listener, $priority = 0);
+
+	public function afterAttempt($listener, $priority = 0);
+
+	public function beforeLogout($listener, $priority = 0);
+
+	public function afterLogout($listener, $priority = 0);
 }

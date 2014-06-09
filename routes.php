@@ -3,7 +3,15 @@
 $app = Application::instance();
 
 $app->get('/',function() use($app){			
-	return \utilphp\util::var_dump_plain($app['session']);
+	$auth = $app['auth'];
+	if( $auth->check() )
+	{
+		return 'Hello World!';
+	}
+	else
+	{
+		return 'Sorry you dont have permission';
+	}
 });
 
 //mounting Backend URI

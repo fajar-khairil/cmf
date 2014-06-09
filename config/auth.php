@@ -1,23 +1,15 @@
 <?php
 return array(
-	/**
-	 *
-	 *	authentication default implementation
-	 *	current valid value : Eloquent ,  in the future we would support simple,pdo
-	 */
-	'default'			=>	'Eloquent',
-	'session_key'		=>  'UNIKA_AUTH',
-
+	'session_key'			=>  'UNIKA_AUTH',
+	'max_failed_attempt'	=> 5,
+	//prevent brute force attack and other authentication issues
+	'guard_enabled'			=> True,
 	//implementation
 	'Eloquent'				=>	array(
 		'user_table'		=>	'users'
 	),
 
-	//Remember me configurations
-	'enabled_remember_me'	=> True,
-	//allow remember me on this computer
 	'restrict_ip'			=> True,
-	'enabled_session_info'	=> True,
 	/**
 	 *	
 	 *	you must fill session_info_table if you enabled restrict_ip or enabled_session_info

@@ -19,6 +19,7 @@ class Application extends \Silex\Application
     protected static $instance = null;
 
     protected $_modules = array();
+    protected $authGuard;
 
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
@@ -88,6 +89,13 @@ class Application extends \Silex\Application
         $this->initTwig();
 
         $this->initCommonProviders();  
+
+        $this['auth'] = $this->share(function($app){
+            return new \Unika\Security\Eloquent\Auth($app);
+        });
+
+        $this->authGuard = new Unika\Security\Authentication\Guard($this);
+        $this->authGuard->RegisterListener();   
     }
 
     public function initCommonProviders()

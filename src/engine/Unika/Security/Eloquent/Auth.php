@@ -19,11 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 class Auth implements AuthInterface
 {
 	protected $app;
+	protected $dispatcher;
 	protected $sign_method = AuthInterface::VIA_NORMAL_LOGIN;
 
 	public function __construct(\Application $app)
 	{
 		$this->app = $app;
+		$this->dispatcher = $this->app['Illuminate.dispatcher'];
 	}
 
 	/**
@@ -34,15 +36,20 @@ class Auth implements AuthInterface
 	 * 	@return boolean
 	 */
 	public function attempt(array $credentials , $remember = False, $expired = null )
-	{
+	{		
 		if( $this->check() ) return True;
+
+		$this->dispatcher->fire('auth.before_attempt',['credentials' => $credentials, 'auth' => $this]);
+
 		$result = $this->_checkCredentials( $credentials );
 
 		if( $result )
-		{
+		{			
+			$this->dispatcher->fire('auth.attempt_success',array('auth' => $this, 'user' => $result));
 			return $this->sign($result,AuthInterface::VIA_NORMAL_LOGIN,$remember,$expired);
 		}
 
+		$this->dispatcher->fire('auth.after_attempt',array('auth' => $this, 'user' => $result));
 
 		return (boolean)$result;	
 	}
@@ -85,22 +92,18 @@ class Auth implements AuthInterface
 			]);			
 
 			$this->app->after(function($request,$response) use($remember_cookie){
-				//dd('here');
 				$response->headers->setCookie( $remember_cookie );
 			});
 
-			if( ($this->app['config']['auth.restrict_ip'] === True) OR ($this->app['config']['auth.enabled_session_info'] === True) )
-			{
-				//prepare values
-				$values = array(
-					'session_token'		=>	$this->app['session']->getId(),
-					'user_agent'		=>	$request->headers->get('user-agent'),
-					'ip_address'		=>	$request->getClientIp(),
-					'remember_token'	=>	$remember_token,
-					'session_time'		=>	time()
-				);
-				$this->_updateSessionInfo($values);				
-			}
+			//prepare values
+			$values = array(
+				'session_token'		=>	$this->app['session']->getId(),
+				'user_agent'		=>	$request->headers->get('user-agent'),
+				'ip_address'		=>	$request->getClientIp(),
+				'remember_token'	=>	$remember_token,
+				'session_time'		=>	time()
+			);
+			$this->_updateSessionInfo($values);				
 
 			$this->sign_method = $signMethod;
 		}
@@ -114,7 +117,6 @@ class Auth implements AuthInterface
 	 */
 	protected function _updateUser($id,array $values)
 	{
-		//if return is False log
 		$capsule = $this->app['capsule'];
 		return $capsule::table($this->app['config']['auth.Eloquent.user_table'])
 				->where('id',$id)
@@ -156,8 +158,13 @@ class Auth implements AuthInterface
 			}
 			else
 			{
+				$this->dispatcher->fire('auth.bad_password',['user' => $row[0], 'request' => $this->app['request']]);
 				$this->_updateUser($row[0]['id'],['last_failed_count' => (int)$row[0]['last_failed_count']+1]);
 			}
+		}
+		else
+		{
+			$this->dispatcher->fire('auth.bad_credentials',['credentials' => $credentials, 'request' => $this->app['request']]);
 		}
 
 		return $result;
@@ -202,7 +209,6 @@ class Auth implements AuthInterface
 
 	/**
 	 *
-	 *	single request login no session or cookie
 	 *	AuthInterface::VIA_ONCE
 	 *	@return boolean
 	 */
@@ -213,8 +219,11 @@ class Auth implements AuthInterface
 		$result = $this->_checkCredentials($credentials);
 		if( $result )
 		{
-			$this->app['session']->getFlashBag()->set($this->app['config']['auth.session_key'],$result);
-			$this->sign_method = AuthInterface::VIA_ONCE;
+			$this->sign($result,AuthInterface::VIA_ONCE);
+			$self = $this;
+			$this->app->after(function($request,$response)use($self){
+				$self->logout();
+			});
 		}
 
 		return (boolean) $result;
@@ -235,10 +244,13 @@ class Auth implements AuthInterface
 		if( !$result ) return False;
 		
 		$result = $this->app['signer']->check($request->cookies->get($cookies['name']));
-			
-
-		if( $result === False ){
-			throw new AuthException('token was broken');
+		
+		
+		if( $result === False ){		
+			if( count($this->dispatcher->hasListeners('auth.token_altered')) > 0 )
+				$this->dispatcher->fire('auth.token_altered', ['request' => $this->app['request']]);
+			else
+				throw new AuthException('token altered');					
 		}
 
 		if( $result )
@@ -255,8 +267,13 @@ class Auth implements AuthInterface
 							->take(1)
 							->get();
 
-			if( empty($session_info) ) throw new AuthException('invalid token');			
-				
+			if( empty($session_info) ){
+				if( $this->dispatcher->hasListeners('auth.token_invalid') )
+					$this->dispatcher->fire('auth.token_invalid', ['request' => $this->app['request']]);
+				else
+					throw new AuthException('invalid token');					
+			} 		
+			
 			//compare user_agent and and ip_address
 			if( 
 				( $request->headers->get('user-agent') == $session_info[0]['user_agent'] ) 
@@ -275,7 +292,19 @@ class Auth implements AuthInterface
 				}
 				else
 				{
-					throw new AuthException('unmatched token.');
+					if( $this->dispatcher->hasListeners('auth.token_mismatch') )
+						$this->dispatcher->fire('auth.token_mismatch', ['request' => $this->app['request'],'user' => $user[0]] );
+					else
+						throw new AuthException('token mismatch');	
+				}
+			}
+			else
+			{		
+				if( $this->dispatcher->hasListeners('auth.token_altered') ){
+					$this->dispatcher->fire('auth.token_altered', ['request' => $this->app['request'],'misc' => 'pertamax' ]);
+				}
+				else{
+					throw new AuthException('token altered');					
 				}
 			}
 		}		
@@ -291,7 +320,7 @@ class Auth implements AuthInterface
 	public function check()
 	{
 		$result = $this->app['session']->has($this->app['config']['auth.session_key']);
-		
+
 		if( $result === False )
 		{
 			$user = $this->checkRemembermePresent(True);
@@ -308,6 +337,7 @@ class Auth implements AuthInterface
 	//logout user
 	public function logout()
 	{
+		$this->dispatcher->fire('auth.before_logout',['auth' => $this]);
 		$result = $this->app['session']->remove($this->app['config']['auth.session_key']);
 		$this->app['session']->invalidate();		
 		
@@ -316,7 +346,8 @@ class Auth implements AuthInterface
 			$response->headers->clearCookie( $cookies['name'],$cookies['path'],$cookies['domain'] );
 		});		
 		
-		return $result;
+		$this->dispatcher->fire('auth.after_logout',['auth' => $this]);	
+		return (boolean)$result;
 	}
 
 	//login user manually
@@ -344,5 +375,56 @@ class Auth implements AuthInterface
 	public function signinMethod()
 	{
 		return $this->sign_method;
+	}
+
+	public function onTokenMismatch($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.token_mismatch',$listener,$priority);
+	}
+
+	public function onTokenAltered($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.token_altered',$listener,$priority);
+	}
+
+	public function onTokenInvalid($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.token_invalid',$listener,$priority);
+	}
+
+	public function onBadCredentials($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.bad_credentials',$listener,$priority);
+	}
+
+	public function onBadPassword($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.bad_password',$listener,$priority);
+	}
+
+	public function onAttemptSuccess($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.attempt_success',$listener,$priority);
+	}
+
+	public function beforeAttempt($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.attempt_success',$listener,$priority);
+	}
+
+	public function afterAttempt($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.attempt_success',$listener,$priority);
+	}
+
+
+	public function beforeLogout($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.before_logout',$listener,$priority);
+	}
+
+	public function afterLogout($listener, $priority = 0)
+	{
+		$this->dispatcher->listen('auth.after_logout',$listener,$priority);
 	}
 }

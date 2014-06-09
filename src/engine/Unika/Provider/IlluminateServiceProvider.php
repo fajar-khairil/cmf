@@ -71,8 +71,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
         });
         //END Cache
 
-        //BEGIN Eqloquent
-
+        //BEGIN Eloquent
 		$app['capsule'] = $app->share(function($app){
 			$Capsule = new Capsule();
 			$Capsule->setAsGlobal();
@@ -88,6 +87,10 @@ class IlluminateServiceProvider implements ServiceProviderInterface
 			return $Capsule;
 		});      
 		//END Eloquent  
+
+        $app['Illuminate.dispatcher'] = function($app){
+            return new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
+        };
     }
 
     /**
