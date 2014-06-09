@@ -11,8 +11,6 @@
 
 namespace Unika\Security\Authentication;
 
-use Unika\Security\Authentication\AuthUserGuardInterface;
-
 class Guard
 {
 	protected $app;

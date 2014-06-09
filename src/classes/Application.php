@@ -94,8 +94,10 @@ class Application extends \Silex\Application
             return new \Unika\Security\Eloquent\Auth($app);
         });
 
-        $this->authGuard = new Unika\Security\Authentication\Guard($this);
-        $this->authGuard->RegisterListener();   
+        if( $this['config']['guard_enabled'] === True ){
+            $this->authGuard = new Unika\Security\Authentication\Guard($this);
+            $this->authGuard->RegisterListener();   
+        }
     }
 
     public function initCommonProviders()
