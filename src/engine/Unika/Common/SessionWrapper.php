@@ -15,9 +15,9 @@ class SessionWrapper
 	protected $app;
 	protected $resolved = array();
 
-	function __construct( )
+	function __construct(\Application $app)
 	{
-		$this->app = \Application::instance();
+		$this->app = $app;
 	}
 
 	public function getSession( $session_name )

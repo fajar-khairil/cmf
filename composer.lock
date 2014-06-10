@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "805095107a6068bb1ca0f328f3394484",
+    "hash": "2d368f980638e4279074b342c4f5dcf6",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
@@ -873,7 +873,7 @@
         },
         {
             "name": "silex/web-profiler",
-            "version": "v1.0.3",
+            "version": "dev-master",
             "target-dir": "Silex/Provider",
             "source": {
                 "type": "git",
@@ -1927,7 +1927,6 @@
         "illuminate/database": 0,
         "illuminate/cache": 0,
         "illuminate/redis": 0,
-        "silex/web-profiler": 0,
         "illuminate/filesystem": 0,
         "illuminate/config": 0
     },

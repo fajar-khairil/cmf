@@ -27,17 +27,6 @@ class Application extends \Silex\Application
     use \Silex\Application\TranslationTrait;
     use \Silex\Application\TwigTrait;	
 
-    //return Unika\Application
-    public static function instance()
-    {
-        if( static::$instance === null )
-        {
-            static::$instance = new Application();
-        }
-
-        return static::$instance;
-    }
-
     /**
      * Instantiate a new Application.
      *
@@ -46,7 +35,7 @@ class Application extends \Silex\Application
      * @param array $values The parameters or objects.
      */
     public function __construct(array $values = array())
-    {
+    {     
     	parent::__construct($values);
         
         $this['security.util'] = $this->share(function($app){
@@ -94,11 +83,16 @@ class Application extends \Silex\Application
             return new \Unika\Security\Eloquent\Auth($app);
         });
 
-        if( $this['config']['guard_enabled'] === True ){
-            $this->authGuard = new Unika\Security\Authentication\Guard($this);
-            $this->authGuard->RegisterListener();   
+        if( $this['config']['auth.guard_enabled'] === True ){
+            $this->authGuard = new \Unika\Security\Eloquent\AuthGuard($this);
+            $this->authGuard->RegisterListener();
         }
+
+        $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+        if( static::$_environtment !== 'production' )
+            $this->register(new \Silex\Provider\WebProfilerServiceProvider());        
     }
+
 
     public function initCommonProviders()
     {
@@ -120,11 +114,7 @@ class Application extends \Silex\Application
         $this['swiftmailer.options'] = $this['config']->get('email');      
 
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
-        
-        if( $this['debug'] === True )
-            $this->register(new \Silex\Provider\WebProfilerServiceProvider);
-
-        $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+                
 
         $this['PasswordLib'] = $this->share(function(){
             return new \PasswordLib\PasswordLib();
@@ -161,8 +151,8 @@ class Application extends \Silex\Application
     {
         $this->register(new \Silex\Provider\SessionServiceProvider());
 
-        $this['SessionManager'] = $this->share(function(){
-            return new \Unika\Common\SessionWrapper();
+        $this['SessionManager'] = $this->share(function($app){
+            return new \Unika\Common\SessionWrapper($app);
         });
 
         $this->app['session.storage.save_path'] = $this['config']->get('session.File.path');

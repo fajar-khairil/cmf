@@ -26,6 +26,7 @@ class Auth implements AuthInterface
 	{
 		$this->app = $app;
 		$this->dispatcher = $this->app['Illuminate.dispatcher'];
+		print_r('auth constructed <br>');
 	}
 
 	/**
@@ -48,7 +49,7 @@ class Auth implements AuthInterface
 			$this->dispatcher->fire('auth.attempt_success',array('auth' => $this, 'user' => $result));
 			return $this->sign($result,AuthInterface::VIA_NORMAL_LOGIN,$remember,$expired);
 		}
-
+		
 		$this->dispatcher->fire('auth.after_attempt',array('auth' => $this, 'user' => $result));
 
 		return (boolean)$result;	
@@ -113,18 +114,6 @@ class Auth implements AuthInterface
 
 	/**
 	 *
-	 *	update user row
-	 */
-	protected function _updateUser($id,array $values)
-	{
-		$capsule = $this->app['capsule'];
-		return $capsule::table($this->app['config']['auth.Eloquent.user_table'])
-				->where('id',$id)
-				->update($values);	
-	}
-
-	/**
-	 *
 	 *	internal function check supplied credentials
 	 *	@return user array if success return False if failed, use by validate and attempt
 	 */
@@ -159,12 +148,11 @@ class Auth implements AuthInterface
 			else
 			{
 				$this->dispatcher->fire('auth.bad_password',['user' => $row[0], 'request' => $this->app['request']]);
-				$this->_updateUser($row[0]['id'],['last_failed_count' => (int)$row[0]['last_failed_count']+1]);
 			}
 		}
 		else
-		{
-			$this->dispatcher->fire('auth.bad_credentials',['credentials' => $credentials, 'request' => $this->app['request']]);
+		{				
+			$this->dispatcher->fire('auth.bad_credentials',['request' => $this->app['request']]);
 		}
 
 		return $result;
@@ -247,10 +235,13 @@ class Auth implements AuthInterface
 		
 		
 		if( $result === False ){		
-			if( count($this->dispatcher->hasListeners('auth.token_altered')) > 0 )
+			if( $this->dispatcher->hasListeners('auth.token_altered') ){
 				$this->dispatcher->fire('auth.token_altered', ['request' => $this->app['request']]);
-			else
+				return False;
+			}
+			else{
 				throw new AuthException('token altered');					
+			}
 		}
 
 		if( $result )
@@ -268,10 +259,13 @@ class Auth implements AuthInterface
 							->get();
 
 			if( empty($session_info) ){
-				if( $this->dispatcher->hasListeners('auth.token_invalid') )
+				if( $this->dispatcher->hasListeners('auth.token_invalid') ){
 					$this->dispatcher->fire('auth.token_invalid', ['request' => $this->app['request']]);
-				else
+					return False;
+				}
+				else{
 					throw new AuthException('invalid token');					
+				}
 			} 		
 			
 			//compare user_agent and and ip_address
@@ -292,16 +286,20 @@ class Auth implements AuthInterface
 				}
 				else
 				{
-					if( $this->dispatcher->hasListeners('auth.token_mismatch') )
+					if( $this->dispatcher->hasListeners('auth.token_mismatch') ){
 						$this->dispatcher->fire('auth.token_mismatch', ['request' => $this->app['request'],'user' => $user[0]] );
-					else
+						return False;			
+					}
+					else{
 						throw new AuthException('token mismatch');	
+					}
 				}
 			}
 			else
 			{		
 				if( $this->dispatcher->hasListeners('auth.token_altered') ){
 					$this->dispatcher->fire('auth.token_altered', ['request' => $this->app['request'],'misc' => 'pertamax' ]);
+					return False;
 				}
 				else{
 					throw new AuthException('token altered');					
@@ -394,7 +392,7 @@ class Auth implements AuthInterface
 
 	public function onBadCredentials($listener, $priority = 0)
 	{
-		$this->dispatcher->listen('auth.bad_credentials',$listener,$priority);
+		$this->dispatcher->listen('auth.bad_credentials',$listener,$priority);		
 	}
 
 	public function onBadPassword($listener, $priority = 0)

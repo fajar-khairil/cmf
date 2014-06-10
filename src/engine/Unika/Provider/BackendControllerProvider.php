@@ -21,7 +21,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 
 		$controllers->get('/', function (\Application $app) 
 		{
-			$auth = new \Unika\Security\Eloquent\Auth($app);
+			$auth = $app['auth'];
 			if( !$auth->check() )
 			{
 				return $app->redirect('/administrator/login');
@@ -31,7 +31,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 		})->bind('backend');
 
 		$controllers->get('/login', function (\Application $app) {
-			$auth = new \Unika\Security\Eloquent\Auth($app);
+			$auth = $auth = $app['auth'];
 			if( $auth->check() )
 			{
 				return $app->redirect('/administrator');
@@ -40,7 +40,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 		});
 
 		$controllers->get('/logout', function (\Application $app) {
-			$auth = new \Unika\Security\Eloquent\Auth($app);
+			$auth = $auth = $app['auth'];
 			$auth->logout();
 
 			$app['session']->getFlashBag()->add('notice','logged_out successfully');
@@ -51,7 +51,7 @@ class BackendControllerProvider implements ControllerProviderInterface
 		$controllers->post('/login_check', function (\Application $app) {
 			$post = $app['request']->request->all();
 
-			$auth = new \Unika\Security\Eloquent\Auth($app);
+			$auth = $auth = $app['auth'];
 			$result = $auth->attempt(['username' => $post['_username'],'pass' => $post['_password'] ],(bool)array_get($post,'_remember'));
 			
 			if( $result )
@@ -62,7 +62,6 @@ class BackendControllerProvider implements ControllerProviderInterface
 			else
 			{
 				$app['session']->getFlashBag()->add('notice','Wrong Credentials');
-				//dd($app['session']->getFlashBag()->get('notice'));
 				return $app->redirect('/administrator/login');
 			}
 		});

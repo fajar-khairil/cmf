@@ -1,7 +1,5 @@
 <?php
 
-$app = Application::instance();
-
 $app->get('/',function() use($app){			
 	$auth = $app['auth'];
 	if( $auth->check() )

@@ -34,7 +34,7 @@
         "illuminate/database": "@stable",
         "illuminate/cache": "@stable",
         "illuminate/redis": "@stable",
-        "silex/web-profiler": "@stable",
+        "silex/web-profiler": "*",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
         "brandonwamboldt/utilphp": "1.0.6",
