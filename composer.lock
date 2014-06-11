@@ -4,24 +4,27 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2d368f980638e4279074b342c4f5dcf6",
+    "hash": "3048d3babdab1185561fb6cb05a37efb",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
-            "version": "1.0.6",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brandonwamboldt/utilphp.git",
-                "reference": "2bd3b7989d9c617b49a190c65dcd192d9c47d755"
+                "reference": "860b5dddaa24aba312c7421a62cef5fc2df01323"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brandonwamboldt/utilphp/zipball/2bd3b7989d9c617b49a190c65dcd192d9c47d755",
-                "reference": "2bd3b7989d9c617b49a190c65dcd192d9c47d755",
+                "url": "https://api.github.com/repos/brandonwamboldt/utilphp/zipball/860b5dddaa24aba312c7421a62cef5fc2df01323",
+                "reference": "860b5dddaa24aba312c7421a62cef5fc2df01323",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
             },
             "type": "library",
             "autoload": {
@@ -47,7 +50,7 @@
                 "php",
                 "utility"
             ],
-            "time": "2014-02-06 18:00:57"
+            "time": "2014-02-07 22:20:26"
         },
         {
             "name": "illuminate/cache",
@@ -650,12 +653,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "a8862f0fdd716f0d99d6cce3b2eacbd1342b0132"
+                "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/a8862f0fdd716f0d99d6cce3b2eacbd1342b0132",
-                "reference": "a8862f0fdd716f0d99d6cce3b2eacbd1342b0132",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
+                "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
                 "shasum": ""
             },
             "require": {
@@ -692,7 +695,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-06-03 14:57:22"
+            "time": "2014-06-10 08:58:02"
         },
         {
             "name": "psr/log",
@@ -1397,12 +1400,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-core.git",
-                "reference": "561f3bf3750b4eb16669edc30b7b1321889aea92"
+                "reference": "986bd0d792c31817ea37b1d90745eded4a315783"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-core/zipball/561f3bf3750b4eb16669edc30b7b1321889aea92",
-                "reference": "561f3bf3750b4eb16669edc30b7b1321889aea92",
+                "url": "https://api.github.com/repos/symfony/security-core/zipball/986bd0d792c31817ea37b1d90745eded4a315783",
+                "reference": "986bd0d792c31817ea37b1d90745eded4a315783",
                 "shasum": ""
             },
             "require": {
@@ -1452,7 +1455,7 @@
             ],
             "description": "Symfony Security Component - Core Library",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-06 03:53:34"
         },
         {
             "name": "symfony/security-csrf",
@@ -1913,7 +1916,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "silex/silex": 20,
         "respect/validation": 20,
         "monolog/monolog": 0,
         "swiftmailer/swiftmailer": 0,

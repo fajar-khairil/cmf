@@ -80,7 +80,7 @@ interface AuthInterface
 
 	public function beforeAttempt($listener, $priority = 0);
 
-	public function afterAttempt($listener, $priority = 0);
+	public function onAttemptFailed($listener, $priority = 0);
 
 	public function beforeLogout($listener, $priority = 0);
 

@@ -20,7 +20,7 @@
         }
     },
     "require": {
-        "silex/silex": "1.2.x-dev",  
+        "silex/silex": "*",  
         "Respect/Validation": "dev-master",
         "monolog/monolog": "@stable",
         "swiftmailer/swiftmailer": "@stable",
@@ -37,7 +37,7 @@
         "silex/web-profiler": "*",
         "illuminate/filesystem": "@stable",
         "illuminate/config": "@stable",
-        "brandonwamboldt/utilphp": "1.0.6",
+        "brandonwamboldt/utilphp": "*",
         "PasswordLib/PasswordLib": "*"
     }
 }

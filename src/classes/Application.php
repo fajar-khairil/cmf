@@ -19,7 +19,6 @@ class Application extends \Silex\Application
     protected static $instance = null;
 
     protected $_modules = array();
-    protected $authGuard;
 
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
@@ -84,13 +83,12 @@ class Application extends \Silex\Application
         });
 
         if( $this['config']['auth.guard_enabled'] === True ){
-            $this->authGuard = new \Unika\Security\Eloquent\AuthGuard($this);
-            $this->authGuard->RegisterListener();
+            $this->register(new \Unika\Provider\AuthGuardServiceProvider);
         }
 
-        $this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
+        /*$this['profiler.cache_dir'] = $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'profiler';
         if( static::$_environtment !== 'production' )
-            $this->register(new \Silex\Provider\WebProfilerServiceProvider());        
+            $this->register(new \Silex\Provider\WebProfilerServiceProvider());*/        
     }
 
 
@@ -111,10 +109,10 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider);       
 
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
+
         $this['swiftmailer.options'] = $this['config']->get('email');      
 
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider);
-                
+        $this->register(new \Silex\Provider\ServiceControllerServiceProvider);              
 
         $this['PasswordLib'] = $this->share(function(){
             return new \PasswordLib\PasswordLib();

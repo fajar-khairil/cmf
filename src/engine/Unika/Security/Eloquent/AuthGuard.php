@@ -46,6 +46,61 @@ class AuthGuard
 		$auth->onBadPassword(function($user,$request) use($self){
 			$self->doUpdateUser($user);
 		});
+
+		$auth->beforeAttempt(function($credentials)
+		{
+			$capsule = $this->app['capsule'];
+
+			//normalize credentials
+			if( isset($credentials['password']) ){
+				$credentials['pass'] = $credentials['password'];
+				unset($credentials['password']);
+			}	
+			if( isset($credentials['email']) ){
+				$credentials['username'] = $credentials['email'];
+				unset($credentials['email']);
+			}
+
+			$row = $capsule::table($this->app['config']['auth.Eloquent.user_table'])
+			->where('username',$credentials['username'])
+			->take(1)
+			->get();	
+
+			if( !empty($row) )
+			{
+				if( (int)$row[0]['last_failed_count'] >= (int)$this->app['config']['auth.max_failed_attempt'] )
+				{
+					$this->app->abort(403,'user blocked.');
+				}
+			}				
+		});
+	}
+
+	/**
+	 *
+	 *	check if the given ip is blocked
+	 *
+	 *	@return boolean
+	 */
+	public function isBlocked($ip_address)
+	{
+		$capsule = $this->app['capsule'];
+		$row = $capsule::table('banneds')
+		->where('ip_address',$ip_address)
+		->take(1)
+		->get();
+		
+		if( !empty($row) )
+		{
+			if( (int)$row[0]['failed_count'] >= (int)$this->app['config']['auth.max_failed_attempt'] )
+				return True;
+			else
+				return False;
+		}
+		else
+		{
+			return False;
+		}
 	}
 
 	protected function doInvalidToken($request,$reason)

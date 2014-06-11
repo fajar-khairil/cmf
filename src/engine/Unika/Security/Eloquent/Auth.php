@@ -26,7 +26,6 @@ class Auth implements AuthInterface
 	{
 		$this->app = $app;
 		$this->dispatcher = $this->app['Illuminate.dispatcher'];
-		print_r('auth constructed <br>');
 	}
 
 	/**
@@ -40,17 +39,17 @@ class Auth implements AuthInterface
 	{		
 		if( $this->check() ) return True;
 
-		$this->dispatcher->fire('auth.before_attempt',['credentials' => $credentials, 'auth' => $this]);
+		$this->dispatcher->fire('auth.before_attempt',['credentials' => $credentials]);
 
 		$result = $this->_checkCredentials( $credentials );
 
 		if( $result )
 		{			
-			$this->dispatcher->fire('auth.attempt_success',array('auth' => $this, 'user' => $result));
+			$this->dispatcher->fire('auth.attempt_success',['user' => $result]);
 			return $this->sign($result,AuthInterface::VIA_NORMAL_LOGIN,$remember,$expired);
 		}
 		
-		$this->dispatcher->fire('auth.after_attempt',array('auth' => $this, 'user' => $result));
+		$this->dispatcher->fire('auth.attempt_failed',array('auth' => $this, 'user' => $result));
 
 		return (boolean)$result;	
 	}
@@ -62,6 +61,11 @@ class Auth implements AuthInterface
 	{
 		unset($user['pass']);unset($user['salt']);
 		$this->app['session']->set( $this->app['config']['auth.session_key'] , $user );
+
+		$user_values = array(
+			'last_login'		=> date('Y-m-d H:i:s',time()),
+			'last_failed_count'	=> 0
+		);
 
 		if( $remember === True )
 		{
@@ -86,11 +90,7 @@ class Auth implements AuthInterface
 			$remember_cookie = $this->app['cookie']->cookie($cookies);
 
 			//update user
-			$this->_updateUser($user['id'],[
-				'last_login'			=> date('Y-m-d H:i:s',time()),
-				'remember_token'		=>	$remember_token,
-				'last_failed_count'		=>  0
-			]);			
+			$user_values['remember_token']	 = $remember_token;	
 
 			$this->app->after(function($request,$response) use($remember_cookie){
 				$response->headers->setCookie( $remember_cookie );
@@ -108,6 +108,12 @@ class Auth implements AuthInterface
 
 			$this->sign_method = $signMethod;
 		}
+
+		$capsule = $this->app['capsule'];
+		$values['last_login'] = date('Y-m-d H:i:s',time());
+		$query = $capsule::table($this->app['config']['auth.Eloquent.user_table'])
+				->where('id',$user['id'])
+				->update($user_values);	
 
 		return True;
 	}
@@ -128,6 +134,11 @@ class Auth implements AuthInterface
 			unset($credentials['password']);
 		}	
 
+		if( isset($credentials['email']) ){
+			$credentials['username'] = $credentials['email'];
+			unset($credentials['email']);
+		}			
+
 		$pass = $credentials['pass'];unset($credentials['pass']);
 
 		foreach( $credentials as $col=>$value )
@@ -147,12 +158,18 @@ class Auth implements AuthInterface
 			}
 			else
 			{
-				$this->dispatcher->fire('auth.bad_password',['user' => $row[0], 'request' => $this->app['request']]);
+				if( $this->dispatcher->hasListeners('auth.bad_password') )
+					$this->dispatcher->fire('auth.bad_password',['user' => $row[0], 'request' => $this->app['request']]);
+				else
+					throw new Symfony\Component\Security\Core\Exception\BadCredentialsException();
 			}
 		}
 		else
 		{				
-			$this->dispatcher->fire('auth.bad_credentials',['request' => $this->app['request']]);
+			if( $this->dispatcher->hasListeners('auth.bad_credentials') )
+				$this->dispatcher->fire('auth.bad_credentials',['request' => $this->app['request']]);
+			else
+				throw new \Symfony\Component\Security\Core\Exception\UsernameNotFoundException();
 		}
 
 		return $result;
@@ -407,12 +424,12 @@ class Auth implements AuthInterface
 
 	public function beforeAttempt($listener, $priority = 0)
 	{
-		$this->dispatcher->listen('auth.attempt_success',$listener,$priority);
+		$this->dispatcher->listen('auth.before_attempt',$listener,$priority);
 	}
 
-	public function afterAttempt($listener, $priority = 0)
+	public function onAttemptFailed($listener, $priority = 0)
 	{
-		$this->dispatcher->listen('auth.attempt_success',$listener,$priority);
+		$this->dispatcher->listen('auth.attempt_failed',$listener,$priority);
 	}
 
 
