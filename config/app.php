@@ -10,7 +10,6 @@ return array(
      *  name of algorithm to sign and unsign sensitive data
      *  valid value http://www.php.net/manual/en/function.hash-algos.php
      */
-	'sign_algo'			=> 'ripemd160',
     'charset' 			=> 'utf-8',
     'locale' 			=> 'en',  
     'tmp_dir'			=> Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',

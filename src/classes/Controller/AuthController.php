@@ -6,12 +6,6 @@ class Controller_AuthController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
-		$auth = $this->app['auth'];
-		if( !$auth->check() )
-		{
-			return $this->app->redirect('/administrator/login');
-		}
-
 		return $this->app['twig']->render('default/layout.twig',array('page_title' => "Dashboard"));
 	}
 
@@ -28,15 +22,22 @@ class Controller_AuthController extends Controller_BaseController
 	public function logoutAction(Request $request)
 	{
 		$auth = $auth = $this->app['auth'];
-		$auth->logout();
-
-		$this->app['session']->getFlashBag()->add('notice','logged_out successfully');
+		if( $auth->check() )
+		{				
+			$auth->logout();
+			$this->app['session']->getFlashBag()->add('notice','logged out successfully');
+		}
 
 		return $this->app->redirect('/administrator/login');
 	}
 
+	//post only
 	public function login_checkAction(Request $request)
 	{
+		if( $request->getMethod() !== 'POST' ){
+			$this->app->abort(404,'Page not found.');
+		}
+
 		$post = $this->app['request']->request->all();
 
 		$auth = $auth = $this->app['auth'];

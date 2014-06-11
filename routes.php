@@ -10,11 +10,18 @@ $app->match('/'.$app['config']['app.backend_uri'].'/{actionName}',function($acti
 
 	return $controller->$method($app['request']);	
 })
-->method('GET|POST')
-->value('actionName','index');
+->method('GET|POST|UPDATE|DELETE|PATCH')
+->before(function($request,$app){
+	$path = explode('/',$request->getPathInfo());
+
+	if( !in_array($path[2],['login','logout','login_check']) )
+		return Filters::backendFilter($request,$app);
+})
+->value('actionName','index')
+->compile();
 
 
-//generic
+//generic route
 $app->match('/{controllerName}/{actionName}', function ($controllerName, $actionName) use ($app) 
 {
 	$controllerName = ucfirst($controllerName);
@@ -34,5 +41,6 @@ $app->match('/{controllerName}/{actionName}', function ($controllerName, $action
 	$controller = new $class($app);
 	return $controller->$method($app['request']);	
 })
+->method('GET|POST')
 ->value('controllerName', 'index')
 ->value('actionName', 'index');

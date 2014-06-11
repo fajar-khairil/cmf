@@ -2,10 +2,16 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-class Filters {
+class Filters 
+{
 	
-	public function mustLoggedIn(Request $request)
+	//backend filter	
+	public static function backendFilter($request,\Silex\Application $app)
 	{
-		throw new \RuntimeException('bot yet implemented');
+		if( !$app['auth']->check() )
+		{
+			$app['session']->getFlashBag()->add('notice','you must be logged in');
+			return $app->redirect($app['config']['app.backend_uri'].'/login');
+		}
 	}
 }

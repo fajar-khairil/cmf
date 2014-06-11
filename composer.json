@@ -17,7 +17,10 @@
         ],
         "psr-0" : { 
             "Unika" : "src/engine"
-        }
+        },
+        "files": [
+            "src/classes/functions.php"
+        ]
     },
     "require": {
         "silex/silex": "*",  

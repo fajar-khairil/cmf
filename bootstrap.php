@@ -14,6 +14,8 @@ date_default_timezone_set('Asia/Jakarta');
 require 'vendor/autoload.php';
 
 Application::$ENGINE_PATH = __DIR__;
+Application::$BACKEND_URI = 'administrator';
+Application::$BASE_URL = 'http://unikacmf.dev/';
 
 //environtment detection source
 $environtments = array(

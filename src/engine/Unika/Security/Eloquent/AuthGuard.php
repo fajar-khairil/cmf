@@ -27,8 +27,7 @@ class AuthGuard
 
 		$auth->onTokenMismatch(function($request,$user) use($self){
 			$self->doUpdateUser($user);
-		});
-		
+		});		
 		
 		$auth->onTokenAltered(function($request) use($self){		
 			$self->doInvalidToken($request,'Remember Token Altered');
@@ -138,18 +137,12 @@ class AuthGuard
 	{
 		$capsule = $this->app['capsule'];
 		$user_table = $this->app['config']['auth.Eloquent.user_table'];
+		$query = $capsule::table($user_table)
+					->where('id',$user['id']);
 
 		if(  (int)$user['last_failed_count'] >= (int)$this->app['config']['auth.max_failed_attempt'] )
-		{
-			$capsule::table($user_table)
-				->where('id',$user['id'])
-				->update(array('active' => 0 ));	
-		}
+			$query->update(array('active' => 0 ));	
 		else
-		{
-			$capsule::table($user_table)
-			->where('id',$user['id'])
-			->update(array('last_failed_count' => (int)$user['last_failed_count']+1 ));				
-		}
+			$query->update(array('last_failed_count' => (int)$user['last_failed_count']+1));				
 	}
 }

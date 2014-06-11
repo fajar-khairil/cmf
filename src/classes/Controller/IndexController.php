@@ -6,14 +6,7 @@ class Controller_IndexController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
-		$auth = $this->app['auth'];
-		if( $auth->check() )
-		{
-			return 'Hello World!';
-		}
-		else
-		{
-			return 'You dont have permission.';
-		}
+		//dd($this->app->path('/administrator/login'));
+		return 'Hello World!<br>Work In Progress';
 	}
 }

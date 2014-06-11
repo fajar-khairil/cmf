@@ -22,9 +22,7 @@ class Application extends \Silex\Application
 
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
-    use \Silex\Application\MonologTrait;
     use \Silex\Application\TranslationTrait;
-    use \Silex\Application\TwigTrait;	
 
     /**
      * Instantiate a new Application.
@@ -48,7 +46,7 @@ class Application extends \Silex\Application
 
         $this['config'] = $this->share(function($app){
             return new \Illuminate\Config\Repository( 
-                new \Illuminate\Config\FileLoader( 
+                new \Unika\Common\Config\File( 
                     $app['Illuminate.files'],
                     Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
                 ), 
@@ -91,6 +89,10 @@ class Application extends \Silex\Application
             $this->register(new \Silex\Provider\WebProfilerServiceProvider());*/        
     }
 
+    public function config()
+    {
+        return $this['config'];
+    }
 
     public function initCommonProviders()
     {
