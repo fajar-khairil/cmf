@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ *  This file is part of the Unika-CMF project.
  *	View Service Provider
  *
  *	@license MIT

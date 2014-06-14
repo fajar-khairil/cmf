@@ -1,7 +1,7 @@
 <?php
 /**
  *	This file is part of the Unika-CMF project.
- *	SessionWrapper
+ *	View Wrapper
  *	
  *	@license MIT
  *	@author Fajar Khairil

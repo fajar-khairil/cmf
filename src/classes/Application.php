@@ -52,7 +52,7 @@ class Application extends \Silex\Application
         
         $this->registerViewPath($default_backend_theme);
 
-        $this->register(new \Unika\Provider\AuthServiceProvider);
+        $this->register(new \Unika\Provider\SecurityServiceProvider);
         $this->register(new \Unika\Provider\TwigServiceProvider);
         $this->register(new \Unika\Provider\ViewServiceProvider);
         $this->register(new \Silex\Provider\SessionServiceProvider());

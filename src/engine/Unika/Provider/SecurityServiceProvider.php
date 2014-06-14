@@ -1,7 +1,7 @@
 <?php
 /**
- *
- *  Bring Some Illuminate(L4) components to silex
+ *	This file is part of the Unika-CMF project.
+ *  Security Service Provider
  *
  *  @license MIT
  *  @author Fajar Khairil
@@ -11,7 +11,7 @@ namespace Unika\Provider;
 
 use Pimple\ServiceProviderInterface;
 
-class AuthServiceProvider implements ServiceProviderInterface
+class SecurityServiceProvider implements ServiceProviderInterface
 {
 
     public function register(\Pimple\Container $app)
