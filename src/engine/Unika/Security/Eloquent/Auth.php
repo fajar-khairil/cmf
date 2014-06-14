@@ -25,7 +25,7 @@ class Auth implements AuthInterface
 	public function __construct(\Application $app)
 	{
 		$this->app = $app;
-		$this->dispatcher = $this->app['Illuminate.dispatcher'];
+		$this->dispatcher = $this->app['Illuminate.events'];
 	}
 
 	/**

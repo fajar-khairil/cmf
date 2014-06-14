@@ -1,9 +1,37 @@
 <?php
+/**
+ *	This file is part of the Unika-CMF project.
+ *  Database Config Loader
+ *
+ *  @license : MIT 
+ *  @author  : Fajar Khairil
+ *
+ */
 
 namespace Unika\Common\Config;
 
-class Database implements implements \Illuminate\Config\LoaderInterface
+class Eloquent implements implements \Illuminate\Config\LoaderInterface
 {
+
+	protected $cache;
+	protected $app;
+	protected $capsule;
+
+	public function __construct(
+		\Application $app,
+		\Illuminate\Database\Capsule\Manager $capsule,
+		\Illuminate\Cache\Repository $cache = null
+		)
+	{
+		$this->capsule = $capsule;
+		$this->app = $app;
+		
+		if( $cache === null )
+			$cache = $this->app['cache'];
+
+		$this->cache = $cache;
+	}
+
 	/**
 	 * Load the given configuration group.
 	 *

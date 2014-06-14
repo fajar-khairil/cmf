@@ -1,7 +1,7 @@
 <?php
 /**
  *
- *	Bring Some Illuminate(L4) components to silex
+ *	Bring Some Illuminate(L4) components
  *
  *	@license MIT
  *	@author Fajar Khairil
@@ -9,7 +9,7 @@
 
 namespace Unika\Provider;
 
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class IlluminateServiceProvider implements ServiceProviderInterface
@@ -22,16 +22,30 @@ class IlluminateServiceProvider implements ServiceProviderInterface
      *
      * @param Application $app An Application instance
      */
-    public function register(\Silex\Application $app)
+    public function register(\Pimple\Container $app)
     {
+        $app['Illuminate.files'] = function(){
+            return new \Illuminate\Filesystem\Filesystem();
+        };   
+
+        $app['config'] = function($app){
+            return new \Illuminate\Config\Repository( 
+                new \Unika\Common\Config\File( 
+                    $app['Illuminate.files'],
+                    \Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'config' 
+                ), 
+                \Application::detectEnvirontment()
+            );
+        };
+
         //Illuminate Container
-        $app['Illuminate.container'] = $app->share(function($app){
+        $app['Illuminate.container'] = function($app){
            $container = new \Illuminate\Container\Container(); 
 
            $container['config'] = $app['config'];
 
            return $container;
-        });
+        };
 
         $container = $app['Illuminate.container'];
         $container->singleton('memcached.connector',function(){
@@ -47,7 +61,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
                 $app['config']['cache.default'] = 'File';
         }
 
-        $app['cache_manager'] = $app->share(function($app) use($container){
+        $app['cache_manager'] = function($app) use($container){
 
             $container['config']['cache.path'] = $app['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache';
             
@@ -64,15 +78,13 @@ class IlluminateServiceProvider implements ServiceProviderInterface
             $CacheManager->setDefaultDriver( $app['config']['cache.default'] );
 
             return $CacheManager;
-        });
+        };
 
-        $app['cache'] = $app->share(function($app){
-            return $app['CacheManager']->driver();
-        });
+        $app['cache'] = $app['cache_manager']->driver();
         //END Cache
 
         //BEGIN Eloquent
-		$app['capsule'] = $app->share(function($app){
+		$app['capsule'] = function($app){
 			$Capsule = new Capsule();
 			$Capsule->setAsGlobal();
 			$Capsule->addConnection(
@@ -85,23 +97,24 @@ class IlluminateServiceProvider implements ServiceProviderInterface
 			$Capsule->setCacheManager( $app['cache_manager'] );
 
 			return $Capsule;
-		});      
+		};      
 		//END Eloquent  
 
-        $app['Illuminate.dispatcher'] = function($app){
-            return new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
-        };
-    }
+        $app['Illuminate.events'] = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
 
-    /**
-     * Bootstraps the application.
-     *
-     * This method is called after all services are registered
-     * and should be used for "dynamic" configuration (whenever
-     * a service must be requested).
-     */
-    public function boot(\Silex\Application $app)
-    {
-        
-    }	
+        //BEGIN Blade
+        $app['Illuminate.blade'] = function($app){
+            $blade_config = $app['config']['view.blade'];
+
+            $blade = new \Illuminate\View\Compilers\BladeCompiler($app['Illuminate.files'],$blade_config['cache']);
+            $blade->setContentTags($blade_config['content_tags'][0],$blade_config['content_tags'][1]);
+            return $blade;
+        };
+        //END Blade
+
+        $app['view.finder'] = function($app){
+            $finder = new \Unika\Ext\ViewFinder($app['Illuminate.files'], $app['config']['view.paths']);
+            return $finder;
+        };         
+    }
 }

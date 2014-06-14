@@ -17,30 +17,24 @@
         ],
         "psr-0" : { 
             "Unika" : "src/engine"
-        },
-        "files": [
-            "src/classes/functions.php"
-        ]
+        }
     },
     "require": {
-        "silex/silex": "*",  
+        "silex/silex": "dev-master",  
         "Respect/Validation": "dev-master",
-        "monolog/monolog": "@stable",
-        "swiftmailer/swiftmailer": "@stable",
-        "twig/twig": "@stable",
-        "symfony/twig-bridge": "@stable",
-        "symfony/templating": "@stable",
-        "symfony/console": "@stable",
-        "symfony/translation": "@stable",
-        "symfony/finder": "@stable",
-        "symfony/yaml": "@stable",
-        "illuminate/database": "@stable",
-        "illuminate/cache": "@stable",
-        "illuminate/redis": "@stable",
-        "silex/web-profiler": "*",
-        "illuminate/filesystem": "@stable",
-        "illuminate/config": "@stable",
-        "brandonwamboldt/utilphp": "*",
-        "PasswordLib/PasswordLib": "*"
+        "monolog/monolog": "dev-master",
+        "swiftmailer/swiftmailer": "dev-master",
+        "twig/twig": "dev-master",
+        "symfony/console": "2.6.*",
+        "symfony/translation": "2.6.*",
+        "symfony/yaml": "2.6.*",
+        "illuminate/database": "4.3.*",
+        "illuminate/cache": "4.3.*",
+        "illuminate/redis": "4.3.*",
+        "illuminate/filesystem": "4.3.*",
+        "illuminate/config": "4.3.*",
+        "illuminate/view": "4.3.*",
+        "brandonwamboldt/utilphp": "dev-master",
+        "PasswordLib/PasswordLib": "dev-master"
     }
 }

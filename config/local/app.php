@@ -1,16 +1,17 @@
 <?php
 return array(
     'debug'             => True,
+    //use to encrypt cookie and other security related min character 8
+    'secret_key'        => 'HfhdsknliUIHH89j9B3hnKNKJB',
     'backend_uri'       => Application::$BACKEND_URI,
     'base_url'          => Application::$BASE_URL,
+    /**
+     *  
+     *  name of algorithm to sign and unsign sensitive data
+     *  valid value http://www.php.net/manual/en/function.hash-algos.php
+     */
     'charset'           => 'utf-8',
-    'locale'            => 'en',
+    'locale'            => 'en',  
     'tmp_dir'           => Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp',
-    'log_dir'           => Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'logs',
-    
-    //valid File/Database
-    'session_default'          => 'File', 
-
-    //valid Apc,Memcached,File,Array,Redis
-    'cache_default'     => 'Apc'
+    'log_dir'           => Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'logs'
 );

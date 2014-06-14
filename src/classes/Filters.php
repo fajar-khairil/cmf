@@ -4,7 +4,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Filters 
 {
-	
 	//backend filter	
 	public static function backendFilter($request,\Silex\Application $app)
 	{

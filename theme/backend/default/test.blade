@@ -1,0 +1,6 @@
+<p>Database Info</p>
+<ul>
+@foreach ($app['config']['database.default'] as $key=>$value)
+    <li>[[ $key ]] : [[ $value ]]</li>
+@endforeach
+</ul>

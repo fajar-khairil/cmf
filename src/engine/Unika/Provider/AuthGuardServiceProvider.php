@@ -1,13 +1,20 @@
 <?php
+/**
+ *
+ *  AuthGuardProvider prevent brute force and other security issue
+ *
+ *  @license MIT
+ *  @author Fajar Khairil
+ */
 
 namespace Unika\Provider;
 
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
 
 class AuthGuardServiceProvider implements ServiceProviderInterface
 {
 
-    public function register(\Silex\Application $app)
+    public function register(\Pimple\Container $app)
     {
         $guard = new \Unika\Security\Eloquent\AuthGuard($app);
         $guard->RegisterListener();   	
@@ -19,9 +26,4 @@ class AuthGuardServiceProvider implements ServiceProviderInterface
         	}
         });
     }   
-
-    public function boot(\Silex\Application $app)
-    {
-        
-    }
 }

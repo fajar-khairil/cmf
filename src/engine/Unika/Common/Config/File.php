@@ -1,6 +1,6 @@
 <?php 
 /**
- *
+ *	This file is part of the Unika-CMF project.
  *  File Config Loader steal from Illuminate\Config\FileLoader with little adjustment
  *
  *  @license : MIT 
