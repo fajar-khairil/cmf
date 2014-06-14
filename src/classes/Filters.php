@@ -1,4 +1,11 @@
 <?php
+/**
+ *	This file is part of the Unika-CMF project.
+ *  Filters Class for Reusable Filter function
+ *
+ *  @license MIT
+ *  @author Fajar Khairil
+ */
 
 use Symfony\Component\HttpFoundation\Request;
 

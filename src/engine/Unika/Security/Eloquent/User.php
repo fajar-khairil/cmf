@@ -1,6 +1,6 @@
 <?php
 /**
- *	Unika-CMF Project
+ *	This file is part of the Unika-CMF project.
  *	User class implementing important authentication interface
  *	using Illuminate\Database\Eloquent\Model
  *	

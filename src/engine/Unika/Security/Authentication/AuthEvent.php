@@ -1,6 +1,6 @@
 <?php
 /**
- *	Unika-CMF Project
+ *	This file is part of the Unika-CMF project.
  *	AuthEvent
  *	
  *	@license MIT

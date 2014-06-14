@@ -1,7 +1,7 @@
 <?php
 /**
- *	
- *	Base Controller for Backend
+ *	This file is part of the Unika-CMF project.
+ *	Base Controller
  *
  *	@license MIT
  *	@author Fajar Khairil

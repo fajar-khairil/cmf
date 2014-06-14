@@ -1,6 +1,6 @@
 <?php
 /**
- *	Unika-CMF Project
+ *	This file is part of the Unika-CMF project.
  *	default Auth Service Implementation
  *	
  *	@license MIT

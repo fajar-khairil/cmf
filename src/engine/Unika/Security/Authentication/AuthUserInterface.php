@@ -1,6 +1,6 @@
 <?php
 /**
- *	Unika-CMF Project
+ *	This file is part of the Unika-CMF project.
  *	User must implement this interface to be use by Auth service
  *
  *	@license MIT

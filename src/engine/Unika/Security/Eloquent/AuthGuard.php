@@ -1,6 +1,6 @@
 <?php
 /**
- *	Unika-CMF Project
+ *	This file is part of the Unika-CMF project.
  *	Authentication Guard , prevent brute force attack and other security issues to Authentication
  *	
  *	@license MIT

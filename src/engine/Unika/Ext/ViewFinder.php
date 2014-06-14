@@ -13,7 +13,7 @@ class ViewFinder extends \Illuminate\View\FileViewFinder
 	implements \Twig_LoaderInterface,\Twig_ExistsLoaderInterface
 {
 
-    protected $extensions = array('blade', 'php','twig');
+    protected $extensions = array('blade','twig', 'php');
 
     /**
      * Gets the source code of a template, given its name.
