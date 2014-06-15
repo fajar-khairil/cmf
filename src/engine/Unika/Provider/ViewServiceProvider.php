@@ -23,6 +23,19 @@ class ViewServiceProvider implements ServiceProviderInterface
      */
     public function register(\Pimple\Container $app)
     {
+        $app['view.finder'] = function($app){
+            $finder = new \Unika\Ext\ViewFinder($app['Illuminate.files'], $app['view.paths']);
+            return $finder;
+        };    
+        
+        $app['Illuminate.blade'] = function($app){
+            $blade_config = $app['config']['view.blade'];
+
+            $blade = new \Illuminate\View\Compilers\BladeCompiler($app['Illuminate.files'],$blade_config['cache']);
+            $blade->setContentTags($blade_config['content_tags'][0],$blade_config['content_tags'][1]);
+            return $blade;
+        };
+
         $this->registerEngineResolver($app);
         $this->registerFactory($app);
 

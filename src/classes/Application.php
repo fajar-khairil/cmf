@@ -18,6 +18,9 @@ class Application extends \Silex\Application
     
     protected static $instance = null;
 
+    //SplFixedArray for storing view paths
+    protected $view_path_fixed;
+
     use \Silex\Application\UrlGeneratorTrait;
     use \Silex\Application\SwiftmailerTrait;
     use \Silex\Application\TranslationTrait;
@@ -32,7 +35,8 @@ class Application extends \Silex\Application
     public function __construct(array $values = array())
     {     
     	parent::__construct($values);
-        
+        $this->view_path_fixed = new \SplFixedArray(64);//internal
+        //config depend on Illuminate/config
         $this->register(new \Unika\Provider\IlluminateServiceProvider());
 
         $this['config']['engine_path'] = Application::$ENGINE_PATH;
@@ -49,28 +53,43 @@ class Application extends \Silex\Application
 
         $default_backend_theme =  Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.
                                 DIRECTORY_SEPARATOR.'backend';
-        
+
         $this->registerViewPath($default_backend_theme);
 
+        $this['view.paths'] = function($app){
+            return $app->view_path_fixed->toArray();
+        };
+
         $this->register(new \Unika\Provider\SecurityServiceProvider);
-        $this->register(new \Unika\Provider\TwigServiceProvider);
+        $this->register(new \Unika\Provider\CapsuleServiceProvider);
+        $this->register(new \Unika\Provider\CacheServiceProvider);      
         $this->register(new \Unika\Provider\ViewServiceProvider);
+        $this->register(new \Unika\Provider\TwigServiceProvider);
+
+
         $this->register(new \Silex\Provider\SessionServiceProvider());
         $this->register(new \Silex\Provider\TranslationServiceProvider);       
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);        
-
+       
         $this->initCommonContainers(); 
-        $this['config']['modules_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'module';
+        $this['config']['modules_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
     }
 
     public function registerViewPath($path)
     {
-        //checking may slow down performance
-        //if( !is_dir($path) )
-            //throw new \RuntimeException($path.' doesn`t look like directory.');
+        $this->view_path_fixed->next();
+        $key = $this->view_path_fixed->key();
+        if( $key === 1 )
+            $key = 0;
+        else
+            $key = $key - 1;
 
-        $this['config']['view.paths'] = array($path);
+        $this->view_path_fixed[ $key ] = $path;
+
+        //if there is no more room in FixedArray increase the size
+        if( !$this->view_path_fixed->valid() )
+            $this->view_path_fixed->setSize( $this->view_path_fixed->count() + 64 );
     }
 
     public function config()
@@ -117,7 +136,7 @@ class Application extends \Silex\Application
 
     public static function detectEnvirontment(array $environtments = null)
     {
-        //prevent user to detect environtment more than once
+        //prevent user to detect environtment twice
         if( $environtments === null OR static::$_environtmentDetected === True )
         {
             return static::$_environtment;

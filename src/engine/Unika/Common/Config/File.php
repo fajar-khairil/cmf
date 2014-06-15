@@ -42,6 +42,8 @@ class File implements \Illuminate\Config\LoaderInterface {
 	 */
 	protected $exists = array();
 
+	protected $app;
+
 	/**
 	 * Create a new file configuration loader.
 	 *
@@ -49,8 +51,9 @@ class File implements \Illuminate\Config\LoaderInterface {
 	 * @param  string  $defaultPath
 	 * @return void
 	 */
-	public function __construct(Filesystem $files, $defaultPath)
+	public function __construct(\Application $app,Filesystem $files, $defaultPath)
 	{
+		$this->app = $app;
 		$this->files = $files;
 		$this->defaultPath = $defaultPath;
 	}
@@ -165,7 +168,7 @@ class File implements \Illuminate\Config\LoaderInterface {
 		// First we will look for a configuration file in the packages configuration
 		// folder. If it exists, we will load it and merge it with these original
 		// options so that we will easily "cascade" a package's configurations.
-		$file = "modules/{$package}/{$group}.php";
+		$file = $this->app['config']['modules_path']."{$package}/{$group}.php";
 
 		if ($this->files->exists($path = $this->defaultPath.'/'.$file))
 		{
@@ -195,7 +198,7 @@ class File implements \Illuminate\Config\LoaderInterface {
 	 */
 	protected function getPackagePath($env, $package, $group)
 	{
-		$file = "modules/{$package}/{$env}/{$group}.php";
+		$file = $this->app['config']['modules_path']."{$package}/{$env}/{$group}.php";
 
 		return $this->defaultPath.'/'.$file;
 	}

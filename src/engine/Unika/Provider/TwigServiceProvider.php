@@ -25,7 +25,7 @@ class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
     {
-        $app['twig.path'] = $app['config']['view.paths'];
+        $app['twig.path'] = $app['view.paths'];
 
         $app['twig.options'] = array(
             'charset'       => $app['config']['app.charset'],

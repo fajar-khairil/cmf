@@ -10,12 +10,14 @@
 
 namespace Unika\Common\Config;
 
-class Eloquent implements implements \Illuminate\Config\LoaderInterface
+class Eloquent implements LoaderInterface
 {
-
 	protected $cache;
 	protected $app;
 	protected $capsule;
+
+	protected $hints = array();
+	protected $setting_table;
 
 	public function __construct(
 		\Application $app,
@@ -24,7 +26,9 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 		)
 	{
 		$this->capsule = $capsule;
+
 		$this->app = $app;
+		$this->setting_table = $app['config']['setting.Database.table'];
 		
 		if( $cache === null )
 			$cache = $this->app['cache'];
@@ -42,7 +46,20 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 	 */
 	public function load($environment, $group, $namespace = null)
 	{
-		throw new \RuntimeException('not yet implemented');
+		if( is_string($namespace) )
+			$group .= '::'.trim( array_get($this->hints,$namespace,'') );
+
+		$row = $this->capsule->table($this->setting_table)
+		->select('*')
+		->where('environment',$environment)
+		->where('group',$group)
+		->take(1)
+		->get();
+
+		if( count($row) > 0 )
+			return $row[0];
+		else
+			return array();
 	}
 
 	/**
@@ -54,7 +71,16 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 	 */
 	public function exists($group, $namespace = null)
 	{
-		throw new \RuntimeException('not yet implemented');
+		if( is_string($namespace) )
+			$group .= '::'.trim( array_get($this->hints,$namespace,'') );
+
+		$row = $this->capsule->table($this->setting_table)
+		->select('*')
+		->where('group',$group)
+		->take(1)
+		->get();
+
+		return (boolean)$row;
 	}
 
 	/**
@@ -66,7 +92,7 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 	 */
 	public function addNamespace($namespace, $hint)
 	{
-		throw new \RuntimeException('not yet implemented');
+		$this->hints[$namespaces] = trim($hint);
 	}
 
 	/**
@@ -77,7 +103,7 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 	 */
 	public function getNamespaces()
 	{
-		throw new \RuntimeException('not yet implemented');
+		return $this->hints;
 	}	
 
 	/**
@@ -91,6 +117,47 @@ class Eloquent implements implements \Illuminate\Config\LoaderInterface
 	 */
 	public function cascadePackage($environment, $package, $group, $items)
 	{
-		throw new \RuntimeException('not yet implemented');
+		if( is_string($namespace) )
+			$group .= '::'.trim( $package );
+
+		$row = $this->capsule->table($this->setting_table)
+		->select('*')
+		->where('environment',$environment)
+		->where('group',$group)
+		->take(1)
+		->get();
+
+		if( count($row) > 0 )
+			return array_merge($items,$row[0]);
+		else
+			return $items;
 	}	
+
+	public function afterSet($env,$key,$value)
+	{
+		$namespace_pos = strpos($key, '::');//namespace position
+		$module_name = '';
+		
+		$row_keys = explode('.', substr($key,$namespace_pos + 2));
+		
+		$group = $row_keys[0];unset($row_keys[0]);
+		$real_key = implode('.', $row_keys);		
+
+		if( $namespace_pos !== False )
+		{			
+			$module_name = substr($key, 0,$namespace_pos);
+			$group = $module_name.'::'.$group;
+		}
+
+		$values = [
+			'id'			=> md5($env.$group.$real_key),
+			'environment'	=> $env,
+			'group'			=> $group,
+			'key'			=> $real_key,
+			'value'			=> $value
+		];
+		
+		//return $this->capsule->table($this->setting_table)
+		//->insert( $values );
+	}
 }
