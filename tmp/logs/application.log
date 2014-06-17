@@ -1,0 +1,6 @@
+[2014-06-18 01:08:40] myapp.INFO: Matched route "GET_POST_controllerName_actionName" (parameters: "_controller": "{}", "controllerName": "index", "actionName": "index", "_route": "GET_POST_controllerName_actionName") [] []
+[2014-06-18 01:08:40] myapp.INFO: > GET / [] []
+[2014-06-18 01:08:40] myapp.INFO: < 200 [] []
+[2014-06-18 01:08:54] myapp.INFO: Matched route "GET_POST_controllerName_actionName" (parameters: "_controller": "{}", "controllerName": "index", "actionName": "index", "_route": "GET_POST_controllerName_actionName") [] []
+[2014-06-18 01:08:54] myapp.INFO: > GET / [] []
+[2014-06-18 01:08:54] myapp.INFO: < 200 [] []

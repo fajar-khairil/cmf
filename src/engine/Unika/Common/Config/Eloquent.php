@@ -65,16 +65,6 @@ class Eloquent implements LoaderInterface
 			return array();
 	}
 
-	public function normalizeKeys($dots)
-	{
-		$dot_pos = strpos($dots,'.');
-		$tmp = array();
-		if( $dot_pos !== False )
-		{
-			$tmp[] = substr($dots, 0,$dot_pos);
-		}
-	}
-
 	/**
 	 * Determine if the given configuration group exists.
 	 *
