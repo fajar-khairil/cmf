@@ -29,5 +29,16 @@ class CapsuleServiceProvider implements ServiceProviderInterface
 
 			return $Capsule;
 		};
+
+        $app['setting'] = function($app){
+            return new \Unika\Common\Config\Repository( 
+                new \Unika\Common\Config\Eloquent(
+                    $app, 
+                    $app['capsule'],
+                    $app['cache']
+                ), 
+                \Application::detectEnvirontment()
+            );
+        };   		
 	}
 }

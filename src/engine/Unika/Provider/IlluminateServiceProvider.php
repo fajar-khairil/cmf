@@ -36,7 +36,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
                 ), 
                 \Application::detectEnvirontment()
             );
-        };      
+        };              
 
         //Illuminate Container
         $app['Illuminate.container'] = function($app){
@@ -47,17 +47,6 @@ class IlluminateServiceProvider implements ServiceProviderInterface
            return $container;
         };       
 
-        $app['Illuminate.events'] = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
-
-        $app['config_database'] = function($app){
-            return new \Unika\Common\Config\Repository( 
-                new \Unika\Common\Config\Eloquent(
-                    $app, 
-                    $app['capsule'],
-                    $app['cache']
-                ), 
-                \Application::detectEnvirontment()
-            );
-        };               
+        $app['Illuminate.events'] = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);            
     }
 }

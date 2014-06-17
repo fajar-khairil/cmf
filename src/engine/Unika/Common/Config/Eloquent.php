@@ -24,7 +24,7 @@ class Eloquent implements LoaderInterface
 		\Illuminate\Database\Capsule\Manager $capsule,
 		\Illuminate\Cache\Repository $cache = null
 		)
-	{
+	{		
 		$this->capsule = $capsule;
 
 		$this->app = $app;
@@ -46,20 +46,33 @@ class Eloquent implements LoaderInterface
 	 */
 	public function load($environment, $group, $namespace = null)
 	{
+
 		if( is_string($namespace) )
 			$group .= '::'.trim( array_get($this->hints,$namespace,'') );
-
-		$row = $this->capsule->table($this->setting_table)
+		
+		$rows = $this->capsule->table($this->setting_table)
 		->select('*')
 		->where('environment',$environment)
 		->where('group',$group)
 		->take(1)
+		->remember(5)
 		->get();
-
-		if( count($row) > 0 )
-			return $row[0];
+		if( count($rows) > 0 )
+		{
+			return array_add(array(),$rows[0]['key'],$rows[0]['value']);
+		}
 		else
 			return array();
+	}
+
+	public function normalizeKeys($dots)
+	{
+		$dot_pos = strpos($dots,'.');
+		$tmp = array();
+		if( $dot_pos !== False )
+		{
+			$tmp[] = substr($dots, 0,$dot_pos);
+		}
 	}
 
 	/**
@@ -78,6 +91,7 @@ class Eloquent implements LoaderInterface
 		->select('*')
 		->where('group',$group)
 		->take(1)
+		->remember(5)
 		->get();
 
 		return (boolean)$row;
@@ -125,10 +139,11 @@ class Eloquent implements LoaderInterface
 		->where('environment',$environment)
 		->where('group',$group)
 		->take(1)
+		->remember(5)
 		->get();
 
 		if( count($row) > 0 )
-			return array_merge($items,$row[0]);
+			return array_merge($items, array_add(array(),$rows[0]['key'],$rows[0]['value']) );
 		else
 			return $items;
 	}	
@@ -157,7 +172,23 @@ class Eloquent implements LoaderInterface
 			'value'			=> $value
 		];
 		
-		//return $this->capsule->table($this->setting_table)
-		//->insert( $values );
+		$row = $this->capsule->table($this->setting_table)
+				->select('id')
+				->where('id',$values['id'])
+				->take(1)			
+				->get();
+
+		if( count($row) > 0 )
+		{
+			$setting_id = $values['id'];unset($values['id']);
+			return $this->capsule->table($this->setting_table)
+				   ->where('id',$setting_id)
+				   ->update( $values );			
+		}
+		else
+		{
+			return $this->capsule->table($this->setting_table)
+				   ->insert( $values );
+		}
 	}
 }

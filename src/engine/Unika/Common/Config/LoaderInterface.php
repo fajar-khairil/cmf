@@ -1,7 +1,7 @@
 <?php
 /**
  *  This file is part of the Unika-CMF project.
- *  Config Repository extends Illuminate\Config\Repository
+ *  LoaderInterface extends \Illuminate\Config\LoaderInterface
  *
  *  @license : MIT 
  *  @author  : Fajar Khairil

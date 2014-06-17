@@ -84,7 +84,7 @@ class AuthGuard
 	public function isBlocked($ip_address)
 	{
 		$capsule = $this->app['capsule'];
-		$row = $capsule::table('banneds')
+		$row = $capsule::table('bans')
 		->where('ip_address',$ip_address)
 		->take(1)
 		->get();
@@ -106,14 +106,14 @@ class AuthGuard
 	{
 		$capsule = $this->app['capsule'];
 
-		$row = $capsule::table('banneds')
+		$row = $capsule::table('bans')
 			->select('*')
 			->where('ip_address',$request->getClientIp())
 			->take(1)->get();
 
 		if( !empty($row) )
 		{
-			$capsule::table('banneds')
+			$capsule::table('bans')
 				->where('ip_address',$request->getClientIp())
 				->update(array(
 				'ip_address'	=> $request->getClientIp(),
@@ -123,7 +123,7 @@ class AuthGuard
 		}
 		else
 		{
-			$capsule::table('banneds')
+			$capsule::table('bans')
 			->insert(array(
 				'ip_address'	=> $request->getClientIp(),
 				'failed_count' => (int)$row[0]['failed_count']+1,

@@ -61,8 +61,8 @@ class Application extends \Silex\Application
         };
 
         $this->register(new \Unika\Provider\SecurityServiceProvider);
-        $this->register(new \Unika\Provider\CapsuleServiceProvider);
-        $this->register(new \Unika\Provider\CacheServiceProvider);      
+        $this->register(new \Unika\Provider\CacheServiceProvider);
+        $this->register(new \Unika\Provider\CapsuleServiceProvider);      
         $this->register(new \Unika\Provider\ViewServiceProvider);
         $this->register(new \Unika\Provider\TwigServiceProvider);
 

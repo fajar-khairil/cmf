@@ -25,6 +25,10 @@ class CacheServiceProvider implements ServiceProviderInterface
 
         $container = $app['Illuminate.container'];
 
+        $container->singleton('files',function() use($app){
+            return $app['Illuminate.files'];
+        });
+
         $container->singleton('memcached.connector',function(){
             return new \Illuminate\Cache\MemcachedConnector();
         });   

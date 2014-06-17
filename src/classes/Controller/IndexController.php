@@ -13,8 +13,7 @@ class Controller_IndexController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{		
-		//$this->app['config_database']['package::app.Eloquent.table'] = 'masterkey';
-
+		return $this->app['setting']['app.Eloquent.table.row'];
 		if( $this->app['auth']->check() )
 			return $this->app['view']->render('default/test')->with('page_title','Welcome to the jungle!');
 		else
