@@ -8,7 +8,7 @@
  *
  */
 
-namespace Unika\Security\Eloquent;
+namespace Unika\Security\Authentication\Eloquent;
 
 use Unika\Security\Authentication\AuthInterface;
 use Unika\Security\Authentication\AuthException;
@@ -391,6 +391,8 @@ class Auth implements AuthInterface
 	{
 		return $this->sign_method;
 	}
+
+	/*---------------events-----------------*/
 
 	public function onTokenMismatch($listener, $priority = 0)
 	{

@@ -18,8 +18,8 @@ $app->match('/'.$app['config']['app.backend_uri'].'/{actionName}',function($acti
 		return Filters::backendFilter($request,$app);
 })
 ->value('actionName','index')
+->bind('backend')
 ->compile();
-
 
 //generic route
 $app->match('/{controllerName}/{actionName}', function ($controllerName, $actionName) use ($app) 
@@ -28,7 +28,7 @@ $app->match('/{controllerName}/{actionName}', function ($controllerName, $action
 	 
 	$class = "Controller_{$controllerName}Controller";
 	$method = "{$actionName}Action";
-	 
+
 	if (!class_exists($class)) {
 		$app->abort(404);
 	}
@@ -42,5 +42,7 @@ $app->match('/{controllerName}/{actionName}', function ($controllerName, $action
 	return $controller->$method($app['request']);	
 })
 ->method('GET|POST')
-->value('controllerName', 'index')
-->value('actionName', 'index');
+->value('controllerName', 'home')
+->value('actionName', 'index')
+->bind('front')
+->compile();

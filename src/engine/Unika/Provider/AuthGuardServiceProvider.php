@@ -16,7 +16,7 @@ class AuthGuardServiceProvider implements ServiceProviderInterface
 
     public function register(\Pimple\Container $app)
     {
-        $guard = new \Unika\Security\Eloquent\AuthGuard($app);
+        $guard = new \Unika\Security\Authentication\AuthGuard($app);
         $guard->RegisterListener();   	
     
         $app->before(function($request) use($guard,$app){

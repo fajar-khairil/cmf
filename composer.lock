@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1e6403f9e124d47ef7adec2b58d63608",
+    "hash": "7a3b87135db36cf9c7a8f07021509261",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
@@ -58,12 +58,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
-                "reference": "908217b323a31d52545f45a7b044123d6ee3d3ec"
+                "reference": "274dba4dc6a5ac8a55a17e3486e79da37007926e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/cache/zipball/908217b323a31d52545f45a7b044123d6ee3d3ec",
-                "reference": "908217b323a31d52545f45a7b044123d6ee3d3ec",
+                "url": "https://api.github.com/repos/illuminate/cache/zipball/274dba4dc6a5ac8a55a17e3486e79da37007926e",
+                "reference": "274dba4dc6a5ac8a55a17e3486e79da37007926e",
                 "shasum": ""
             },
             "require": {
@@ -100,7 +100,7 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-06-06 15:13:48"
+            "time": "2014-06-21 11:25:41"
         },
         {
             "name": "illuminate/config",
@@ -108,12 +108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
-                "reference": "56504998c0366a0277e1be809e624050b2589701"
+                "reference": "a0b11202e55ecf570b10df2eb9cb1e5da280ac15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/config/zipball/56504998c0366a0277e1be809e624050b2589701",
-                "reference": "56504998c0366a0277e1be809e624050b2589701",
+                "url": "https://api.github.com/repos/illuminate/config/zipball/a0b11202e55ecf570b10df2eb9cb1e5da280ac15",
+                "reference": "a0b11202e55ecf570b10df2eb9cb1e5da280ac15",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-06-01 19:50:07"
+            "time": "2014-06-18 03:59:39"
         },
         {
             "name": "illuminate/container",
@@ -194,12 +194,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "ba8d30a12345fd86049688954a0547d61147085e"
+                "reference": "a5fbc7fade0cc80bcb6258ef6b800c8f7252a49c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/ba8d30a12345fd86049688954a0547d61147085e",
-                "reference": "ba8d30a12345fd86049688954a0547d61147085e",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/a5fbc7fade0cc80bcb6258ef6b800c8f7252a49c",
+                "reference": "a5fbc7fade0cc80bcb6258ef6b800c8f7252a49c",
                 "shasum": ""
             },
             "require": {
@@ -245,7 +245,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2014-06-11 15:34:38"
+            "time": "2014-06-21 15:22:00"
         },
         {
             "name": "illuminate/events",
@@ -385,12 +385,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "8ba416d18dd7a2ffff5454afd1b94a17b8f37fa1"
+                "reference": "1b2339a459e298dc7b193773c7b655eb39ce196f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/8ba416d18dd7a2ffff5454afd1b94a17b8f37fa1",
-                "reference": "8ba416d18dd7a2ffff5454afd1b94a17b8f37fa1",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/1b2339a459e298dc7b193773c7b655eb39ce196f",
+                "reference": "1b2339a459e298dc7b193773c7b655eb39ce196f",
                 "shasum": ""
             },
             "require": {
@@ -426,7 +426,7 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-06-06 15:13:48"
+            "time": "2014-06-18 03:59:39"
         },
         {
             "name": "illuminate/view",
@@ -434,12 +434,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
-                "reference": "f8a8cd51a8b179a2dee8301cdafce39af7776c6c"
+                "reference": "a8e96a68a02299e1349e0cdc83b8b455be0daeb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/view/zipball/f8a8cd51a8b179a2dee8301cdafce39af7776c6c",
-                "reference": "f8a8cd51a8b179a2dee8301cdafce39af7776c6c",
+                "url": "https://api.github.com/repos/illuminate/view/zipball/a8e96a68a02299e1349e0cdc83b8b455be0daeb2",
+                "reference": "a8e96a68a02299e1349e0cdc83b8b455be0daeb2",
                 "shasum": ""
             },
             "require": {
@@ -472,7 +472,52 @@
                     "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-06-11 15:34:38"
+            "time": "2014-06-13 20:12:36"
+        },
+        {
+            "name": "kalnoy/nestedset",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lazychaser/laravel4-nestedset.git",
+                "reference": "e63f9aa4ee0a95a8f7be5c20547929704d40280e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lazychaser/laravel4-nestedset/zipball/e63f9aa4ee0a95a8f7be5c20547929704d40280e",
+                "reference": "e63f9aa4ee0a95a8f7be5c20547929704d40280e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "~4.1",
+                "illuminate/support": "~4.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Kalnoy\\Nestedset": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Alexander Kalnoy",
+                    "email": "lazychaser@gmail.com"
+                }
+            ],
+            "description": "Nested Set Model for Laravel 4",
+            "keywords": [
+                "database",
+                "hierarchy",
+                "laravel",
+                "nested sets",
+                "nsm"
+            ],
+            "time": "2014-06-23 12:13:53"
         },
         {
             "name": "monolog/monolog",
@@ -480,12 +525,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "25b16e801979098cb2f120e697bfce454b18bf23"
+                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/25b16e801979098cb2f120e697bfce454b18bf23",
-                "reference": "25b16e801979098cb2f120e697bfce454b18bf23",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
+                "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
                 "shasum": ""
             },
             "require": {
@@ -540,7 +585,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-06-04 16:30:04"
+            "time": "2014-06-20 14:09:34"
         },
         {
             "name": "nesbot/carbon",
@@ -643,12 +688,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Pimple.git",
-                "reference": "90b4710f115766d12e1a579b816c0974887b87a7"
+                "reference": "175904c2d78972d2c1f89391e835a54ac02f94b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/90b4710f115766d12e1a579b816c0974887b87a7",
-                "reference": "90b4710f115766d12e1a579b816c0974887b87a7",
+                "url": "https://api.github.com/repos/fabpot/Pimple/zipball/175904c2d78972d2c1f89391e835a54ac02f94b9",
+                "reference": "175904c2d78972d2c1f89391e835a54ac02f94b9",
                 "shasum": ""
             },
             "require": {
@@ -683,7 +728,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2014-05-01 10:34:00"
+            "time": "2014-06-24 06:42:49"
         },
         {
             "name": "predis/predis",
@@ -691,12 +736,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3"
+                "reference": "8373663486b836813987ab7f0ef03d388e8fc146"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
-                "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/8373663486b836813987ab7f0ef03d388e8fc146",
+                "reference": "8373663486b836813987ab7f0ef03d388e8fc146",
                 "shasum": ""
             },
             "require": {
@@ -733,7 +778,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-06-10 08:58:02"
+            "time": "2014-06-23 12:25:30"
         },
         {
             "name": "psr/log",
@@ -832,17 +877,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/silexphp/Silex.git",
-                "reference": "d19df7727bde5fbcd2f31ae0691bd7da4816d343"
+                "reference": "4b1d7d3398af1ed53e913a11ef819efde72839e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/silexphp/Silex/zipball/d19df7727bde5fbcd2f31ae0691bd7da4816d343",
-                "reference": "d19df7727bde5fbcd2f31ae0691bd7da4816d343",
+                "url": "https://api.github.com/repos/silexphp/Silex/zipball/4b1d7d3398af1ed53e913a11ef819efde72839e1",
+                "reference": "4b1d7d3398af1ed53e913a11ef819efde72839e1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "pimple/pimple": "~2.1@dev",
+                "pimple/pimple": "~2.1",
                 "symfony/event-dispatcher": ">=2.4,<2.6-dev",
                 "symfony/http-foundation": ">=2.4,<2.6-dev",
                 "symfony/http-kernel": ">=2.4,<2.6-dev",
@@ -914,7 +959,54 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2014-06-06 05:45:25"
+            "time": "2014-06-24 06:43:45"
+        },
+        {
+            "name": "stefangabos/zebra_mptt",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stefangabos/Zebra_Mptt.git",
+                "reference": "027302adb9f52c2a9f02d8442595d3b6cb24733c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stefangabos/Zebra_Mptt/zipball/027302adb9f52c2a9f02d8442595d3b6cb24733c",
+                "reference": "027302adb9f52c2a9f02d8442595d3b6cb24733c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=4.4.9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Zebra_Mptt": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Stefan Gabos",
+                    "email": "contact@stefangabos.ro",
+                    "homepage": "http://stefangabos.ro/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A PHP library providing an implementation of the modified preorder tree traversal algorithm",
+            "homepage": "http://stefangabos.ro/php-libraries/zebra-mptt/",
+            "keywords": [
+                "MPTT",
+                "modified",
+                "php",
+                "preorder",
+                "traversal",
+                "tree"
+            ],
+            "time": "2014-05-30 12:55:15"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -922,12 +1014,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc"
+                "reference": "0ad7a82115989ae6274b583d7d1beec04cb69b51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7b048deea4ee9c49c70c40a15f4045f8dff765bc",
-                "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0ad7a82115989ae6274b583d7d1beec04cb69b51",
+                "reference": "0ad7a82115989ae6274b583d7d1beec04cb69b51",
                 "shasum": ""
             },
             "require": {
@@ -968,7 +1060,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2014-06-13 11:45:24"
+            "time": "2014-06-20 15:48:17"
         },
         {
             "name": "symfony/console",
@@ -977,12 +1069,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64"
+                "reference": "9a491e7983209bf320d40917291c03e856eee947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/f41913cde27de7073e78d9a41c1299c0315dfe64",
-                "reference": "f41913cde27de7073e78d9a41c1299c0315dfe64",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/9a491e7983209bf320d40917291c03e856eee947",
+                "reference": "9a491e7983209bf320d40917291c03e856eee947",
                 "shasum": ""
             },
             "require": {
@@ -1027,7 +1119,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-11 06:54:52"
+            "time": "2014-06-20 17:41:51"
         },
         {
             "name": "symfony/debug",
@@ -1036,16 +1128,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "342dc52465f509f4ba5a8312ee1052a2d6f05101"
+                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/342dc52465f509f4ba5a8312ee1052a2d6f05101",
-                "reference": "342dc52465f509f4ba5a8312ee1052a2d6f05101",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/4bd5484d456e6263acc6429fabea7e2fbc74fffc",
+                "reference": "4bd5484d456e6263acc6429fabea7e2fbc74fffc",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": ">=5.3.3",
+                "psr/log": "~1.0"
             },
             "require-dev": {
                 "symfony/http-foundation": "~2.1",
@@ -1084,7 +1177,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-07 15:54:31"
+            "time": "2014-06-16 11:52:56"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1201,12 +1294,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "efa2b935a1305a578aef7fc22a28ad5204969927"
+                "reference": "69f0f702c36d030c132d90991357bc2b84da50de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/efa2b935a1305a578aef7fc22a28ad5204969927",
-                "reference": "efa2b935a1305a578aef7fc22a28ad5204969927",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/69f0f702c36d030c132d90991357bc2b84da50de",
+                "reference": "69f0f702c36d030c132d90991357bc2b84da50de",
                 "shasum": ""
             },
             "require": {
@@ -1247,7 +1340,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-06 03:57:03"
+            "time": "2014-06-20 17:38:20"
         },
         {
             "name": "symfony/http-kernel",
@@ -1256,19 +1349,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "e17c6c3d93070c0a3f0469de025d15201ab7d107"
+                "reference": "565dc6789d8e93a3fd1778ccafd7293c35fb4293"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/e17c6c3d93070c0a3f0469de025d15201ab7d107",
-                "reference": "e17c6c3d93070c0a3f0469de025d15201ab7d107",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/565dc6789d8e93a3fd1778ccafd7293c35fb4293",
+                "reference": "565dc6789d8e93a3fd1778ccafd7293c35fb4293",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
                 "psr/log": "~1.0",
                 "symfony/debug": "~2.5",
-                "symfony/event-dispatcher": "~2.1",
+                "symfony/event-dispatcher": "~2.5",
                 "symfony/http-foundation": "~2.4"
             },
             "require-dev": {
@@ -1320,7 +1413,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-06-03 15:24:49"
+            "time": "2014-06-12 17:00:29"
         },
         {
             "name": "symfony/routing",
@@ -1397,12 +1490,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "eb94a43aeaa1ccacbd4690f1cd08c008c96b0886"
+                "reference": "648fe60e8921358aadb0d50b74339c52691a1763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/eb94a43aeaa1ccacbd4690f1cd08c008c96b0886",
-                "reference": "eb94a43aeaa1ccacbd4690f1cd08c008c96b0886",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/648fe60e8921358aadb0d50b74339c52691a1763",
+                "reference": "648fe60e8921358aadb0d50b74339c52691a1763",
                 "shasum": ""
             },
             "require": {
@@ -1445,7 +1538,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-23 14:36:49"
+            "time": "2014-06-17 05:29:56"
         },
         {
             "name": "symfony/yaml",
@@ -1502,12 +1595,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "1c0bec2814a078a81fb86dbc38798bf73418f839"
+                "reference": "96336aba609af06e8722ddc17451ce93d70b54e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/1c0bec2814a078a81fb86dbc38798bf73418f839",
-                "reference": "1c0bec2814a078a81fb86dbc38798bf73418f839",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/96336aba609af06e8722ddc17451ce93d70b54e1",
+                "reference": "96336aba609af06e8722ddc17451ce93d70b54e1",
                 "shasum": ""
             },
             "require": {
@@ -1551,7 +1644,48 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-05-26 15:15:28"
+            "time": "2014-06-20 07:26:46"
+        },
+        {
+            "name": "zendframework/zend-permissions-acl",
+            "version": "dev-develop",
+            "target-dir": "Zend/Permissions/Acl",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/Component_ZendPermissionsAcl.git",
+                "reference": "70002c43718dc5bff111672cd0c69879a3cf19b2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/Component_ZendPermissionsAcl/zipball/70002c43718dc5bff111672cd0c69879a3cf19b2",
+                "reference": "70002c43718dc5bff111672cd0c69879a3cf19b2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev",
+                    "dev-develop": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Zend\\Permissions\\Acl\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "provides a lightweight and flexible access control list (ACL) implementation for privileges management",
+            "keywords": [
+                "acl",
+                "zf2"
+            ],
+            "time": "2014-03-04 21:00:13"
         }
     ],
     "packages-dev": [],
@@ -1560,9 +1694,11 @@
     "stability-flags": {
         "silex/silex": 20,
         "respect/validation": 20,
+        "kalnoy/nestedset": 20,
         "monolog/monolog": 20,
         "swiftmailer/swiftmailer": 20,
         "twig/twig": 20,
+        "zendframework/zend-permissions-acl": 20,
         "brandonwamboldt/utilphp": 20,
         "passwordlib/passwordlib": 20
     },

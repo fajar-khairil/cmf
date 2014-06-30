@@ -1,0 +1,25 @@
+<?php
+/**
+ *	This file is part of the Unika-CMF project.
+ *	Role Interface
+ *	
+ *	@license MIT
+ *	@author Fajar Khairil
+ */
+
+namespace Unika\Security\Authorization;
+
+Interface RoleRegistryInterface{
+
+	public function add(RoleInterface $role);
+
+	public function remove($roleId);
+
+	public function removeAll();
+
+	public function has($roleId);
+
+	public function all();
+
+	public function get($roleId);
+}

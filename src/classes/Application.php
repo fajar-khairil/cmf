@@ -25,6 +25,11 @@ class Application extends \Silex\Application
     use \Silex\Application\SwiftmailerTrait;
     use \Silex\Application\TranslationTrait;
 
+    public static function instance()
+    {
+        return static::$instance;
+    }
+
     /**
      * Instantiate a new Application.
      *
@@ -66,14 +71,16 @@ class Application extends \Silex\Application
         $this->register(new \Unika\Provider\ViewServiceProvider);
         $this->register(new \Unika\Provider\TwigServiceProvider);
 
-
         $this->register(new \Silex\Provider\SessionServiceProvider());
         $this->register(new \Silex\Provider\TranslationServiceProvider);       
         $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);        
-       
+        $this->register(new \Silex\Provider\RoutingServiceProvider);  
+        
         $this->initCommonContainers(); 
         $this['config']['modules_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
+    
+        static::$instance = $this;
     }
 
     public function registerViewPath($path)

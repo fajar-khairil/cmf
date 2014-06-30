@@ -1,6 +1,7 @@
 <?php
 return array(
-	'default'	=>	array(
+	'default'	=> 'mysqlconn',
+	'mysqlconn'	=>	array(
 		'driver'    => 'mysql',
 		'host'      => 'localhost',
 		'database'  => 'cmf',

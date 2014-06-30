@@ -18,15 +18,17 @@ class CapsuleServiceProvider implements ServiceProviderInterface
 		$app['capsule'] = function($app){
 			$Capsule = new \Illuminate\Database\Capsule\Manager();
 			$Capsule->setAsGlobal();
+			$defaultConn = $app['config']->get('database.default','mysqlconn');
 			$Capsule->addConnection(
-				$app['config']->get('database.default')
+				$app['config']['database'][$defaultConn]
 			);
 
 			$dispatcher = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
 			$Capsule->setEventDispatcher($dispatcher);
 
 			$Capsule->setCacheManager( $app['cache_manager'] );
-
+			
+			$Capsule->bootEloquent();
 			return $Capsule;
 		};
 

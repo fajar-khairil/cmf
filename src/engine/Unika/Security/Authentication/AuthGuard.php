@@ -9,7 +9,7 @@
  */
 
 
-namespace Unika\Security\Eloquent;
+namespace Unika\Security\Authentication;
 
 class AuthGuard
 {
