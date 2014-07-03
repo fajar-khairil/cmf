@@ -1,6 +1,6 @@
 <p>[[ $page_title ]]</p>
 <ul>
-@foreach ($app['config']['database.default'] as $key=>$value)
+@foreach ($app['config']['database.'.$app['config']['database.default']] as $key=>$value)
     <li>[[ $key ]] : [[ $value ]]</li>
 @endforeach
 </ul>

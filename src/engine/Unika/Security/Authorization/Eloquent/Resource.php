@@ -14,8 +14,9 @@ use Unika\Security\Authorization\ResourceInterface;
 
 class Resource extends Node implements ResourceInterface
 {
-	protected $table = 'acos';
-
+	protected $table = 'aros';
+	protected $guarded = array('lft', 'rgt');
+	protected $fillable = array('name','description');
     /**
      * The name of "lft" column.
      *
@@ -30,19 +31,26 @@ class Resource extends Node implements ResourceInterface
      */
     const RGT = 'rgt';	
 
+	public function __construct(array $attributes = array())
+	{
+		parent::__construct($attributes);
+		$app = \Application::instance();
+		$this->table = $app['config']['acl.eloquent.resource_table'];
+	}
+
 	public function getResourceId()
 	{
-		if( !$this->exists )
-			throw new \RuntimeException('cannot get resource description when object not loaded.');
 
 		return $this->getKey();
 	}
 
+	public function getResourceName()
+	{
+		return $this->name;
+	}
+
 	public function getResourceDescription()
 	{
-		if( !$this->exists )
-			throw new \RuntimeException('cannot get resource description when object not loaded.');
-
 		return $this->description;
 	}
 }

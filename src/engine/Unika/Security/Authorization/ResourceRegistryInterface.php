@@ -8,10 +8,11 @@
  */
 
 namespace Unika\Security\Authorization;
+use Unika\Security\Authorization\ResourceInterface;
 
 Interface ResourceRegistryInterface{
 
-	public function add(ResourceInterface $resource);
+	public function add(ResourceInterface $resource,ResourceInterface $parent = null);
 
 	public function remove($resource);
 

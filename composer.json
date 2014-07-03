@@ -37,6 +37,7 @@
         "zendframework/zend-permissions-acl": "2.3.*@dev",
         "illuminate/view": "4.3.*",
         "brandonwamboldt/utilphp": "dev-master",
-        "PasswordLib/PasswordLib": "dev-master"
+        "PasswordLib/PasswordLib": "dev-master",
+        "anahkiasen/underscore-php": "dev-master"
     }
 }

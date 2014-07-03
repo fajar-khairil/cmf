@@ -14,6 +14,8 @@ use Unika\Security\Authorization\RoleInterface;
 
 class Role extends Eloquent implements RoleInterface
 {
+	protected $fillable = array('name','description');
+	
 	public function __construct(array $attributes = array())
 	{
 		parent::__construct($attributes);

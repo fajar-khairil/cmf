@@ -13,7 +13,7 @@ class Controller_AuthController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
-		return $this->app['twig']->render('default/layout',array('page_title' => "Dashboard"));
+		return $this->app['view']->render('default/layout',array('page_title' => "Dashboard"));
 	}
 
 	public function loginAction(Request $request)
@@ -23,7 +23,7 @@ class Controller_AuthController extends Controller_BaseController
 		{
 			return $this->app->redirect('/administrator');
 		}
-		return $this->app['twig']->render('default/login',array('page_title' => "Signin"));
+		return $this->app['view']->render('default/login',array('page_title' => "Signin"));
 	}
 
 	public function logoutAction(Request $request)

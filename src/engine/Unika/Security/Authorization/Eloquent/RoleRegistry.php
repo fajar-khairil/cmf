@@ -24,13 +24,14 @@ class RoleRegistry implements RoleRegistryInterface
 	}
 
 	public function add(RoleInterface $role)
-	{
-		$exists = $this->has($role->getRoleId());
+	{	
+		$exists = False;
+		if( $role->getRoleId() )
+			$exists = $this->has($role->getRoleId());
 	
 		$capsule = $this->app['capsule'];
 
 		$values = array(
-			'id'			=> 	$role->getRoleId(),
 			'name'			=>	$role->getRoleName(),
 			'description'	=>	$role->getRoleDescription()
 		);
@@ -76,9 +77,10 @@ class RoleRegistry implements RoleRegistryInterface
 				   ->get();
 		
 		$results = new \Illuminate\Database\Eloquent\Collection;
+		$role_class = $this->app['config']['acl.eloquent.role_class'];
 		foreach( $records as $row )
 		{
-			$obj = new $this->app['config']['acl.eloquent.role_class'];
+			$obj = new $role_class;
 			$obj->id = $row['id'];
 			$obj->name = $row['name'];
 			$obj->description = $row['description'];
@@ -112,6 +114,6 @@ class RoleRegistry implements RoleRegistryInterface
 			return $obj;
 		}
 
-		return $row;
+		return NULL;
 	}
 }
