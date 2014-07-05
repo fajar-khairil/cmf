@@ -7,29 +7,14 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Authorization\Eloquent;
-
-use Kalnoy\Nestedset\Node;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Unika\Security\Authorization\ResourceInterface;
 
-class Resource extends Node implements ResourceInterface
+class Resource extends Eloquent implements ResourceInterface
 {
 	protected $table = 'aros';
-	protected $guarded = array('lft', 'rgt');
-	protected $fillable = array('name','description');
-    /**
-     * The name of "lft" column.
-     *
-     * @var string 
-     */
-    const LFT = 'lft';
-
-    /**
-     * The name of "rgt" column.
-     *
-     * @var string 
-     */
-    const RGT = 'rgt';	
+	protected $guarded = array('id');
+	protected $fillable = array('name','description','permissions');
 
 	public function __construct(array $attributes = array())
 	{
@@ -52,5 +37,11 @@ class Resource extends Node implements ResourceInterface
 	public function getResourceDescription()
 	{
 		return $this->description;
+	}
+
+	//return array of permissions
+	public function getPermissions()
+	{
+		return json_decode($this->permissions,True);
 	}
 }

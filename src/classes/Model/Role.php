@@ -7,10 +7,7 @@
  *	@author Fajar Khairil
  */
 
-namespace Unika\Security\Authorization\Eloquent;
-
 use Illuminate\Database\Eloquent\Model as Eloquent;
-
 
 class Role extends Eloquent
 {

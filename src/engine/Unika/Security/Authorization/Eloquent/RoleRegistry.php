@@ -96,12 +96,21 @@ class RoleRegistry implements RoleRegistryInterface
 	{
 		if( $roleId instanceof RoleInterface )
 			$roleId = $roleId->getRoleId();
-		
+
 		$capsule = $this->app['capsule'];
 
-		$row = $capsule::table($this->role_table)
-		->where('id',$roleId)
-		->take(1)->get();
+		$query = $capsule::table($this->role_table);		
+
+		if( is_string($roleId) )
+		{
+			$query->where('name',$roleId);
+		}
+		else
+		{
+			$query->where('id',$roleId);
+		}
+
+		$row = $query->take(1)->get();
 		unset($capsule);
 
 		if( !empty($row) )

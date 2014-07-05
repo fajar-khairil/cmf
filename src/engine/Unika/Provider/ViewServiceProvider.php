@@ -32,8 +32,8 @@ class ViewServiceProvider implements ServiceProviderInterface
             $blade_config = $app['config']['view.blade'];
 
             $blade = new \Illuminate\View\Compilers\BladeCompiler($app['Illuminate.files'],$blade_config['cache']);
-            $blade->setContentTags($blade_config['content_tags'][0],$blade_config['content_tags'][1]);
-            $blade->setEscapedContentTags($blade_config['escaped_content_tags'][0],$blade_config['escaped_content_tags'][1]);
+            $blade->setContentTags($blade_config['content_tags'][0],$blade_config['content_tags'][1],True);
+            $blade->setContentTags($blade_config['escaped_content_tags'][0],$blade_config['escaped_content_tags'][1]);
             return $blade;
         };
 

@@ -12,19 +12,15 @@ use Unika\Security\Authorization\ResourceInterface;
 
 Interface ResourceRegistryInterface{
 
-	public function add(ResourceInterface $resource,ResourceInterface $parent = null);
+	public function add(ResourceInterface $resource,array $permission = array('*'));
 
 	public function remove($resource);
 
 	public function removeAll();
-
-	public function isInherit($childResource,$parentResource);
 
 	public function has($resource);
 
 	public function all();
 
 	public function get($resource);
-
-	public function getParent($resource);
 } 

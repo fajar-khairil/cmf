@@ -74,6 +74,7 @@ class Application extends \Silex\Application
         $this->register(new \Unika\Provider\CapsuleServiceProvider);      
         $this->register(new \Unika\Provider\ViewServiceProvider);
         $this->register(new \Unika\Provider\TwigServiceProvider);
+        $this->register(new \Unika\Provider\AclServiceProvider);
 
         $this->register(new \Silex\Provider\SessionServiceProvider());
         $this->register(new \Silex\Provider\TranslationServiceProvider);       

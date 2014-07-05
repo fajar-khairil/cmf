@@ -25,57 +25,45 @@ class ResourceRegistry implements ResourceRegistryInterface
 		$this->resource_class = $this->app['config']['acl.eloquent.resource_class'];
 	}
 
-	public function add(ResourceInterface $resource,ResourceInterface $parent = null)
+	public function createResource(array $attributes = array())
 	{
-		$resourceExists = False;
-		if( $resource->getResourceId() )
-			$resourceExists = $this->has($resource->getResourceId());
+		if( isset($attributes['id']) ){
+			$res = $this->get($attributes['id']);
+			if( $res )
+				return $res;
 
+			unset($attributes['id']);
+		}
 
-		$values = array(
+		if( isset($attributes['name']) ){
+			$attributes['name'] = preg_replace('/[.," "]/', '_', $attributes['name']);
+			$res = $this->get($attributes['name']);
+			if( $res )
+				return $res;
+		}
+
+		if( isset($attributes['permissions']) ){
+			unset($attributes['permissions']);
+		}
+
+		return new $this->resource_class($attributes);
+	}
+
+	public function add(ResourceInterface $resource,array $permission = array('*'))
+	{
+		$values = array(	
 			'name'			=>	$resource->getResourceName(),
-			'description'	=>	$resource->getResourceDescription()
+			'description'	=>	$resource->getResourceDescription(),
+			'permissions'	=>  json_encode($permission)
 		);
 
-		$parentExists = False;
-
-		if( $parent !== null ){
-			$parent = $this->get($parent->getResourceId());
-			if( $parent ){
-				$parentExists = True;
-			}
-		}
-
-		if( !$resourceExists )
-		{
-			$values['created_at'] = date('Y-m-d H:i:s',time());
-			$res = new $this->resource_class;
-			$res->fill($values);
-			if( $parentExists === True ){
-				$res->parent_id = $parent->getResourceId();
-				return $res->save();
-			}else{
-				return $res->saveAsRoot();
-			}
-		}
-		else
-		{
-			$values['updated_at'] = date('Y-m-d H:i:s',time());
-			if( $parentExists === True )
-			{
-				$res = new $this->resource_class;
-				$res->fill($values);
-				$res->parent_id = $parent->getResourceId();
-				return $res->save();
-			}
-			else
-			{
-				$capsule = $this->app['capsule'];
-
-				return $capsule::table($this->resource_table)
-				->update($values);
-			}
-		}
+		$res = new $this->resource_class;
+		$res->id = $resource->getResourceId();
+		if( $res->id !== NULL )
+			$res->exists = True;
+		
+		$res->fill($values);
+		return $res->save();
 	}
 
 	public function remove($resource)
@@ -96,21 +84,6 @@ class ResourceRegistry implements ResourceRegistryInterface
 		return $capsule::table($this->resource_table)->delete();
 	}
 
-	public function isInherit($childResource,$parentResource)
-	{   
-		if( !$childResource OR !$parentResource ) throw new \RuntimeException('Invalid Resource supplied.');
-
-		if( !$childResource instanceof \Kalnoy\Nestedset\Node ){
-			$childResource = $this->get($childResource);
-		}
-
-		if( !$parentResource instanceof \Kalnoy\Nestedset\Node ){
-			$parentResource = $this->get($parentResource);
-		}
-
-		return (boolean)$childResource->isDescendantOf($parentResource);
-	}
-
 	public function has($resource)
 	{
 		return (boolean)$this->get($resource);
@@ -128,11 +101,19 @@ class ResourceRegistry implements ResourceRegistryInterface
 			$resource = $resource->getResourceId();
 
 		$capsule = $this->app['capsule'];
-		$row = $capsule::table($this->app['config']['acl.eloquent.resource_table'])
-			   ->where('id',$resource)
-			   ->take(1)
-			   ->get();
 
+		$query = $capsule::table($this->resource_table);		
+
+		if( is_string($resource) )
+		{
+			$query->where('name',$resource);
+		}
+		else
+		{
+			$query->where('id',$resource);
+		}
+
+		$row = $query->take(1)->get();
 		unset($capsule);
 
 		if( !empty($row) )
@@ -141,23 +122,11 @@ class ResourceRegistry implements ResourceRegistryInterface
 			$obj->id = $row[0]['id'];
 			$obj->name = $row[0]['name'];
 			$obj->description = $row[0]['description'];
+			$obj->permissions = $row[0]['permissions'];
 			$obj->exists = True;
 			return $obj;
 		}
 
 		return NULL;
-	}
-
-	public function getParent($resource)
-	{
-		if( !$resource ) throw new \RuntimeException('Invalid Resource Supplied.');
-
-		if( !$resource instanceof \Kalnoy\Nestedset\Node ){
-			$resource = $this->get($resource);
-		}
-
-		$row = $resource->hasParent()->take(1)->get();
-
-		return $row[0];
 	}
 }

@@ -23,14 +23,13 @@ class CapsuleServiceProvider implements ServiceProviderInterface
 				$app['config']['database'][$defaultConn]
 			);
 
-			$dispatcher = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
-			$Capsule->setEventDispatcher($dispatcher);
+			$Capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher($app['Illuminate.container']));
 
-			$Capsule->setCacheManager( $app['cache_manager'] );
-			
-			$Capsule->bootEloquent();
+			$Capsule->setCacheManager( $app['cache_manager'] );			
 			return $Capsule;
 		};
+		
+		$app['capsule']->bootEloquent();
 
         $app['setting'] = function($app){
             return new \Unika\Common\Config\Repository( 

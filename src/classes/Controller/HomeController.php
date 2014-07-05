@@ -12,12 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 class Controller_HomeController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
-	{		
-		$user = $this->app['auth']->user();
+	{				
+
+
+		$acl = $this->app['acl'];
+		$acl->setAuth($this->app['auth']);
+		$res = $acl->getResourceRegistry()->createResource(['name' => 'Second_Test','description' => 'Second']);
 		
-		if( $user ){
-			return $user->username.' is '.$user->getRoleName().' and '.$user->getRoleDescription();
-		}
+		$acl->getResourceRegistry()->add($res);
+		return get_class($acl);
+		//$user = $this->app['auth']->user();
+		
+		//if( $user ){
+			//return $user->username.' is '.$user->getRoleName().' and '.$user->getRoleDescription();
+		//}
 
 		if( $this->app['auth']->check() )
 			return $this->app['view']->render('default/test')->with('page_title','Welcome to the jungle!');

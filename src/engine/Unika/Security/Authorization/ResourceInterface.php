@@ -16,4 +16,6 @@ Interface ResourceInterface{
 	public function getResourceName();
 
 	public function getResourceDescription();
+
+	public function getPermissions();
 } 
