@@ -10,31 +10,23 @@
 namespace Unika\Security\Authorization\Eloquent;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Unika\Security\Authorization\RoleInterface;
 
-class Role extends Eloquent implements RoleInterface
+
+class Role extends Eloquent
 {
 	protected $fillable = array('name','description');
-	
+	protected $app;
+
 	public function __construct(array $attributes = array())
 	{
 		parent::__construct($attributes);
-		$app = \Application::instance();
-		$this->table = $app['config']['acl.eloquent.role_table'];
+		$this->app = \Application::instance();
+		$this->table = $this->app['config']['acl.eloquent.role_table'];
 	}
 
-	public function getRoleId()
+	//belongsTo relation
+	public function users()
 	{
-		return $this->getKey();
+		return $this->hasMany($this->app['config']['auth.Eloquent.user_class']);
 	}
-
-	public function getRoleName()
-	{
-		return $this->name;		
-	}
-
-	public function getRoleDescription()
-	{
-		return $this->description;
-	}	
 }

@@ -47,7 +47,7 @@ interface AuthInterface
 	public function logout();
 
 	//login user manually
-	public function forceLogin(array $user);
+	public function forceLogin(array $credentials);
 
 	/**
 	 *

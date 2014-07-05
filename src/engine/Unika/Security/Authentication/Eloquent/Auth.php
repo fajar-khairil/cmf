@@ -1,7 +1,7 @@
 <?php
 /**
  *	This file is part of the Unika-CMF project.
- *	default Auth Service Implementation
+ *	Eloquent Auth Service Implementation
  *	
  *	@license MIT
  *	@author Fajar Khairil
@@ -121,7 +121,7 @@ class Auth implements AuthInterface
 	/**
 	 *
 	 *	internal function check supplied credentials
-	 *	@return user array if success return False if failed, use by validate and attempt
+	 *	@return user array if success return False if failed, use by validate() and attempt() method
 	 */
 	protected function _checkCredentials( array $credentials )
 	{
@@ -141,6 +141,7 @@ class Auth implements AuthInterface
 
 		$pass = $credentials['pass'];unset($credentials['pass']);
 
+		$credentials['active'] = 1;
 		foreach( $credentials as $col=>$value )
 		{
 			$query->where($col,$value);
@@ -366,21 +367,27 @@ class Auth implements AuthInterface
 	}
 
 	//login user manually
-	public function forceLogin(array $user)
+	public function forceLogin(array $credentials)
 	{
 		if( $this->check() === True )
 			return True;
 
-		return $this->sign($user,AuthInterface::VIA_FORCE_LOGIN);
+		return $this->sign($credentials,AuthInterface::VIA_FORCE_LOGIN);
 	}
 
 	/**
 	 *
-	 *	@return array of user property and return null if user not already loggedin
+	 *	@return user instance property and return null if user not already loggedin
 	 */
 	public function user()
 	{
-		return $this->app['session']->get($this->app['config']['auth.session_key']);
+		if( !$this->check() ) return NULL;
+
+		$user_attributes = $this->app['session']->get($this->app['config']['auth.session_key']);
+		if( is_array($user_attributes) ){
+			$user_class = $this->app['config']['auth.Eloquent.user_class'];
+			return new $user_class($user_attributes);
+		}
 	}
 
 	/**

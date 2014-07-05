@@ -6,7 +6,8 @@ return array(
 	'guard_enabled'			=> True,
 	//implementation
 	'Eloquent'				=>	array(
-		'user_table'		=>	'users'
+		'user_table'		=>	'users',
+		'user_class'		=>  'Model_User'
 	),
 
 	'restrict_ip'			=> True,

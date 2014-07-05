@@ -27,6 +27,10 @@ class Application extends \Silex\Application
 
     public static function instance()
     {
+        if( static::$instance === NULL ){
+            throw new \RuntimeException('Cannot get instance when Application not yet constructed.');
+        }
+
         return static::$instance;
     }
 
@@ -56,7 +60,7 @@ class Application extends \Silex\Application
             \Symfony\Component\Debug\Debug::enable('E_ALL');
         }              
 
-        $default_backend_theme =  Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'theme'.
+        $default_backend_theme =  Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'themes'.
                                 DIRECTORY_SEPARATOR.'backend';
 
         $this->registerViewPath($default_backend_theme);
