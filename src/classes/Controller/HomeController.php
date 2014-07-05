@@ -13,14 +13,8 @@ class Controller_HomeController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{				
-
-
 		$acl = $this->app['acl'];
-		$acl->setAuth($this->app['auth']);
-		$res = $acl->getResourceRegistry()->createResource(['name' => 'Second_Test','description' => 'Second']);
-		
-		$acl->getResourceRegistry()->add($res);
-		return get_class($acl);
+		dd($acl->getResourceRegistry()->all()->count());
 		//$user = $this->app['auth']->user();
 		
 		//if( $user ){

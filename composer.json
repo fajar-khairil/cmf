@@ -34,7 +34,6 @@
         "illuminate/redis": "4.3.*",
         "illuminate/filesystem": "4.3.*",
         "illuminate/config": "4.3.*",
-        "zendframework/zend-permissions-acl": "2.3.*@dev",
         "illuminate/view": "4.3.*",
         "brandonwamboldt/utilphp": "dev-master",
         "PasswordLib/PasswordLib": "dev-master",

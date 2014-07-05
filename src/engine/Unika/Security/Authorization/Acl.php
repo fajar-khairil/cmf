@@ -85,7 +85,7 @@ class Acl implements AclInterface
      * @param  string                               $privilege
      * @return bool
      */
-    public function isAllowed($role = null, $resource = null, $privilege = null)
+    public function isAllowed($resource = null, $privilege = null,$role = null)
     {
     	$roleId = $this->getRoleId($role);
     	$resourceId = $this->getResourceId($resource); 

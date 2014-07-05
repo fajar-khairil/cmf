@@ -1059,53 +1059,6 @@
             "time": "2014-07-01 09:22:12"
         },
         {
-            "name": "stefangabos/zebra_mptt",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/stefangabos/Zebra_Mptt.git",
-                "reference": "027302adb9f52c2a9f02d8442595d3b6cb24733c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/stefangabos/Zebra_Mptt/zipball/027302adb9f52c2a9f02d8442595d3b6cb24733c",
-                "reference": "027302adb9f52c2a9f02d8442595d3b6cb24733c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=4.4.9"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Zebra_Mptt": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Stefan Gabos",
-                    "email": "contact@stefangabos.ro",
-                    "homepage": "http://stefangabos.ro/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP library providing an implementation of the modified preorder tree traversal algorithm",
-            "homepage": "http://stefangabos.ro/php-libraries/zebra-mptt/",
-            "keywords": [
-                "MPTT",
-                "modified",
-                "php",
-                "preorder",
-                "traversal",
-                "tree"
-            ],
-            "time": "2014-05-30 12:55:15"
-        },
-        {
             "name": "swiftmailer/swiftmailer",
             "version": "dev-master",
             "source": {
@@ -1742,47 +1695,6 @@
                 "templating"
             ],
             "time": "2014-06-20 07:26:46"
-        },
-        {
-            "name": "zendframework/zend-permissions-acl",
-            "version": "dev-develop",
-            "target-dir": "Zend/Permissions/Acl",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/Component_ZendPermissionsAcl.git",
-                "reference": "70002c43718dc5bff111672cd0c69879a3cf19b2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/Component_ZendPermissionsAcl/zipball/70002c43718dc5bff111672cd0c69879a3cf19b2",
-                "reference": "70002c43718dc5bff111672cd0c69879a3cf19b2",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.23"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev",
-                    "dev-develop": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Zend\\Permissions\\Acl\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "provides a lightweight and flexible access control list (ACL) implementation for privileges management",
-            "keywords": [
-                "acl",
-                "zf2"
-            ],
-            "time": "2014-03-04 21:00:13"
         }
     ],
     "packages-dev": [],
@@ -1795,7 +1707,6 @@
         "monolog/monolog": 20,
         "swiftmailer/swiftmailer": 20,
         "twig/twig": 20,
-        "zendframework/zend-permissions-acl": 20,
         "brandonwamboldt/utilphp": 20,
         "passwordlib/passwordlib": 20,
         "anahkiasen/underscore-php": 20
