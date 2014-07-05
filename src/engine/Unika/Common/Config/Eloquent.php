@@ -28,7 +28,7 @@ class Eloquent implements LoaderInterface
 		$this->capsule = $capsule;
 
 		$this->app = $app;
-		$this->setting_table = $app['config']['setting.Database.table'];
+		$this->setting_table = $app['config']['setting.table'];
 		
 		if( $cache === null )
 			$cache = $this->app['cache'];

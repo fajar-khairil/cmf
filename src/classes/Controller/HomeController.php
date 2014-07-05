@@ -1,7 +1,7 @@
 <?php
 /**
  *  This file is part of the Unika-CMF project.
- *  Default Controller
+ *  Home Controller
  *
  *  @license : MIT 
  *  @author  : Fajar Khairil
@@ -16,7 +16,6 @@ class Controller_HomeController extends Controller_BaseController
 		$user = $this->app['auth']->user();
 		
 		if( $user ){
-			//$role = $user->role;
 			return $user->username.' is '.$user->getRoleName().' and '.$user->getRoleDescription();
 		}
 
