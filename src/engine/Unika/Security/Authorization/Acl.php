@@ -10,11 +10,10 @@
 namespace Unika\Security\Authorization;
 
 class Acl implements AclInterface
-{
-    CONST WILDCARD = '*';
-	
+{	
 	protected $roleRegistry;
 	protected $resourceRegistry;
+    protected $aclDriver;
 	//cache
 	protected $cache;
 	protected $auth;
@@ -22,13 +21,11 @@ class Acl implements AclInterface
 	public function __construct(
 		RoleRegistryInterface $roleRegistry,
 		ResourceRegistryInterface $resourceRegistry,
-		\Illuminate\Cache\Repository $cache = null)
+		AclDriverInterface $aclDriver)
 	{
 		$this->roleRegistry = $roleRegistry;
-		$this->resourceRegistry = $resourceRegistry;
-		
-		if( null !== $cache )
-			$this->cache = $cache;
+		$this->resourceRegistry = $resourceRegistry;		
+		$this->aclDriver = $aclDriver;
 	}
 
 	public function setAuth(\Unika\Security\Authentication\AuthInterface $auth)
@@ -36,14 +33,24 @@ class Acl implements AclInterface
 		$this->auth = $auth;
 	}
 
-	public function getResourceRegistry()
-	{
-		return $this->resourceRegistry;
-	}
+    protected function getAuth()
+    {
+        if( $this->auth === NULL )
+            throw new AclException('Auth not set');
 
-	public function getRoleRegistry()
+        return $this->auth;
+    }
+
+	public function addResource($name)
 	{
-		return $this->roleRegistry;
+	   $resource = $this->resourceRegistry->createResource($name);
+	   return $this->resourceRegistry->add($resource);
+    }
+
+	public function addRole($name,$description)
+	{
+       $role = $this->roleRegistry->createRole(['name' => $name,'description' => $description]);
+       return $this->roleRegistry->add($role);
 	}
 
     /**
@@ -62,36 +69,45 @@ class Acl implements AclInterface
     /**
      * Returns true if and only if the Role has access to the Resource
      *
-     * The $role and $resource parameters may be references to, or the string identifiers for,
-     * an existing Resource and Role combination.
-     *
-     * If either $role or $resource is null, then the query applies to all Roles or all Resources,
-     * respectively. Both may be null to query whether the ACL has a "blacklist" rule
-     * (allow everything to all). By default, Zend\Permissions\Acl creates a "whitelist" rule (deny
-     * everything to all), and this method would return false unless this default has
-     * been overridden (i.e., by executing $acl->allow()).
-     *
-     * If a $privilege is not provided, then this method returns false if and only if the
-     * Role is denied access to at least one privilege upon the Resource. In other words, this
-     * method returns true if and only if the Role is allowed all privileges on the Resource.
-     *
-     * This method checks Role inheritance using a depth-first traversal of the Role registry.
-     * The highest priority parent (i.e., the parent most recently added) is checked first,
-     * and its respective parents are checked similarly before the lower-priority parents of
-     * the Role are checked.
-     *
      * @param  Role\RoleInterface|string            $role
      * @param  Resource\ResourceInterface|string    $resource
      * @param  string                               $privilege
+     * @param  Callback                             $assertCallback
      * @return bool
      */
-    public function isAllowed($resource = null, $privilege = null,$role = null)
-    {
+    public function isAllowed($resource = null, $operation = null,$assert = null,$role = null)
+    {         
     	$roleId = $this->getRoleId($role);
-    	$resourceId = $this->getResourceId($resource); 
+        $resource = $this->getResource($resource);
+
+        return $this->aclDriver->queryAcl($roleId,$resource,$operation);
     }
 
-    protected function getResourceId($resource)
+    public function deny($role,$resource,array $operation = array('*'))
+    {
+        return $this->setRules($role,$resource,$operation,False);
+    }
+
+    public function allow($role,$resource,array $operation = array('*'))
+    {
+        return $this->setRules($role,$resource,$operation,True);
+    }
+
+    protected function setRules($role,$resource,array $operations = array('*'),$allow)
+    {
+        $roleId = $this->getRoleId($role);
+        $res = $this->getResource($resource); 
+        
+        if($res === NULL){
+            $res = $this->resourceRegistry->add($this->resourceRegistry->createResource($resource));
+        }
+
+        $resourceId = $res->getResourceId();
+        $this->aclDriver->setRules($roleId,$resourceId,$operations,$allow);     
+    }
+
+    //return ResourceInterface
+    protected function getResource($resource)
     {
     	if( $resource === null )
     	{
@@ -99,10 +115,6 @@ class Acl implements AclInterface
     	}
 
 		$resource = $this->resourceRegistry->get($resource);
-		if( $resource === NULL )
-			throw new AclException($resource.' Role not found.');
-
-		$resource = $resource->getResourceId();
 
     	return $resource;
     }
@@ -111,24 +123,23 @@ class Acl implements AclInterface
     {
     	if( $role === null )
     	{
-  			if( ! $this->auth->check() )
+  			if( ! $this->getAuth()->check() )
   				throw new AclException('role no supplied and there are no logged in user on Auth.');
 
-  			$user = $this->auth->user();
+  			$user = $this->getAuth()->user();
   			if( ! $user instanceof RoleInterface )
   				throw new AclException('Invalid Role on Auth.');
     		
-    		$role = $user->getRoleId();unset($user);
+    		$role = $user->role->getRoleId();unset($user);
     	}
     	else
     	{
     		$role = $this->roleRegistry->get($role);
     		if( $role === NULL )
     			throw new AclException($role.' Role not found.');
-
     		$role = $role->getRoleId();
     	}
 
-    	return $role;
+        return $role;
     }
 }

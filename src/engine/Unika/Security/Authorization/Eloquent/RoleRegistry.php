@@ -23,6 +23,28 @@ class RoleRegistry implements RoleRegistryInterface
 		$this->role_table = $this->app['config']['acl.eloquent.role_table'];
 	}
 
+	//return RoleInterface
+	public function createRole(array $attributes = array())
+	{
+		if( isset($attributes['id']) ){
+			$res = $this->get($attributes['id']);
+			if( $res )
+				return $res;
+
+			unset($attributes['id']);
+		}
+
+		if( isset($attributes['name']) ){
+			$attributes['name'] = preg_replace('/[.," "]/', '_', $attributes['name']);
+			$res = $this->get($attributes['name']);
+			if( $res )
+				return $res;
+		}
+
+		$role_class = $this->app['config']['acl.eloquent.role_class'];
+		return new $role_class($attributes);		
+	}
+
 	public function add(RoleInterface $role)
 	{	
 		$exists = False;
@@ -36,18 +58,17 @@ class RoleRegistry implements RoleRegistryInterface
 			'description'	=>	$role->getRoleDescription()
 		);
 
-		if( !$exists )
-		{
-			$values['created_at'] = date('Y-m-d H:i:s',time());
-			return $capsule::table($this->role_table)
-			->insert($values);
-		}
+		$role_class = $this->app['config']['acl.eloquent.role_class'];
+		$instance = new $role_class;
+		$instance->id = $resource->getResourceId();
+		if( $instance->id !== NULL )
+			$instance->exists = True;
+		
+		$instance->fill($values);
+		if( $instance->save() )
+			return $instance;
 		else
-		{
-			$values['updated_at'] = date('Y-m-d H:i:s',time());
-			return $capsule::table($this->role_table)
-			->update($values);
-		}
+			return False;
 	}
 
 	public function remove($roleId)
@@ -77,7 +98,7 @@ class RoleRegistry implements RoleRegistryInterface
 				   ->get();
 		
 		$results = new \Illuminate\Database\Eloquent\Collection;
-		$role_class = $this->app['config']['acl.eloquent.role_class'];
+		$role_class = $this->app['config']['acl.eloquent.role_implementation'];
 		foreach( $records as $row )
 		{
 			$obj = new $role_class;

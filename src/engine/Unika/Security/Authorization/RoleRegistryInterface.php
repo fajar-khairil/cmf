@@ -13,6 +13,9 @@ Interface RoleRegistryInterface{
 
 	public function add(RoleInterface $role);
 
+	//return RoleInterface
+	public function createRole(array $attributes = array());
+
 	public function remove($roleId);
 
 	public function removeAll();

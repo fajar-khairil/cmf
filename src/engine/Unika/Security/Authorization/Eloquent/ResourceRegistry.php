@@ -22,39 +22,22 @@ class ResourceRegistry implements ResourceRegistryInterface
 	{
 		$this->app = $app;
 		$this->resource_table = $this->app['config']['acl.eloquent.resource_table'];
-		$this->resource_class = $this->app['config']['acl.eloquent.resource_class'];
+		$this->resource_class = $this->app['config']['acl.eloquent.resource_implementation'];
 	}
 
-	public function createResource(array $attributes = array())
+	//return ResourceInterface
+	public function createResource($name)
 	{
-		if( isset($attributes['id']) ){
-			$res = $this->get($attributes['id']);
-			if( $res )
-				return $res;
+		$res = $this->get(preg_replace('/[.," "]/', '_', $name));
+		if( $res ) return $res;
 
-			unset($attributes['id']);
-		}
-
-		if( isset($attributes['name']) ){
-			$attributes['name'] = preg_replace('/[.," "]/', '_', $attributes['name']);
-			$res = $this->get($attributes['name']);
-			if( $res )
-				return $res;
-		}
-
-		if( isset($attributes['permissions']) ){
-			unset($attributes['permissions']);
-		}
-
-		return new $this->resource_class($attributes);
+		return new $this->resource_class(['name' => $name]);
 	}
 
-	public function add(ResourceInterface $resource,array $permission = array('*'))
+	public function add(ResourceInterface $resource)
 	{
 		$values = array(	
-			'name'			=>	$resource->getResourceName(),
-			'description'	=>	$resource->getResourceDescription(),
-			'permissions'	=>  json_encode($permission)
+			'name'	=>	$resource->getResourceName()
 		);
 
 		$res = new $this->resource_class;
@@ -63,7 +46,10 @@ class ResourceRegistry implements ResourceRegistryInterface
 			$res->exists = True;
 		
 		$res->fill($values);
-		return $res->save();
+		if( $res->save() )
+			return $res;
+		else
+			return False;		
 	}
 
 	public function remove($resource)
@@ -121,8 +107,6 @@ class ResourceRegistry implements ResourceRegistryInterface
 			$obj = new $this->resource_class;
 			$obj->id = $row[0]['id'];
 			$obj->name = $row[0]['name'];
-			$obj->description = $row[0]['description'];
-			$obj->permissions = $row[0]['permissions'];
 			$obj->exists = True;
 			return $obj;
 		}

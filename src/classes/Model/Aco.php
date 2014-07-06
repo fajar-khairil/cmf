@@ -12,9 +12,9 @@ use Unika\Security\Authorization\ResourceInterface;
 
 class Resource extends Eloquent implements ResourceInterface
 {
-	protected $table = 'aros';
+	protected $table = 'acos';
 	protected $guarded = array('id');
-	protected $fillable = array('name','description','permissions');
+	protected $fillable = array('name','description');
 
 	public function __construct(array $attributes = array())
 	{
@@ -32,16 +32,5 @@ class Resource extends Eloquent implements ResourceInterface
 	public function getResourceName()
 	{
 		return $this->name;
-	}
-
-	public function getResourceDescription()
-	{
-		return $this->description;
-	}
-
-	//return array of permissions
-	public function getPermissions()
-	{
-		return json_decode($this->permissions,True);
 	}
 }

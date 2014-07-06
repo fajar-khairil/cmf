@@ -12,7 +12,10 @@ use Unika\Security\Authorization\ResourceInterface;
 
 Interface ResourceRegistryInterface{
 
-	public function add(ResourceInterface $resource,array $permission = array('*'));
+	public function add(ResourceInterface $resource);
+
+	//return ResourceInterface
+	public function createResource($name);
 
 	public function remove($resource);
 

@@ -16,11 +16,16 @@ class AclServiceProvider implements ServiceProviderInterface,BootableProviderInt
 {
     public function register(\Pimple\Container $app)
 	{
-		$app['acl'] = new \Unika\Security\Authorization\Acl(
+		$acl = new \Unika\Security\Authorization\Acl(
 			new \Unika\Security\Authorization\Eloquent\RoleRegistry($app),
 			new \Unika\Security\Authorization\Eloquent\ResourceRegistry($app),
-			$app['cache']
+			new \Unika\Security\Authorization\Eloquent\Acl($app)
 		);	
+
+		//set Auth to Acl
+		$acl->setAuth($app['auth']);
+
+		$app['acl'] = $acl;
 	}
 
     public function boot(\Silex\Application $app)
@@ -30,7 +35,7 @@ class AclServiceProvider implements ServiceProviderInterface,BootableProviderInt
 		}
 
 		//register eloquent resource saving event
-		$resource_object = $app['config']['acl.eloquent.resource_class'];
+		$resource_object = $app['config']['acl.eloquent.resource_implementation'];
 		$resource_object::saving(function($instance){
 			$instance->name = preg_replace('/[.," "]/', '_', $instance->name);
 		});

@@ -42,12 +42,12 @@ class Model_User extends Model implements AuthUserInterface,AuthRememberUserInte
 	public function getRoleName()
 	{
 		return $this->role->name;		
-	}
+	}	
 
 	public function getRoleDescription()
 	{
 		return $this->role->description;
-	}	
+	}
 
 	//AuthUserInterface
 	public function getAuthIdentifier()
