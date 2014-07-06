@@ -86,7 +86,7 @@ class AuthGuard
 		$row = $capsule::table('bans')
 		->where('ip_address',$ip_address)
 		->take(1)
-		->rememberForever()
+		->rememberForever('ip_blocked')
 		->get();
 		
 		if( !empty($row) )
