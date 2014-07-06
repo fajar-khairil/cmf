@@ -97,8 +97,6 @@ class Acl implements AclDriverInterface
 			//return true if permissions is wildcard
 			if( in_array('*', $permissions) ) return True;
 
-			
-
 			if( is_array($operation) )
 			{
 				$flag = True;

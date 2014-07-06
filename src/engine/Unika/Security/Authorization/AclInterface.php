@@ -19,8 +19,8 @@ Interface AclInterface
      * @param  Role\RoleInterface|string            $role
      * @param  Resource\ResourceInterface|string    $resource
      * @param  string                               $privilege
-     * @param  AssertInterface                      $assertCallback
+     * @param  AssertInterface                      $assert
      * @return bool
      */
-    public function isAllowed($resource = null, $operation = null,$assert = null,$role = null);
+    public function isAllowed($resource, $operation = '*',AssertInterface $assert = null,$role = null);
 }

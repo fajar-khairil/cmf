@@ -11,9 +11,8 @@
 use Illuminate\Database\Eloquent\Model;
 use Unika\Security\Authentication\AuthUserInterface;
 use Unika\Security\Authentication\AuthRememberUserInterface;
-use Unika\Security\Authorization\RoleInterface;
 
-class Model_User extends Model implements AuthUserInterface,AuthRememberUserInterface,RoleInterface
+class Model_User extends Model implements AuthUserInterface,AuthRememberUserInterface
 {
 	protected $app;
 	protected $hidden = array('pass','salt');
@@ -32,22 +31,6 @@ class Model_User extends Model implements AuthUserInterface,AuthRememberUserInte
     {
         return $this->belongsTo($this->app['config']['acl.eloquent.role_class']);
     }	
-
-    //RoleInterface
-	public function getRoleId()
-	{
-		return $this->role->getKey();
-	}
-
-	public function getRoleName()
-	{
-		return $this->role->name;		
-	}	
-
-	public function getRoleDescription()
-	{
-		return $this->role->description;
-	}
 
 	//AuthUserInterface
 	public function getAuthIdentifier()

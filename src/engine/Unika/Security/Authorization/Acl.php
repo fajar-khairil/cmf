@@ -72,15 +72,20 @@ class Acl implements AclInterface
      * @param  Role\RoleInterface|string            $role
      * @param  Resource\ResourceInterface|string    $resource
      * @param  string                               $privilege
-     * @param  Callback                             $assertCallback
+     * @param  Callback                             $assertInterface
      * @return bool
      */
-    public function isAllowed($resource = null, $operation = null,$assert = null,$role = null)
+    public function isAllowed($resource, $operation = '*',AssertInterface $assert = null,$role = null)
     {         
-    	$roleId = $this->getRoleId($role);
+    	$role = $this->getRole($role);
         $resource = $this->getResource($resource);
 
-        return $this->aclDriver->queryAcl($roleId,$resource,$operation);
+        if( $assert instanceof AssertInterface )
+        {
+            return $assert->assert($this,$role,$resource,$operations);
+        }
+
+        return $this->aclDriver->queryAcl($role->getRoleId(),$resource,$operation);
     }
 
     public function deny($role,$resource,array $operation = array('*'))
@@ -95,7 +100,7 @@ class Acl implements AclInterface
 
     protected function setRules($role,$resource,array $operations = array('*'),$allow)
     {
-        $roleId = $this->getRoleId($role);
+        $role = $this->getRole($role);
         $res = $this->getResource($resource); 
         
         if($res === NULL){
@@ -103,7 +108,7 @@ class Acl implements AclInterface
         }
 
         $resourceId = $res->getResourceId();
-        $this->aclDriver->setRules($roleId,$resourceId,$operations,$allow);     
+        $this->aclDriver->setRules($role->getRoleId(),$resourceId,$operations,$allow);     
     }
 
     //return ResourceInterface
@@ -119,7 +124,7 @@ class Acl implements AclInterface
     	return $resource;
     }
 
-    protected function getRoleId($role)
+    protected function getRole($role)
     {
     	if( $role === null )
     	{
@@ -130,16 +135,14 @@ class Acl implements AclInterface
   			if( ! $user instanceof RoleInterface )
   				throw new AclException('Invalid Role on Auth.');
     		
-    		$role = $user->role->getRoleId();unset($user);
+    		return $user->role;
     	}
     	else
     	{
     		$role = $this->roleRegistry->get($role);
     		if( $role === NULL )
     			throw new AclException($role.' Role not found.');
-    		$role = $role->getRoleId();
+    		return $role;
     	}
-
-        return $role;
     }
 }
