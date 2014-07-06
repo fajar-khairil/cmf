@@ -24,9 +24,7 @@ use Pimple\ServiceProviderInterface;
 class TwigServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $app)
-    {
-        $app['twig.path'] = $app['view.paths'];
-
+    {        
         $app['twig.options'] = array(
             'charset'       => $app['config']['app.charset'],
             'debug'         => $app['config']['app.debug'],

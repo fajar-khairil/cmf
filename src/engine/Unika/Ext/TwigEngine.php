@@ -34,7 +34,7 @@ namespace Unika\Ext;
             //Events are already fired by the View Environment
             $template->setFiredEvents(true);
         }
-        
+   
         return $template->render($data);		
 	}
 

@@ -14,7 +14,7 @@ class Controller_HomeController extends Controller_BaseController
 	public function indexAction(Request $request)
 	{				
 		if( $this->app['auth']->check() )
-			return $this->app['view']->render('default/test')->with('page_title','Welcome to the jungle!');
+			return $this->app['view']->make('backend::default.test',['page_title' => 'Welcome to the jungle!']);
 		else
 			return 'Hello World<br>you are not logged in.';
 	}

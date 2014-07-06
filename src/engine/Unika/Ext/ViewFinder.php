@@ -25,7 +25,7 @@ class ViewFinder extends \Illuminate\View\FileViewFinder
      * @throws Twig_Error_Loader When $name is not found
      */
     public function getSource($name)
-    {
+    {   
     	return $this->files->get($this->getFullPath($name));	
     }
 

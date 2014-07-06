@@ -24,7 +24,10 @@ class ViewServiceProvider implements ServiceProviderInterface
     public function register(\Pimple\Container $app)
     {
         $app['view.finder'] = function($app){
-            $finder = new \Unika\Ext\ViewFinder($app['Illuminate.files'], $app['view.paths']);
+            $default_backend = \Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'themes'.
+                                DIRECTORY_SEPARATOR.'backend';
+            $finder = new \Unika\Ext\ViewFinder($app['Illuminate.files'], array());
+            $finder->addNamespace('backend',$default_backend);
             return $finder;
         };    
         
@@ -84,7 +87,9 @@ class ViewServiceProvider implements ServiceProviderInterface
 
     protected function registerTwigEngine($app,$resolver)
     {     
-        $resolver->register('twig',function() use($app){ return new \Unika\Ext\TwigEngine($app['twig']); });
+        $resolver->register('twig',function() use($app){ 
+            return new \Unika\Ext\TwigEngine($app['twig']); 
+        });
     }
 
     protected function registerFactory($app)

@@ -13,19 +13,19 @@ class ViewWrapper
 {
 	protected $app;
 
-	public function __construct(\Pimple\Container $app)
+	public function __construct(\Application $app)
 	{
 		$this->app = $app;
 	}
 
-	public function render($viewPath,$data = array())
+	public function make($viewPath,$data = array())
 	{
 		$viewPath = $this->app['view.finder']->find($viewPath);
 
         $engine = $this->app['view.factory']->getEngineFromPath($viewPath);
         
         $view = new \Illuminate\View\View($this->app['view.factory'],$engine,'',$viewPath,$data);
-		
+
         return $view;
 	}
 }

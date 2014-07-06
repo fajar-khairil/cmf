@@ -16,7 +16,6 @@ class Filters
 	{
 		if( !$app['auth']->check() )
 		{
-			$app['session']->getFlashBag()->add('notice','you must be logged in');
 			return $app->redirect($app['config']['app.backend_uri'].'/login');
 		}
 	}

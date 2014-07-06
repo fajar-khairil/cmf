@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # use this script while commit
-# removing garbage on tmp
+# removing garbage on tmp folder
 #
 
 echo "removing garbage"

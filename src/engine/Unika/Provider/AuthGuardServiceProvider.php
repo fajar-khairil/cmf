@@ -19,7 +19,8 @@ class AuthGuardServiceProvider implements ServiceProviderInterface
         $guard = new \Unika\Security\Authentication\AuthGuard($app);
         $guard->RegisterListener();   	
     
-        $app->before(function($request) use($guard,$app){
+        $app->before(function($request) use($guard,$app)
+        {
         	if( $guard->isBlocked($request->getClientIp()) )
         	{
         		$app->abort(403,'Blocked IP Address');
