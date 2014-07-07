@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+	<title>Unika-CMF::[[ $page_title ]]</title>
+</head>
+<body>
+	<header id="header">
+		
+	</header>
+
+    <div id="main-navigation">
+    	
+    </div>
+
+    <div class="flash-session">
+    @foreach($app['session']->getFlashBag()->get('notice') as $flash )
+        <li>[[ $flash ]]</li>
+    @endforeach
+    </div>
+    
+	@yield('content')
+</body>
+</html>

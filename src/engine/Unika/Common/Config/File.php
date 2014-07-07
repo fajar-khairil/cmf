@@ -89,7 +89,6 @@ class File implements \Illuminate\Config\LoaderInterface {
 		{
 			$items = $this->files->getRequire($file);
 		}
-
 		// Finally we're ready to check for the environment specific configuration
 		// file which will be merged on top of the main arrays so that they get
 		// precedence over them if we are currently in an environments setup.

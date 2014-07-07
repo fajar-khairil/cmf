@@ -16,7 +16,6 @@ class Eloquent implements LoaderInterface
 	protected $app;
 	protected $capsule;
 
-	protected $hints = array();
 	protected $setting_table;
 
 	public function __construct(
@@ -46,23 +45,30 @@ class Eloquent implements LoaderInterface
 	 */
 	public function load($environment, $group, $namespace = null)
 	{
-
-		if( is_string($namespace) )
-			$group .= '::'.trim( array_get($this->hints,$namespace,'') );
-		
-		$rows = $this->capsule->table($this->setting_table)
+        $group = $this->getNamespacePrefix().'::'.$group;
+	
+		$query = $this->capsule->table($this->setting_table)
 		->select('*')
 		->where('environment',$environment)
-		->where('group',$group)
-		->take(1)
-		->remember(5)
-		->get();
+		->where('group',$group);
+		//->take(1)
+		//->remember(5,md5('setting_'.$environment.'_'.$group));
+
+		$rows = $query->get();
 		if( count($rows) > 0 )
 		{
-			return array_add(array(),$rows[0]['key'],$rows[0]['value']);
+			$result = array();
+			foreach( $rows as $row )
+			{
+				array_set($result,$row['key'],$row['value']);
+			}
+
+			return $result;			
 		}
 		else
+		{
 			return array();
+		}
 	}
 
 	/**
@@ -74,14 +80,13 @@ class Eloquent implements LoaderInterface
 	 */
 	public function exists($group, $namespace = null)
 	{
-		if( is_string($namespace) )
-			$group .= '::'.trim( array_get($this->hints,$namespace,'') );
+		$group = $this->getNamespacePrefix.'::'.$group;
 
 		$row = $this->capsule->table($this->setting_table)
 		->select('*')
-		->where('group',$group)
-		->take(1)
-		->remember(5)
+		->where('group',md5('setting_'.\Application::detectEnvironment().'_'.$group))
+		//->take(1)
+		//->remember(5,'setting_'.$group)
 		->get();
 
 		return (boolean)$row;
@@ -96,7 +101,7 @@ class Eloquent implements LoaderInterface
 	 */
 	public function addNamespace($namespace, $hint)
 	{
-		$this->hints[$namespaces] = trim($hint);
+		return null;
 	}
 
 	/**
@@ -107,7 +112,7 @@ class Eloquent implements LoaderInterface
 	 */
 	public function getNamespaces()
 	{
-		return $this->hints;
+		return array();
 	}	
 
 	/**
@@ -120,16 +125,13 @@ class Eloquent implements LoaderInterface
 	 * @return array
 	 */
 	public function cascadePackage($environment, $package, $group, $items)
-	{
-		if( is_string($namespace) )
-			$group .= '::'.trim( $package );
-
+	{dd('stop at '.__FUNCTION__);
 		$row = $this->capsule->table($this->setting_table)
 		->select('*')
 		->where('environment',$environment)
-		->where('group',$group)
-		->take(1)
-		->remember(5)
+		->where('group',$this->getNamespacePrefix().'::'.$group)
+		//->take(1)
+		//->remember(5,md5('setting_'.$environment.'_'.$group))
 		->get();
 
 		if( count($row) > 0 )
@@ -141,18 +143,20 @@ class Eloquent implements LoaderInterface
 	public function afterSet($env,$key,$value)
 	{
 		$namespace_pos = strpos($key, '::');//namespace position
-		$module_name = '';
-		
-		$row_keys = explode('.', substr($key,$namespace_pos + 2));
-		
-		$group = $row_keys[0];unset($row_keys[0]);
-		$real_key = implode('.', $row_keys);		
 
 		if( $namespace_pos !== False )
 		{			
 			$module_name = substr($key, 0,$namespace_pos);
-			$group = $module_name.'::'.$group;
+			$row_keys = explode('.', substr($key,$namespace_pos + 2));
+			$group = $module_name.'::'.$row_keys[0];unset($row_keys[0]);		
 		}
+		else
+		{
+			$row_keys = explode('.', $key);
+			$group = '*::'.$row_keys[0];unset($row_keys[0]);			
+		}
+
+		$real_key = implode('.', $row_keys);	
 
 		$values = [
 			'id'			=> md5($env.$group.$real_key),
@@ -163,22 +167,22 @@ class Eloquent implements LoaderInterface
 		];
 		
 		$row = $this->capsule->table($this->setting_table)
-				->select('id')
-				->where('id',$values['id'])
-				->take(1)			
+				->where('id',$values['id'])		
 				->get();
 
 		if( count($row) > 0 )
 		{
-			$setting_id = $values['id'];unset($values['id']);
-			return $this->capsule->table($this->setting_table)
-				   ->where('id',$setting_id)
-				   ->update( $values );			
+			return $row;		
 		}
 		else
 		{
 			return $this->capsule->table($this->setting_table)
 				   ->insert( $values );
 		}
+	}
+
+	protected function getNamespacePrefix($namespace)
+	{
+		return $namespace ?: '*';
 	}
 }

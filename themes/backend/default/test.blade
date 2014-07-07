@@ -1,6 +1,11 @@
-<p>[[ $page_title ]]<p>
-<ul>
-@foreach ($app['config']['database.'.$app['config']['database.default']] as $key=>$value)
-    <li>[[ $key ]] : [[ $value ]]</li>
-@endforeach
-</ul>
+@extends('backend::default.layout')
+
+@section('content')
+	<p>[[ $page_title ]]<p>
+	<ul>
+	@foreach ($app['config']['app'] as $key=>$value)
+	    <li>[[ $key ]] : [[ $value ]]</li>
+	@endforeach
+	</ul>
+	<p><a href="[[ $app->path('backend') ]]">Go To Administration Page</a></p>
+@stop

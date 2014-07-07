@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 class Controller_HomeController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
-	{				
+	{			
 		if( $this->app['auth']->check() )
-			return $this->app['view']->make('backend::default.test',['page_title' => 'Welcome to the jungle!']);
+			return $this->app['view']->make('backend::default.test',['page_title' => 'Your App Configurations : ']);
 		else
-			return 'Hello World<br>you are not logged in.';
+			return 'please <a href="'.$this->app->path('backend',['actionName' => 'login']).'">logged in</a>';
 	}
 }
