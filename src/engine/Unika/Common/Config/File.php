@@ -98,7 +98,7 @@ class File implements \Illuminate\Config\LoaderInterface {
 		{
 			$items = $this->mergeEnvironment($items, $file);
 		}
-
+		
 		return $items;
 	}
 

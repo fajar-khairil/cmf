@@ -125,7 +125,7 @@ class Eloquent implements LoaderInterface
 	 * @return array
 	 */
 	public function cascadePackage($environment, $package, $group, $items)
-	{dd('stop at '.__FUNCTION__);
+	{
 		$row = $this->capsule->table($this->setting_table)
 		->select('*')
 		->where('environment',$environment)

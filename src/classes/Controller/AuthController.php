@@ -13,7 +13,7 @@ class Controller_AuthController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
-		return $this->app['view']->make('backend::default.layout')->with('page_title',"Dashboard");
+		return $this->app['view']->make('backend::default.dashboard')->with('page_title',"Dashboard");
 	}
 
 	public function loginAction(Request $request)

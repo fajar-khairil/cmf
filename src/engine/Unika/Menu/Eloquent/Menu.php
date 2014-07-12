@@ -1,7 +1,7 @@
 <?php
 /**
  *	This file is part of the Unika-CMF project.
- *	View Factory
+ *	Menu Node
  *
  *	@license MIT
  *	@author Fajar Khairil

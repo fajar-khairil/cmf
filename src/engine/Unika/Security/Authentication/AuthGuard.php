@@ -86,7 +86,6 @@ class AuthGuard
 		$row = $capsule::table('bans')
 		->where('ip_address',$ip_address)
 		->take(1)
-		->rememberForever('AuthGuard.blocked_ips')
 		->get();
 		
 		if( !empty($row) )
@@ -131,6 +130,7 @@ class AuthGuard
 				'created_at'	=> date('Y-m-d H:i:s',time())
 			));				
 		}
+
 	}
 
 	protected function doUpdateUser($user)
