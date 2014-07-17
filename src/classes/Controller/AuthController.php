@@ -13,6 +13,7 @@ class Controller_AuthController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
+		//dd(count( $this->app['session']->getFlashBag()->get('notice') ));
 		return $this->app['view']->make('backend::default.dashboard')->with('page_title',"Dashboard");
 	}
 

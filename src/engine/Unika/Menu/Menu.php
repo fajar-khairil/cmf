@@ -10,15 +10,16 @@
 namespace Unika\Menu;
 
 use Illuminate\Support\Collection;
-use Unika\Menu\Eloquent\Menu as Node;
+use Unika\Menu\NodeInterface;
 
 class Menu
 {
 
 	//driver instance
 	protected $driver;
+	protected $renderer;
 
-	public function __construct($driver)
+	public function __construct($driver,$renderer)
 	{
 		
 	}
@@ -32,52 +33,32 @@ class Menu
 	{
 		if( !is_string($group) ) throw new \RuntimeException('invalid supplied argument.');
 
-
+		return $this->driver->buildTree($group);
 	}
 
 	/**
 	 *
-	 *	store a collection of menu hirarchy
+	 *	store a collection of menu hierarchy
 	 *	
+	 *	@param string $group name of group menu
+	 *	@param Collection $collection of menu to save
 	 */
-	public function store(Collection $collection)
+	public function store($group,Collection $collection)
 	{
-
+		$this->driver->storeCollection($group,$collection)
 	}
 
 	/**
 	 *
 	 *	put a node of menu to system
 	 *	
-	 *	@param Node
+	 *	@param string $group name of group menu
 	 *	@param mixed nodeId | Node specify parent of supplied node
 	 *	@return boolean true on success false on failed
 	 */
-	public function put($node,$parentNode = null)
+	public function put($group,NodeInterface $node)
 	{
-
-	}
-
-	/**
-	 *	
-	 *	get Node of Menu by identifier
-	 *
-	 *	@param mixed $nodeId
-	 *	@return Node Menu
-	 */
-	public function get($nodeId)
-	{
-
-	}
-
-	/**
-	 *	
-	 *
-	 *	@param mixed nodeId to remove
-	 */
-	public function remove($nodeId)
-	{
-
+		$this->driver->put($group,$node);
 	}
 
 	/**
@@ -87,6 +68,11 @@ class Menu
 	 */
 	public function removeAll($group)
 	{
+		$this->driver->destroy($group);
+	}
 
+	public function render($group)
+	{
+		return $this->renderer->render($this->tree($group));
 	}
 }

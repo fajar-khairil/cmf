@@ -1,3 +1,3 @@
 <?php
-	require_once '../web.php';
+	require_once realpath('../web.php');
 ?>
