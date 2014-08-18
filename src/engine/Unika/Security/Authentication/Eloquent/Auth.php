@@ -245,6 +245,11 @@ class Auth implements AuthInterface
 	{
 		$cookies = $this->app['config'][ 'cookie.'.$this->app['config']['auth.cookie_remember'] ];
 		$request = $this->app['request'];
+
+		if( !$request ){
+			return False;
+		}
+
 		$result = $request->cookies->has($cookies['name']);
 		
 		if( !$result ) return False;
@@ -340,6 +345,8 @@ class Auth implements AuthInterface
 		if( $result === False )
 		{
 			$user = $this->checkRemembermePresent(True);
+
+			if( !$user ) return False;
 
 			if( is_array($user) ){
 				$this->app['session']->set($this->app['config']['auth.session_key'],$user);

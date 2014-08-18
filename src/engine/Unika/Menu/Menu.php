@@ -14,14 +14,13 @@ use Unika\Menu\NodeInterface;
 
 class Menu
 {
-
 	//driver instance
 	protected $driver;
 	protected $renderer;
 
-	public function __construct($driver,$renderer)
+	public function __construct(DriverInterface $driver,RendererInterface $renderer)
 	{
-		
+		$this->renderer = $renderer;
 	}
 
 	/**
@@ -38,18 +37,6 @@ class Menu
 
 	/**
 	 *
-	 *	store a collection of menu hierarchy
-	 *	
-	 *	@param string $group name of group menu
-	 *	@param Collection $collection of menu to save
-	 */
-	public function store($group,Collection $collection)
-	{
-		$this->driver->storeCollection($group,$collection)
-	}
-
-	/**
-	 *
 	 *	put a node of menu to system
 	 *	
 	 *	@param string $group name of group menu
@@ -58,7 +45,12 @@ class Menu
 	 */
 	public function put($group,NodeInterface $node)
 	{
-		$this->driver->put($group,$node);
+		return $this->driver->put($group,$node);
+	}
+
+	public function remove($node)
+	{
+		return $this->driver->remove($node);
 	}
 
 	/**
@@ -68,7 +60,7 @@ class Menu
 	 */
 	public function removeAll($group)
 	{
-		$this->driver->destroy($group);
+		return $this->driver->destroy($group);
 	}
 
 	public function render($group)

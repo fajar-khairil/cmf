@@ -4,7 +4,7 @@
 # removing garbage on tmp folder
 #
 
-echo "removing garbage"
+echo "removing garbage files.."
 rm -rf tmp/cache/*
 rm -rf tmp/sessions/*
 rm -rf tmp/views/twig/*
@@ -12,7 +12,7 @@ rm -rf tmp/views/blade/*
 rm -rf tmp/profiler/*
 rm -rf tmp/logs/*
 
-echo "keep several directory"
+echo "keep temporary diretories.."
 touch tmp/cache/.gitkeep
 touch tmp/sessions/.gitkeep
 touch tmp/views/twig/.gitkeep
@@ -22,8 +22,9 @@ touch tmp/logs/.gitkeep
 
 if [ "$1" == "commit" ] 
 then
-  echo "git commit.."
+  echo "committing..."
   git add -A && git commit
 fi
-echo "done"
+
+echo "all done :-)"
 exit 0

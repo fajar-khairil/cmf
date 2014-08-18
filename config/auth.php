@@ -1,15 +1,11 @@
 <?php
 return array(
+	//specify default auth driver (Eloquent,Native,Memcache)
+	'driver'				=>  'Eloquent',	
 	'session_key'			=>  'UNIKA_AUTH',
 	'max_failed_attempt'	=> 5,
 	//prevent brute force attack and other authentication issues
 	'guard_enabled'			=> True,
-	//implementation
-	'Eloquent'				=>	array(
-		'user_table'		=>	'users',
-		'user_class'		=>  'Model_User'
-	),
-
 	'restrict_ip'			=> True,
 	/**
 	 *	
@@ -21,5 +17,11 @@ return array(
 	 *	please refer to config/cookie.*
 	 */
 	'cookie_remember'		=>	'remember',
-	'remember_token_column'	=>	'remember_token'
+	'remember_token_column'	=>	'remember_token',
+
+	//implementation
+	'Eloquent'				=>	array(
+		'user_table'		=>	'users',
+		'user_class'		=>  'Model_User'
+	)
 );

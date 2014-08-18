@@ -7,6 +7,9 @@
  *  @author  : Fajar Khairil
  */
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 class Application extends \Silex\Application
 {    
     protected static $_environtment = 'production';

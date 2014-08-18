@@ -17,7 +17,7 @@ Application::$ENGINE_PATH = __DIR__;
 Application::$BACKEND_URI = 'administrator';
 Application::$BASE_URL = 'http://unikacmf.dev/';
 
-//environtment detection source
+//environtment detection by machine name
 $environtments = array(
     'local' => array(
         'fajardev'

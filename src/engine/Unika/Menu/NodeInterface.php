@@ -1,7 +1,7 @@
 <?php
 /**
  *	This file is part of the Unika-CMF project.
- *	NodeMenuInterface
+ *	Menu Node Interface
  *
  *	@license MIT
  *	@author Fajar Khairil
@@ -11,15 +11,9 @@ namespace Unika\Menu;
 
 Interface NodeInterface
 {
-	public function getNodeId();
+	public function addChild(NodeInterface $child);
 
-	public function getTarget();
+	public function setParent($parent);
 
-	public function getTitle();
-
-	public function getParent();
-
-	public function getOrder();
-
-	public function addChild();
+	public function getChilds();
 }
