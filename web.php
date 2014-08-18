@@ -13,12 +13,16 @@ $app = new \Application();
 
 require '../routes.php';
 
+$app->after(function($request,$response){
+$response->headers->addCacheControlDirective('no-cache', true);
+$response->headers->addCacheControlDirective('max-age', 0);
+$response->headers->addCacheControlDirective('must-revalidate', true);
+$response->headers->addCacheControlDirective('no-store', true);
+});
+
 //reserved for end developer
 /*$app->error(function($e,$request){
 	
 });*/
 
 $app->run();
-
-header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past

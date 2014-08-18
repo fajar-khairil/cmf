@@ -15,7 +15,6 @@ require 'vendor/autoload.php';
 
 Application::$ENGINE_PATH = __DIR__;
 Application::$BACKEND_URI = 'administrator';
-Application::$BASE_URL = 'http://unikacmf.dev/';
 
 //environtment detection by machine name
 $environtments = array(

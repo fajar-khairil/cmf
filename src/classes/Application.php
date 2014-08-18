@@ -17,7 +17,6 @@ class Application extends \Silex\Application
 
     public static $BACKEND_URI = 'administrator';
     public static $ENGINE_PATH = '/';
-    public static $BASE_URL = '/';
     
     protected static $instance = null;
 
@@ -59,6 +58,7 @@ class Application extends \Silex\Application
         {
             \Symfony\Component\Debug\Debug::enable('E_ALL');
         }              
+        $this->initCommonContainers(); 
 
         $this->register(new \Unika\Provider\SecurityServiceProvider);
         $this->register(new \Unika\Provider\CacheServiceProvider);
@@ -73,7 +73,7 @@ class Application extends \Silex\Application
         $this->register(new \Silex\Provider\ServiceControllerServiceProvider);        
         $this->register(new \Silex\Provider\RoutingServiceProvider);  
         
-        $this->initCommonContainers(); 
+        
         $this['config']['modules_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
     
         static::$instance = $this;
@@ -86,6 +86,22 @@ class Application extends \Silex\Application
 
     public function initCommonContainers()
     {
+        $this['swiftmailer.options'] = $this['config']->get('email');                           
+
+        $this['PasswordLib'] = new \PasswordLib\PasswordLib();
+
+        $this['signer'] = new Symfony\Component\HttpKernel\UriSigner($this['config']['app.secret_key']); 
+        
+        $this['cookie'] = new \Unika\Common\CookieWrapper($this);
+
+        $this['request'] = $this->factory(function(){ 
+            return $this['request_stack']->getCurrentRequest();    
+        });  
+
+        $this['response'] = $this->factory(function($app){
+            return new \Symfony\Component\HttpFoundation\Response();
+        });
+
         $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
 
         $this->app['session.storage.save_path'] = $this['config']->get('session.File.path');
@@ -96,29 +112,13 @@ class Application extends \Silex\Application
 
         $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);
 
-        $this['cookie'] = new \Unika\Common\CookieWrapper($this);
-
-        $this['response'] = $this->factory(function($app){
-            return new \Symfony\Component\HttpFoundation\Response();
-        });
-
-        $this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
+        /*$this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
             'http_cache.cache_dir'  => $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache'
-        ));
+        ));*/
         
         $this->register(new \Silex\Provider\MonologServiceProvider(),array(
             'monolog.logfile'   => $this['config']->get('app.log_dir').DIRECTORY_SEPARATOR.'application.log'
-        ));
-
-        $this['swiftmailer.options'] = $this['config']->get('email');                           
-
-        $this['PasswordLib'] = new \PasswordLib\PasswordLib();
-
-        $this['signer'] = new Symfony\Component\HttpKernel\UriSigner($this['config']['app.secret_key']);
-
-        $this['request'] = $this->factory(function(){ 
-            return $this['request_stack']->getCurrentRequest();    
-        });         
+        ));      
     }
 
     public static function detectEnvirontment(array $environtments = null)
