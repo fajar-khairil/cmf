@@ -108,7 +108,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             // We will also set the container instance on this view environment since the
             // view composers may be classes registered in the container, which allows
             // for great testable, flexible composers for the application developer.
-            $factory->setContainer($app);
+            $factory->setContainer($app['Illuminate.container']);
 
             $factory->share('app', $app);
 
