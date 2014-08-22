@@ -10,7 +10,7 @@
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Unika\Security\Authorization\ResourceInterface;
 
-class Resource extends Eloquent implements ResourceInterface
+class Model_Aco extends Eloquent implements ResourceInterface
 {
 	protected $table = 'acos';
 	protected $guarded = array('id');

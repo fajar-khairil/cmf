@@ -10,7 +10,7 @@
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Unika\Security\Authorization\RoleInterface;
 
-class Role extends Eloquent implements RoleInterface
+class Model_Role extends Eloquent implements RoleInterface
 {
 	protected $fillable = array('name','description');
 	protected $app;
