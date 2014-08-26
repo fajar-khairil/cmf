@@ -11,7 +11,7 @@ namespace Unika\Menu\Eloquent;
 
 class Driver implements Unika\Menu\DriverInterface
 {
-	public function buildTree($group)
+	public function buildTree($parentId)
 	{
 
 	}
@@ -21,14 +21,25 @@ class Driver implements Unika\Menu\DriverInterface
 
 	}
 
-	public function destroy($group)
+	public function destroyAllChilds($group)
 	{
 
 	}
 
-	public function put(NodeInterface $node)
+	public function groupExists($group)
 	{
-		$menu = new \Unika\Menu\Menu($node);
-		$menu->save();
+		$menu = new \Unika\Menu\Eloquent\Menu(['title' => $group]);
+
+		if( $menu->exists AND $menu->isRoot() )
+		{
+			return $menu;
+		}
+
+		return False;
+	}
+
+	public function put($group,NodeInterface $node)
+	{
+		throw new \RuntimeException('not yet implemented.');
 	}
 }

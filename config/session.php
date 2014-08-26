@@ -2,9 +2,9 @@
 //supported session.handler ['Database','File','Mongodb','Memcached']
 return array(
     //valid File/Database
-    'default'		=> 'Database', 
+    'default'		=> 'File', 
 	'File' => array(
-		'path' 	=> '../tmp/sessions'
+		'path' 	=> \Application::$ENGINE_PATH.'/tmp/sessions'
 	),
 	'Database' => array(
 		'dsn'			=> 'mysql:dbname=cmf',

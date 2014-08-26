@@ -17,10 +17,27 @@ class Menu
 	//driver instance
 	protected $driver;
 	protected $renderer;
+	protected $group = null;
 
 	public function __construct(DriverInterface $driver,RendererInterface $renderer)
 	{
 		$this->renderer = $renderer;
+		$this->driver = $driver;
+	}
+
+	/**
+	 *	set group menu for this instance
+	 *
+	 *	@param string $group name of the menu group
+	 */
+	public function setGroup($group)
+	{
+		$instance = $this->driver->groupExists($group);
+		
+		if( False === $instance )
+		{
+			$this->driver->put( new \Unika\Menu\Node(['title' => $group]) );
+		}
 	}
 
 	/**
@@ -28,11 +45,9 @@ class Menu
 	 *	@param string $group name of the menu group
 	 *	@return Collection of Menu Node
 	 */
-	public function tree($group)
+	public function tree()
 	{
-		if( !is_string($group) ) throw new \RuntimeException('invalid supplied argument.');
-
-		return $this->driver->buildTree($group);
+		return $this->driver->buildTree($this->group->id);
 	}
 
 	/**
@@ -43,9 +58,9 @@ class Menu
 	 *	@param mixed nodeId | Node specify parent of supplied node
 	 *	@return boolean true on success false on failed
 	 */
-	public function put($group,NodeInterface $node)
+	public function put(NodeInterface $node)
 	{
-		return $this->driver->put($group,$node);
+		return $this->driver->put($node);
 	}
 
 	public function remove($node)
@@ -58,13 +73,21 @@ class Menu
 	 *	remove all menus
 	 *	@param string $group name of menu group
 	 */
-	public function removeAll($group)
+	public function removeAll()
 	{
-		return $this->driver->destroy($group);
+		return $this->driver->destroyAllChilds($group);
 	}
 
 	public function render($group)
 	{
-		return $this->renderer->render($this->tree($group));
+		
+		return $this->renderer->render($this->tree());
+	}
+
+	function __call($method,$args)
+	{
+		if( $method != 'setGroup' ){		
+			if( !$this->group ) throw new \Unika\Menu\Exception('you must set the group first.');
+		}
 	}
 }

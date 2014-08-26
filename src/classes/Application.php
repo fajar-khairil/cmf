@@ -102,23 +102,20 @@ class Application extends \Silex\Application
             return new \Symfony\Component\HttpFoundation\Response();
         });
 
-        $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
-
-        $this->app['session.storage.save_path'] = $this['config']->get('session.File.path');
-        if( !in_array($this['config']['session.default'], array('Database','Mongodb','Memcached') ) )
-        {
-            return True;
-        }
-
-        $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);
-
-        /*$this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
+        $this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
             'http_cache.cache_dir'  => $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache'
-        ));*/
+        ));
         
         $this->register(new \Silex\Provider\MonologServiceProvider(),array(
             'monolog.logfile'   => $this['config']->get('app.log_dir').DIRECTORY_SEPARATOR.'application.log'
-        ));      
+        ));         
+
+        $this['session.storage.save_path'] = $this['config']->get('session.File.path');
+        //if( strtoupper($this['config']['session.default']) != 'FILE' )
+        //{
+            $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
+            $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);           
+        //}               
     }
 
     public static function detectEnvirontment(array $environtments = null)

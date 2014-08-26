@@ -13,11 +13,11 @@
     </div>
 
     @if( $app['session']->getFlashBag()->has('notice') )
-    <div class="flash-session">
-    @foreach($app['session']->getFlashBag()->get('notice') as $flash )
-        <li>[[ $flash ]]</li>
-    @endforeach
-    </div>
+        <div class="flash-session">
+        @foreach($app['session']->getFlashBag()->get('notice') as $flash )
+            <li>[[ $flash ]]</li>
+        @endforeach
+        </div>
     @endif
     
 	@yield('content')

@@ -13,6 +13,9 @@ class Controller_HomeController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{			
+		/*$menu = new Unika\Menu\Menu();
+		$menu->setGroup('test');*/
+
 		if( $this->app['auth']->check() )
 			return $this->app['view']->make('backend::default.test',['page_title' => 'Your App Configurations : ']);
 		else

@@ -13,7 +13,6 @@ class Controller_AuthController extends Controller_BaseController
 {
 	public function indexAction(Request $request)
 	{
-		//dd(count( $this->app['session']->getFlashBag()->get('notice') ));
 		return $this->app['view']->make('backend::default.dashboard')->with('page_title',"Dashboard");
 	}
 
@@ -24,7 +23,6 @@ class Controller_AuthController extends Controller_BaseController
 		{
 			return $this->app->redirect('/administrator');
 		}
-
 		return $this->app['view']->make('backend::default.login',['page_title' => 'Signin']);
 	}
 
@@ -34,7 +32,7 @@ class Controller_AuthController extends Controller_BaseController
 		if( $auth->check() )
 		{				
 			$auth->logout();
-			$this->app['session']->getFlashBag()->add('notice','logged out successfully');
+			$this->app['session']->getFlashBag()->add('notice','Thanks for using Unika-CMF');
 		}
 
 		return $this->app->redirect('/administrator/login');

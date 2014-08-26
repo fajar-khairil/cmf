@@ -16,4 +16,7 @@ Interface NodeInterface
 	public function setParent($parent);
 
 	public function getChilds();
+
+	//return associative array
+	public function getAttributes();
 }
