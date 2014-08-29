@@ -64,7 +64,6 @@ class Application extends \Silex\Application
         $this->register(new \Unika\Provider\CacheServiceProvider);
         $this->register(new \Unika\Provider\CapsuleServiceProvider);      
         $this->register(new \Unika\Provider\ViewServiceProvider);
-        $this->register(new \Unika\Provider\TwigServiceProvider);
         $this->register(new \Unika\Provider\AclServiceProvider);
 
         $this->register(new \Silex\Provider\SessionServiceProvider());
@@ -111,11 +110,9 @@ class Application extends \Silex\Application
         ));         
 
         $this['session.storage.save_path'] = $this['config']->get('session.File.path');
-        //if( strtoupper($this['config']['session.default']) != 'FILE' )
-        //{
-            $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
-            $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);           
-        //}               
+ 
+        $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
+        $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);                         
     }
 
     public static function detectEnvirontment(array $environtments = null)

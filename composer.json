@@ -25,7 +25,6 @@
         "kalnoy/nestedset": "dev-develop",
         "monolog/monolog": "dev-master",
         "swiftmailer/swiftmailer": "dev-master",
-        "twig/twig": "dev-master",
         "symfony/console": "2.6.*",
         "symfony/translation": "2.6.*",
         "symfony/yaml": "2.6.*",

@@ -52,7 +52,7 @@ class ViewServiceProvider implements ServiceProviderInterface
     {
         $resolver = $app['view.resolver'] = new \Illuminate\View\Engines\EngineResolver();
 
-        foreach (array('twig','php', 'blade') as $engine)
+        foreach (array('php', 'blade') as $engine)
         {
             $this->{'register'.ucfirst($engine).'Engine'}($app,$resolver);
         }
@@ -82,13 +82,6 @@ class ViewServiceProvider implements ServiceProviderInterface
         $resolver->register('blade', function() use ($app)
         {
             return new \Illuminate\View\Engines\CompilerEngine($app['Illuminate.blade'], $app['Illuminate.files']);
-        });
-    }
-
-    protected function registerTwigEngine($app,$resolver)
-    {     
-        $resolver->register('twig',function() use($app){ 
-            return new \Unika\Ext\TwigEngine($app['twig']); 
         });
     }
 

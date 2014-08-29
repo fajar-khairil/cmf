@@ -14,10 +14,10 @@ $app = new \Application();
 require '../routes.php';
 
 $app->after(function($request,$response){
-$response->headers->addCacheControlDirective('no-cache', true);
-$response->headers->addCacheControlDirective('max-age', 0);
-$response->headers->addCacheControlDirective('must-revalidate', true);
-$response->headers->addCacheControlDirective('no-store', true);
+	$response->headers->addCacheControlDirective('no-cache', true);
+	$response->headers->addCacheControlDirective('max-age', 0);
+	$response->headers->addCacheControlDirective('must-revalidate', true);
+	$response->headers->addCacheControlDirective('no-store', true);
 });
 
 //reserved for end developer

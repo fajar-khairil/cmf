@@ -10,7 +10,6 @@
 namespace Unika\Ext;
 
 class ViewFinder extends \Illuminate\View\FileViewFinder 
-	implements \Twig_LoaderInterface,\Twig_ExistsLoaderInterface
 {
 
     protected $extensions = array('blade','twig', 'php');

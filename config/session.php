@@ -2,7 +2,7 @@
 //supported session.handler ['Database','File','Mongodb','Memcached']
 return array(
     //valid File/Database
-    'default'		=> 'File', 
+    'default'		=> 'Database', 
 	'File' => array(
 		'path' 	=> \Application::$ENGINE_PATH.'/tmp/sessions'
 	),
@@ -12,11 +12,9 @@ return array(
 		'password'		=> 'masterkey',
 		'table' 		=> 'sessions',
 		'session_info'	=> array(
-			'enabled'	=> False,
 			'table'		=> 'session_info'
 		)
 	),
-	//depending on your installed extending it can be Memcached or Memcache , Memcached take first priority
 	'Memcached'	=> array(
 		'prefix'		=> 'cmf_',
 		'expiretime'	=> 600
