@@ -1,3 +1,3 @@
 <?php
-	require_once realpath('../web.php');
+	require_once realpath('../bootstrap.php');
 ?>

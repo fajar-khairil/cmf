@@ -90,13 +90,13 @@ class ResourceRegistry implements ResourceRegistryInterface
 
 		$query = $capsule::table($this->resource_table);		
 
-		if( is_string($resource) )
+		if( is_numeric($resource) )
 		{
-			$query->where('name',$resource);
+			$query->where('id',$resource);
 		}
 		else
 		{
-			$query->where('id',$resource);
+			$query->where('name',$resource);
 		}
 
 		$row = $query->take(1)->get();

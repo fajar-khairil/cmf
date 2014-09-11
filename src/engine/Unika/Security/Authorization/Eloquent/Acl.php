@@ -138,9 +138,10 @@ class Acl implements AclDriverInterface
 		$this->cache->forget('acl_'.$roleId.'_'.$resourceId);
 		
 		$row = $this->getAcl($roleId,$resourceId);
+		$capsule = $this->app['capsule'];
+
 		if( !empty($row) AND (boolean)$allow === False )
-		{
-			$capsule = $this->app['capsule'];
+		{		
 			return $capsule::table($this->app['config']['acl.eloquent.acl_table'])
 			->where('role_id',$roleId)
 			->where('aco_id',$resourceId)
@@ -148,13 +149,11 @@ class Acl implements AclDriverInterface
 		}
 		elseif( empty($row) AND (boolean)$allow === True )
 		{
-			$capsule = $this->app['capsule'];
 			return $capsule::table($this->app['config']['acl.eloquent.acl_table'])
-			->insert( ['role_id' => $roleId,'aco_id' => $resourceId,'permissions' => json_encode($operations) ]);			
+			->insert( ['role_id' => $roleId,'aco_id' => $resourceId,'permissions' => json_encode($operations)]);			
 		}
 		elseif( !empty($row) AND (boolean)$allow === True )
 		{
-			$capsule = $this->app['capsule'];
 			return $capsule::table($this->app['config']['acl.eloquent.acl_table'])
 			->where('id',$row[0]['id'])
 			->update( ['permissions' => json_encode($operations) ]);

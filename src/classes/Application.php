@@ -44,6 +44,7 @@ class Application extends \Silex\Application
     {     
     	parent::__construct($values);
         $this->view_path_fixed = new \SplFixedArray(64);//internal
+
         //config depend on Illuminate/config
         $this->register(new \Unika\Provider\IlluminateServiceProvider());
 
@@ -58,20 +59,8 @@ class Application extends \Silex\Application
         {
             \Symfony\Component\Debug\Debug::enable('E_ALL');
         }              
-        $this->initCommonContainers(); 
-
-        $this->register(new \Unika\Provider\SecurityServiceProvider);
-        $this->register(new \Unika\Provider\CacheServiceProvider);
-        $this->register(new \Unika\Provider\CapsuleServiceProvider);      
-        $this->register(new \Unika\Provider\ViewServiceProvider);
-        $this->register(new \Unika\Provider\AclServiceProvider);
-
-        $this->register(new \Silex\Provider\SessionServiceProvider());
-        $this->register(new \Silex\Provider\TranslationServiceProvider);       
-        $this->register(new \Silex\Provider\SwiftmailerServiceProvider);
-        $this->register(new \Silex\Provider\ServiceControllerServiceProvider);        
-        $this->register(new \Silex\Provider\RoutingServiceProvider);  
-        
+       
+        $this->initCommonServices();        
         
         $this['config']['modules_path'] = Application::$ENGINE_PATH.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
     
@@ -83,7 +72,7 @@ class Application extends \Silex\Application
         return $this['config'];
     }
 
-    public function initCommonContainers()
+    public function initCommonServices()
     {
         $this['swiftmailer.options'] = $this['config']->get('email');                           
 
@@ -99,20 +88,7 @@ class Application extends \Silex\Application
 
         $this['response'] = $this->factory(function($app){
             return new \Symfony\Component\HttpFoundation\Response();
-        });
-
-        $this->register(new \Silex\Provider\HttpCacheServiceProvider(),array(
-            'http_cache.cache_dir'  => $this['config']['app.tmp_dir'].DIRECTORY_SEPARATOR.'cache'
-        ));
-        
-        $this->register(new \Silex\Provider\MonologServiceProvider(),array(
-            'monolog.logfile'   => $this['config']->get('app.log_dir').DIRECTORY_SEPARATOR.'application.log'
-        ));         
-
-        $this['session.storage.save_path'] = $this['config']->get('session.File.path');
- 
-        $this['SessionManager'] = new \Unika\Common\SessionWrapper($this);
-        $this['session.storage.handler'] = $this['SessionManager']->getSession($this['config']['session.default']);                         
+        });    
     }
 
     public static function detectEnvirontment(array $environtments = null)

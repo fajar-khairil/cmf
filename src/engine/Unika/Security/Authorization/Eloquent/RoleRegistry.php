@@ -122,13 +122,13 @@ class RoleRegistry implements RoleRegistryInterface
 
 		$query = $capsule::table($this->role_table);		
 
-		if( is_string($roleId) )
+		if( is_numeric($roleId) )
 		{
-			$query->where('name',$roleId);
+			$query->where('id',$roleId);
 		}
 		else
 		{
-			$query->where('id',$roleId);
+			$query->where('name',$roleId);
 		}
 
 		$row = $query->take(1)->get();

@@ -38,6 +38,12 @@ class SessionWrapper
         switch($session_name)
         {
 	        case 'Database' :
+				$this->app['session.db_options'] = array(
+				    'db_table'      => $this->app['config']->get('session.Database.table'),
+				    'db_id_col'     => 'session_id',
+				    'db_data_col'   => 'session_value',
+				    'db_time_col'   => 'session_time',
+				);	        
 	            $session_pdo = new \PDO(
 	                $this->app['config']->get('session.Database.dsn'),
 	                $this->app['config']->get('session.Database.user'),
@@ -45,17 +51,17 @@ class SessionWrapper
 	            );            
 
 	            $session_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-	            $session_dboptions = array(
+	            /*$session_dboptions = array(
 	                'db_table'      => $this->app['config']->get('session.Database.table'),
 	                'db_id_col'     => 'session_id',
 	                'db_data_col'   => 'session_value',
 	                'db_time_col'   => 'session_time'               
-	            );
+	            );*/
 	            
 
 	            return new \Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler(
 	                $session_pdo,
-	                $session_dboptions
+	                $this->app['session.db_options']
 	            );		        	
 	            
 	            break;
