@@ -9,9 +9,6 @@
 
 namespace Unika\Provider;
 
-use Pimple\ServiceProviderInterface;
-use Silex\Api\BootableProviderInterface;
-
 class SessionServiceProvider extends \Silex\Provider\SessionServiceProvider
 {
     public function register(\Pimple\Container $app)

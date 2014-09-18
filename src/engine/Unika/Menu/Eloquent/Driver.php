@@ -23,7 +23,7 @@ class Driver implements Unika\Menu\DriverInterface
 
 	public function destroyAllChilds($group)
 	{
-
+		$menu = new \Unika\Menu\Eloquent\Menu(['title' => $group]);
 	}
 
 	public function groupExists($group)
