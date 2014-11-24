@@ -1,0 +1,9 @@
+<?php $__env->startSection('content'); ?>
+	<form action="login_check" method="post">
+		<input type="text" name="_username" placeholder="username">
+		<input type="password" name="_password" placeholder="password">
+		<input type="checkbox" name="_remember">
+		<input type="submit" value="signin">
+	</form>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('backend::default.layout.one_column', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
