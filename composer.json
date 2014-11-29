@@ -2,9 +2,14 @@
     "minimum-stability": "dev",
     "name": "unikacreative/cmf",
     "description": "The Modern Content Management Framework",
-    "keywords": ["cmf"],
+    "keywords": ["cmf","Content Management Framework"],
     "homepage": "http://unikacreative.com",
     "license": "MIT",
+    "autoload": {
+        "psr-0": {
+            "Unika": "src/"
+        }
+    },
     "authors": [
         {
             "name": "Fajar Khairil",
@@ -13,29 +18,30 @@
     ],
     "autoload": {
         "classmap": [
-            "src/classes"
+            "app"
         ],
-        "psr-0" : { 
-            "Unika" : "src/engine"
+        "psr-0": {
+            "Unika\\": "src/"
         }
     },
     "require": {
-        "silex/silex": "dev-master",  
-        "Respect/Validation": "dev-master",
-        "kalnoy/nestedset": "dev-develop",
-        "monolog/monolog": "dev-master",
-        "swiftmailer/swiftmailer": "dev-master",
-        "symfony/console": "2.6.*",
-        "symfony/translation": "2.6.*",
-        "symfony/yaml": "2.6.*",
-        "illuminate/database": "4.3.*",
-        "illuminate/cache": "4.3.*",
-        "illuminate/redis": "4.3.*",
-        "illuminate/filesystem": "4.3.*",
-        "illuminate/config": "4.3.*",
-        "illuminate/view": "4.3.*",
+        "silex/silex": "2.0.*@dev",
+        "filp/whoops": "1.2.*@dev",
+        "symfony/process": "2.6.*@dev",
+        "symfony/console": "2.6.*@dev",
+        "symfony/translation": "2.6.*@dev",
+        "monolog/monolog": "1.11.0",
+        "illuminate/support": "5.0.*@dev",
+    	"illuminate/database": "5.0.*@dev",
+    	"illuminate/filesystem": "5.0.*@dev",
+    	"illuminate/view": "5.0.*@dev",
+    	"illuminate/cache": "5.0.*@dev",
+    	"illuminate/config": "5.0.*@dev",
+    	"illuminate/remote": "5.0.*@dev",
+        "illuminate/events": "5.0.*@dev",
+    	"evenement/evenement": "2.0.*@dev",
         "brandonwamboldt/utilphp": "dev-master",
         "PasswordLib/PasswordLib": "dev-master",
-        "anahkiasen/underscore-php": "dev-master"
+        "nette/security": "2.3.*@dev"
     }
 }
