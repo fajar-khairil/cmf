@@ -3,7 +3,7 @@
  *  This file is part of the Unika-CMF project
  *  
  *  @license MIT
- *  @author Fajar Khairil
+ *  @author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
 namespace Unika\Ext\Whoops;

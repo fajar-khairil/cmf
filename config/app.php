@@ -1,4 +1,5 @@
-<?php 
+<?php
 return array(
-	'debug'	=>	False
-); 
+	'debug'			=> 	False,
+	'default_theme'	=> 'default'
+);

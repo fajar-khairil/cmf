@@ -15,6 +15,9 @@ touch tmp/cache/.gitkeep
 touch tmp/sessions/.gitkeep
 touch tmp/views/.gitkeep
 touch tmp/logs/.gitkeep
+touch config/local/.gitkeep
+touch config/testing/.gitkeep
+touch config/staging/.gitkeep
 
 if [ "$1" == "commit" ] 
 then

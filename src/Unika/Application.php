@@ -3,7 +3,7 @@
  *	This file is part of the Unika-CMF project
  *	
  *	@license MIT
- *	@author Fajar Khairil
+ *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
 namespace Unika;
@@ -46,6 +46,7 @@ class Application extends SilexApp
 
 		if( $this['debug'] )
 		{
+			\Symfony\Component\Debug\ErrorHandler::register();
 			$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
 

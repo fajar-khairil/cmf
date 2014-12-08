@@ -1,16 +1,14 @@
 <?php
-
 /**
  *	This file is part of the Unika-CMF project
  *	
  *	@license MIT
- *	@author Fajar Khairil
+ *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-use Symfony\Component\HttpFoundation\Request;
 use Unika\Application;
 
-Abstract class Controller
+Abstract class BaseController
 {
 	protected $app;
 

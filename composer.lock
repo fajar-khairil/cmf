@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2a746aabafbde5c3ef37bc390c12c94f",
+    "hash": "9fcba55c033f5c6dabc87e3f2fbdc364",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
@@ -297,12 +297,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "bfd1a86fb64691e89096bc2f77d88ecfa8cc8f2a"
+                "reference": "1effd8824d8b3b7679e0ee9b332750647953f7c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/bfd1a86fb64691e89096bc2f77d88ecfa8cc8f2a",
-                "reference": "bfd1a86fb64691e89096bc2f77d88ecfa8cc8f2a",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/1effd8824d8b3b7679e0ee9b332750647953f7c0",
+                "reference": "1effd8824d8b3b7679e0ee9b332750647953f7c0",
                 "shasum": ""
             },
             "require": {
@@ -330,62 +330,7 @@
                 }
             ],
             "description": "The Illuminate Contracts package.",
-            "time": "2014-11-28 05:08:09"
-        },
-        {
-            "name": "illuminate/database",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/database.git",
-                "reference": "9b95caf7c6fca7df390523971b8a1af68bad2d71"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/9b95caf7c6fca7df390523971b8a1af68bad2d71",
-                "reference": "9b95caf7c6fca7df390523971b8a1af68bad2d71",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/container": "5.0.*",
-                "illuminate/contracts": "5.0.*",
-                "illuminate/support": "5.0.*",
-                "nesbot/carbon": "~1.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "illuminate/console": "5.0.*",
-                "illuminate/filesystem": "5.0.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Database\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "The Illuminate Database package.",
-            "keywords": [
-                "database",
-                "laravel",
-                "orm",
-                "sql"
-            ],
-            "time": "2014-11-27 02:30:22"
+            "time": "2014-11-29 19:55:20"
         },
         {
             "name": "illuminate/events",
@@ -577,12 +522,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/view.git",
-                "reference": "f25d576381d2e76f29530ce9f763e89fda54a1c9"
+                "reference": "b144fd346f993cd53e9838396782383c40b9d289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/view/zipball/f25d576381d2e76f29530ce9f763e89fda54a1c9",
-                "reference": "f25d576381d2e76f29530ce9f763e89fda54a1c9",
+                "url": "https://api.github.com/repos/illuminate/view/zipball/b144fd346f993cd53e9838396782383c40b9d289",
+                "reference": "b144fd346f993cd53e9838396782383c40b9d289",
                 "shasum": ""
             },
             "require": {
@@ -614,7 +559,125 @@
                 }
             ],
             "description": "The Illuminate View package.",
-            "time": "2014-11-26 22:13:43"
+            "time": "2014-11-30 19:21:57"
+        },
+        {
+            "name": "j4mie/idiorm",
+            "version": "v1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4mie/idiorm.git",
+                "reference": "b0922d8719a94e3a0e0e4a0ca3876f4f91475dcf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/j4mie/idiorm/zipball/b0922d8719a94e3a0e0e4a0ca3876f4f91475dcf",
+                "reference": "b0922d8719a94e3a0e0e4a0ca3876f4f91475dcf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "idiorm.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Holywell",
+                    "email": "treffynnon@php.net",
+                    "homepage": "http://simonholywell.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jamie Matthews",
+                    "email": "jamie.matthews@gmail.com",
+                    "homepage": "http://j4mie.org",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Durham Hale",
+                    "email": "me@durhamhale.com",
+                    "homepage": "http://durhamhale.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A lightweight nearly-zero-configuration object-relational mapper and fluent query builder for PHP5",
+            "homepage": "http://j4mie.github.com/idiormandparis",
+            "keywords": [
+                "idiorm",
+                "orm",
+                "query builder"
+            ],
+            "time": "2014-06-23 13:08:57"
+        },
+        {
+            "name": "j4mie/paris",
+            "version": "v1.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/j4mie/paris.git",
+                "reference": "6cd7a3d8ffb721068dd58e508a8121b92b4068b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/j4mie/paris/zipball/6cd7a3d8ffb721068dd58e508a8121b92b4068b8",
+                "reference": "6cd7a3d8ffb721068dd58e508a8121b92b4068b8",
+                "shasum": ""
+            },
+            "require": {
+                "j4mie/idiorm": "1.5.*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "paris.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause",
+                "BSD-3-Clause",
+                "BSD-4-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Simon Holywell",
+                    "email": "treffynnon@php.net",
+                    "homepage": "http://simonholywell.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Jamie Matthews",
+                    "email": "jamie.matthews@gmail.com",
+                    "homepage": "http://j4mie.org",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Durham Hale",
+                    "email": "me@durhamhale.com",
+                    "homepage": "http://durhamhale.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A lightweight Active Record implementation for PHP5, built on top of Idiorm",
+            "homepage": "http://j4mie.github.com/idiormandparis",
+            "keywords": [
+                "Active Record",
+                "model",
+                "orm",
+                "paris"
+            ],
+            "time": "2014-09-23 10:49:36"
         },
         {
             "name": "league/flysystem",
@@ -622,12 +685,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "69a2119209f7b51ea0d16596e1aa58ae7174bc18"
+                "reference": "161f915a8ccc60166db45ef1a295e15db6536d92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/69a2119209f7b51ea0d16596e1aa58ae7174bc18",
-                "reference": "69a2119209f7b51ea0d16596e1aa58ae7174bc18",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/161f915a8ccc60166db45ef1a295e15db6536d92",
+                "reference": "161f915a8ccc60166db45ef1a295e15db6536d92",
                 "shasum": ""
             },
             "require": {
@@ -701,7 +764,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2014-11-28 22:54:14"
+            "time": "2014-11-30 12:09:36"
         },
         {
             "name": "monolog/monolog",
@@ -820,121 +883,6 @@
                 "time"
             ],
             "time": "2014-09-26 02:52:02"
-        },
-        {
-            "name": "nette/security",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/security.git",
-                "reference": "0ac79ec51dbac05f46ac143e12ca708380eb8a2c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/security/zipball/0ac79ec51dbac05f46ac143e12ca708380eb8a2c",
-                "reference": "0ac79ec51dbac05f46ac143e12ca708380eb8a2c",
-                "shasum": ""
-            },
-            "require": {
-                "nette/utils": "~2.2",
-                "php": ">=5.3.1"
-            },
-            "conflict": {
-                "nette/nette": "<2.2"
-            },
-            "require-dev": {
-                "nette/tester": "~1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "http://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "http://nette.org/contributors"
-                }
-            ],
-            "description": "Nette Security: Access Control Component",
-            "homepage": "http://nette.org",
-            "time": "2014-11-25 13:13:43"
-        },
-        {
-            "name": "nette/utils",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nette/utils.git",
-                "reference": "780e11e2937e82123ca75194b6617eb2114aefaa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/780e11e2937e82123ca75194b6617eb2114aefaa",
-                "reference": "780e11e2937e82123ca75194b6617eb2114aefaa",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.1"
-            },
-            "conflict": {
-                "nette/nette": "<2.2"
-            },
-            "require-dev": {
-                "nette/tester": "~1.0"
-            },
-            "suggest": {
-                "ext-gd": "to use Image",
-                "ext-iconv": "to use Strings::webalize() and toAscii()",
-                "ext-intl": "for script transliteration in Strings::webalize() and toAscii()",
-                "ext-mbstring": "to use Strings::lower() etc..."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.3-dev"
-                }
-            },
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause",
-                "GPL-2.0",
-                "GPL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "David Grudl",
-                    "homepage": "http://davidgrudl.com"
-                },
-                {
-                    "name": "Nette Community",
-                    "homepage": "http://nette.org/contributors"
-                }
-            ],
-            "description": "Nette Utility Classes",
-            "homepage": "http://nette.org",
-            "time": "2014-11-18 01:24:54"
         },
         {
             "name": "passwordlib/passwordlib",
@@ -1323,12 +1271,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Debug.git",
-                "reference": "4d38ec502179245fb02de75e477450ca0f7aa089"
+                "reference": "4d01c33fd7d240a46b5dca68bb68debb67e7e553"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/4d38ec502179245fb02de75e477450ca0f7aa089",
-                "reference": "4d38ec502179245fb02de75e477450ca0f7aa089",
+                "url": "https://api.github.com/repos/symfony/Debug/zipball/4d01c33fd7d240a46b5dca68bb68debb67e7e553",
+                "reference": "4d01c33fd7d240a46b5dca68bb68debb67e7e553",
                 "shasum": ""
             },
             "require": {
@@ -1370,7 +1318,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-29 13:43:38"
+            "time": "2014-11-29 14:43:05"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1537,12 +1485,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "9af1836e3d5d7c1f6567aaf6a82205dfb10bd298"
+                "reference": "8f1ed1c9ad7b02777af743e509afeb65f42e0b60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/9af1836e3d5d7c1f6567aaf6a82205dfb10bd298",
-                "reference": "9af1836e3d5d7c1f6567aaf6a82205dfb10bd298",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/8f1ed1c9ad7b02777af743e509afeb65f42e0b60",
+                "reference": "8f1ed1c9ad7b02777af743e509afeb65f42e0b60",
                 "shasum": ""
             },
             "require": {
@@ -1603,7 +1551,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-11-29 12:40:43"
+            "time": "2014-11-30 11:26:28"
         },
         {
             "name": "symfony/process",
@@ -1659,12 +1607,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "676cac48bd7c31abe1080640a22ccbf1aecd39e4"
+                "reference": "8306250c3eaa5610d80a4ac186ee4fc1c6395bc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/676cac48bd7c31abe1080640a22ccbf1aecd39e4",
-                "reference": "676cac48bd7c31abe1080640a22ccbf1aecd39e4",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/8306250c3eaa5610d80a4ac186ee4fc1c6395bc7",
+                "reference": "8306250c3eaa5610d80a4ac186ee4fc1c6395bc7",
                 "shasum": ""
             },
             "require": {
@@ -1717,7 +1665,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2014-11-29 12:40:43"
+            "time": "2014-11-29 14:12:16"
         },
         {
             "name": "symfony/translation",
@@ -1788,7 +1736,6 @@
         "symfony/console": 20,
         "symfony/translation": 20,
         "illuminate/support": 20,
-        "illuminate/database": 20,
         "illuminate/filesystem": 20,
         "illuminate/view": 20,
         "illuminate/cache": 20,
@@ -1797,8 +1744,7 @@
         "illuminate/events": 20,
         "evenement/evenement": 20,
         "brandonwamboldt/utilphp": 20,
-        "passwordlib/passwordlib": 20,
-        "nette/security": 20
+        "passwordlib/passwordlib": 20
     },
     "prefer-stable": false,
     "platform": [],

@@ -2,7 +2,7 @@
 /**
  * This file is part of the Unika-CMF project
  *
- * @author Fajar Khairil
+ * @author Fajar Khairil <fajar.khairil@gmail.com> 
  * @license MIT
  */
 
@@ -36,7 +36,8 @@ class ViewServiceProvider implements ServiceProviderInterface
             	$engineResolver,
             	new \Illuminate\View\FileViewFinder(
             		$app['illuminate.filesystem'],
-            		$paths
+            		$paths,
+                    array('blade','php')
             	)
             );
 

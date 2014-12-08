@@ -1,4 +1,10 @@
 <?php
+/**
+ *	This file is part of the Unika-CMF project
+ *	
+ *	@license MIT
+ *	@author Fajar Khairil <fajar.khairil@gmail.com>
+ */
 
 //global route
 $app->get('/{args}', function ($args) use($app) {	

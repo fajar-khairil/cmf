@@ -2,7 +2,7 @@
 /**
  * This file is part of the Unika-CMF project
  *
- * @author Fajar Khairil
+ * @author Fajar Khairil <fajar.khairil@gmail.com>
  * @license MIT
  */
 
@@ -54,8 +54,11 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $handler;
         };
 
-        $app['monolog.level'] = function () {
-            return Logger::DEBUG;
+        $app['monolog.level'] = function ($app) {
+            if( $app['debug'] )
+                return Logger::DEBUG;
+            else
+                return Logger::ERROR;
         };
 
         $app['monolog.listener'] = function () use ($app) {
