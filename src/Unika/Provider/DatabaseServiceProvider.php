@@ -18,7 +18,6 @@ class DatabaseServiceProvider implements ServiceProviderInterface
     {
     	$configs = $app->config['database'];
     	$default_connection = \Illuminate\Support\Arr::pull($configs,'default');
-
     	foreach ($configs as $con_name=>$config) 
     	{
     		$dsn = $config['driver'].':host='.$config['host'].';dbname='.$config['database'];
@@ -33,9 +32,12 @@ class DatabaseServiceProvider implements ServiceProviderInterface
     		ORM::configure($dsn,null,$connection_name);
 
     		foreach ($config as $key=>$value)
-    		{
-    			ORM::configure($key,$value,$connection_name);
+    		{        
+                if( $value === null ) continue;
+    			ORM::configure([$key => $value],null,$connection_name);
     		}
+
+            ORM::configure(['return_result_sets' => true],null,$connection_name);
 
     		ORM::configure('logger',function($log_string, $query_time){
 				$app['logger']->addDebug('SQL : ' . $log_string . ' in ' . $query_time); 			

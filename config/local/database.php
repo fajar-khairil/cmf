@@ -8,14 +8,14 @@ return array(
 		'username'  => 'root',
 		'password'  => 'masterkey',
 
-        'id_column' => 'id',
-        'id_column_overrides' => array(),
-        'error_mode' => PDO::ERRMODE_EXCEPTION,
-        'driver_options' => null,
-        'identifier_quote_character' => null, // if this is null, will be autodetected
-        'limit_clause_style' => null, // if this is null, will be autodetected
-        'logging' => false,
-        'caching' => false,
-        'cache_driver' => null
+                'id_column' => 'id',
+                'id_column_overrides' => array(),
+                'error_mode' => PDO::ERRMODE_EXCEPTION,
+                'driver_options' => null,
+                'identifier_quote_character' => null, // if this is null, will be autodetected
+                'limit_clause_style' => null, // if this is null, will be autodetected
+                'logging' => false,
+                'caching' => false,
+                'cache_driver' => null
 	)
 );

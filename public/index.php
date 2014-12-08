@@ -1,2 +1,2 @@
 <?php
-require_once '../app/web.php';
+require_once '../web.php';

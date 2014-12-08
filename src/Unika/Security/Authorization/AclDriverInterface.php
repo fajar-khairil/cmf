@@ -11,14 +11,20 @@ namespace Unika\Security\Authorization;
 
 interface AclDriverInterface
 {
+	/**
+	 *	@param string roleName
+	 *	@param integer resourceName
+	 *	@param string operation name
+	 *	@return boolean
+	 */
 	public function queryAcl($roleId,$resource,$operation = null);
 
 	/**
-	 *
-	 *	@param integer roleId
-	 *	@param integer resourceId
-	 *	@param array operations array of operations
-	 *	@param boolean should allow supplied role to given resource and operation?
+	 *	@param integer $roleId
+	 *	@param integer $resourceId
+	 *	@param array $operations array of operations
+	 *	@param boolean $allow should allow supplied role to given resource and operation?
+	 *	@return boolean True on success Throw Exception Otherwirse
 	 */
-	public function setRules($roleId,$resourceId,array $operations = array('*'),$allow);
+	public function setRules($roleId,$resourceId,array $operations = array('*'),$allow = True);
 }

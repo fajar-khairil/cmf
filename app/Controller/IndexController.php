@@ -13,9 +13,8 @@ class Controller_IndexController extends BaseController
 {
 	public function indexAction(Request $request)
 	{
-		dd($this->app['cache']);
-		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());		
-		$this->app['logger']->addInfo('awesome!');
+		dd( $this->app['acl']->isAllowed('Index','index',null,1) );
+		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());
 		return $response;
 	}
 

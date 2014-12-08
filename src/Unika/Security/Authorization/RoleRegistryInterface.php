@@ -11,18 +11,16 @@ namespace Unika\Security\Authorization;
 
 Interface RoleRegistryInterface{
 
-	public function add(RoleInterface $role);
+	public function addRole(array $role);
 
 	//return RoleInterface
-	public function createRole(array $attributes = array());
+	public function createRole(array $attributes);
 
-	public function remove($roleId);
+	public function removeRole($roleId);
 
-	public function removeAll();
+	public function hasRole($roleId);
 
-	public function has($roleId);
+	public function allRole();
 
-	public function all();
-
-	public function get($roleId);
+	public function getRole($roleId);
 }

@@ -6,7 +6,7 @@
  *  @author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-require_once '../vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use Unika\Application as Application;
 
@@ -35,8 +35,19 @@ $app = new Application();
 
 require_once 'routes.php';
 
-require_once 'bootstrap.php';
+/**
+ * Registering some ServiceProvider you can disabled if you dont need it
+ */
 
+$app['Illuminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
+$app->register(new Unika\Provider\DatabaseServiceProvider());
+$app->register(new Unika\Provider\CacheServiceProvider());
+$app->register(new Unika\Provider\AclServiceProvider());
+/**
+ * END Registering ServiceProvider
+ */
+
+//define Application error handler
 $app->error(function ($e,$request) use ($app) 
 {
     $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
@@ -51,7 +62,7 @@ $app->error(function ($e,$request) use ($app)
     }
     else
     {
-        return new \Symfony\Component\HttpFoundation\Response('Something Went Wrong', $code);
+        return new \Symfony\Component\HttpFoundation\Response('Ooops.. Something Went Wrong.', $code);
     }
 });
 

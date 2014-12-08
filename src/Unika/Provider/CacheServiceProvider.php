@@ -74,12 +74,15 @@ class CacheServiceProvider implements ServiceProviderInterface
 		return new \Illuminate\Cache\MemcachedStore($memcached, $this->getPrefixFor('Memcached'));
 	}
 
-	/*protected function createRedisDriver()
+	protected function createRedisDriver()
 	{
-		$redis = $this->app['redis'];
+		if( !class_exists('\Illuminate\Redis\Database') )
+		{
+			throw new \RuntimeException('\Illuminate\Redis\Database\Redis class not found , please install it to use redis as cache backend.');
+		}
 
-		return new \Illuminate\Cache\RedisStore($redis, $this->getPrefixFor('Redis'));
-	}*/
+		return new \Illuminate\Cache\RedisStore(new \Illuminate\Redis\Database( $this->config['Redis']['default'] ), $this->getPrefixFor('Redis'));
+	}
 
 	protected function getPrefixFor($storeName = null)
 	{
