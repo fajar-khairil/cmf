@@ -10,7 +10,7 @@ use Unika\Application;
 
 $app = Application::instance();
 
-$app['Illiminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
+$app['Illuminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
 
 $app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new Unika\Provider\CacheServiceProvider());

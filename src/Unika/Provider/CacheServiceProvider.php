@@ -69,9 +69,7 @@ class CacheServiceProvider implements ServiceProviderInterface
 
 	protected function createMemcachedDriver()
 	{
-		$servers = $this->config['Memcached'];
-
-		$memcached = $this->app['Illuminate.Memcached']->connect($servers);
+		$memcached = $this->app['Illuminate.Memcached']->connect( $this->config['Memcached'] );
 
 		return new \Illuminate\Cache\MemcachedStore($memcached, $this->getPrefixFor('Memcached'));
 	}
