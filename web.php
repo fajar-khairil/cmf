@@ -41,7 +41,7 @@ require_once 'routes.php';
 
 $app['Illuminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
 $app->register(new Unika\Provider\CacheServiceProvider());
-$app->register(new Unika\Provider\DatabaseServiceProvider());
+//$app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new Unika\Provider\AclServiceProvider());
 /**
  * END Registering ServiceProvider
@@ -63,7 +63,7 @@ $app->error(function ($e,$request) use ($app)
     }
     else
     {
-        return new \Symfony\Component\HttpFoundation\Response('Ooops.. Something Went Wrong.', $code);
+        return new \Symfony\Component\HttpFoundation\Response('Ooops.. something went terribly wrong.', $code);
     }
 });
 

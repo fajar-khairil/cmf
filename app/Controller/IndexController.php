@@ -13,14 +13,8 @@ class Controller_IndexController extends BaseController
 {
 	public function indexAction(Request $request)
 	{
-		$acl = $this->app['acl'];
-
-		//$acl->allow(1,'post',['review','create']);
-		$acl->deny(1,'post',['review']);
-
-		$acl_dump = \Unika\Util::var_dump($acl->isAllowed('post','read',1));
 		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());
-		return $response.$acl_dump;
+		return $response;
 	}
 
 	public function errorAction(Request $request)

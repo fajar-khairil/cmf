@@ -11,7 +11,7 @@ namespace Unika\Ext;
 use Closure;
 use Pimple\Container;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\View\ViewFinderInterface;
+use Illuminate\View\FileViewFinder;
 use Illuminate\View\Engines\EngineResolver;
 
 class ViewFactory {
@@ -26,7 +26,7 @@ class ViewFactory {
 	/**
 	 * The view finder implementation.
 	 *
-	 * @var \Illuminate\View\ViewFinderInterface
+	 * @var \Illuminate\View\FileViewFinder
 	 */
 	protected $finder;
 
@@ -101,7 +101,7 @@ class ViewFactory {
 	 * @param  \Illuminate\Contracts\Events\Dispatcher  $events
 	 * @return void
 	 */
-	public function __construct(EngineResolver $engines, ViewFinderInterface $finder)
+	public function __construct(EngineResolver $engines, FileViewFinder $finder)
 	{
 		$this->finder = $finder;
 		$this->engines = $engines;
@@ -118,7 +118,7 @@ class ViewFactory {
 	 */
 	protected function normalizeName($name)
 	{
-		$delimiter = ViewFinderInterface::HINT_PATH_DELIMITER;
+		$delimiter = FileViewFinder::HINT_PATH_DELIMITER;
 
 		if (strpos($name, $delimiter) === false)
 		{

@@ -13,11 +13,10 @@ use ArrayAccess;
 use Illuminate\Support\MessageBag;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\View\Engines\EngineInterface;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Support\MessageProvider;
-use Illuminate\Contracts\View\View as ViewContract;
+use Illuminate\Support\Contracts\RenderableInterface as Renderable;
 
-class View implements ArrayAccess, ViewContract {
+class View implements ArrayAccess, Renderable {
 
 	/**
 	 * The view factory instance.
