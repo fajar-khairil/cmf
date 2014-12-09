@@ -19,10 +19,21 @@ class CacheServiceProvider implements ServiceProviderInterface
 	public function register(Container $app)
     {
     	$this->app = $app;
-    	$this->config = $this->app->config['cache'];
+    	$this->config = $this->app->config('cache');
     	$app['cache'] = function($app){
     		return new \Illuminate\Cache\Repository( $this->getDefaultStore($app) );
     	};
+
+    	$self = $this;
+    	$app['cache.factory'] = $app->protect(function($storeName) use($app,$self){
+    		//dd($this->config);
+    		// its ugly
+    		//$self = new static();
+	    	//$this->app = $app;
+	    	//$this->config = $this->app->config('cache');
+
+    		return new \Illuminate\Cache\Repository( $self->getDefaultStore($app,$storeName) ); 
+    	});
     }
 
     protected function getDefaultStore(Container $app,$storeImpl = null)
@@ -30,7 +41,7 @@ class CacheServiceProvider implements ServiceProviderInterface
     	if( is_string($storeImpl) )
     		$defaultStore = 'create'.$storeImpl.'Driver';
     	else
-    		$defaultStore = 'create'.$app->config['cache.default'].'Driver';
+    		$defaultStore = 'create'.$app->config('cache.default').'Driver';
 
     	return $this->$defaultStore();
     }

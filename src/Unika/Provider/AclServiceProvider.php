@@ -17,7 +17,7 @@ class AclServiceProvider implements ServiceProviderInterface
 {
 	public function register(Container $app)
     {
-    	$defaultImpl = $app->config['acl.default'];
+    	$defaultImpl = $app->config('acl.default');
     	switch ($defaultImpl) 
     	{
     		case 'Database':

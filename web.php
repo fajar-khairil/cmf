@@ -40,8 +40,8 @@ require_once 'routes.php';
  */
 
 $app['Illuminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
-$app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new Unika\Provider\CacheServiceProvider());
+$app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new Unika\Provider\AclServiceProvider());
 /**
  * END Registering ServiceProvider
@@ -51,6 +51,7 @@ $app->register(new Unika\Provider\AclServiceProvider());
 $app->error(function ($e,$request) use ($app) 
 {
     $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
+    $app['logger']->addError($e->getMessage().' : '.$code);
     if( $app['debug'] )
     {
         $method = \Whoops\Run::EXCEPTION_HANDLER;

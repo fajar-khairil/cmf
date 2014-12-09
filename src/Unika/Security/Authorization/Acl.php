@@ -75,21 +75,24 @@ class Acl
      * @param  Role\RoleInterface|string            $role
      * @return bool
      */
-    public function isAllowed($resource, $operation = '*',AssertInterface $assert = null,$role = null)
-    {         
-    	$role = $this->getRole($role);
+    public function isAllowed($resource, $operation = '*',$role = null)
+    {     
+    	  $role = $this->getRole($role);
         if( !$role ){
             throw new AclException( 'cannot find Supplied Role '.$role );
         }
 
         $resource = $this->getResource($resource);
+ 
+        if( !$role->id ){ throw new AclException('Role not found.'); }
+        if( !$resource->id ){ throw new AclException('Resource not found.'); }  
 
-        if( $assert instanceof AssertInterface )
-        {
-            return $assert->assert($this,$role,$resource,$operations);
-        }
+        return $this->aclDriver->queryAcl($role->id,$resource->id,$operation);
+    }
 
-        return $this->aclDriver->queryAcl($role->id,$resource,$operation);
+    public function allowAssert(AssertInterface $assertInstance)
+    {
+        return (boolean)$assert->assert($this,$role,$resource,$operations);      
     }
 
     public function deny($role,$resource,array $operation = array('*'))
@@ -111,21 +114,15 @@ class Acl
             $res = $this->resourceRegistry->addResource($this->resourceRegistry->createResource($resource));
         }
 
-        $resourceId = $res->getResourceId();
-        $this->aclDriver->setRules($role->getRoleId(),$resourceId,$operations,$allow);     
+        $this->aclDriver->setRules($role->id,$res->id,$operations,$allow);     
     }
 
     //return ResourceInterface
     protected function getResource($resource)
     {
-    	if( $resource === null )
-    	{
-  			return static::WILDCARD;
-    	}
+      $resource = $this->resourceRegistry->getResource($resource);
 
-		$resource = $this->resourceRegistry->getResource($resource);
-
-    	return $resource;
+      return $resource;
     }
 
     protected function getRole($role)
@@ -143,10 +140,10 @@ class Acl
     	}
     	else
     	{
-    		$role = $this->roleRegistry->getRole($role);
-    		if( $role === NULL )
+    		$role_instance = $this->roleRegistry->getRole($role);
+    		if( $role_instance === NULL )
     			throw new AclException($role.' Role not found.');
-    		return $role;
+    		return $role_instance;
     	}
     }
 }

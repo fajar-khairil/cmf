@@ -13,9 +13,14 @@ class Controller_IndexController extends BaseController
 {
 	public function indexAction(Request $request)
 	{
-		dd( $this->app['acl']->isAllowed('Index','index',null,1) );
+		$acl = $this->app['acl'];
+
+		//$acl->allow(1,'post',['review','create']);
+		$acl->deny(1,'post',['review']);
+
+		$acl_dump = \Unika\Util::var_dump($acl->isAllowed('post','read',1));
 		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());
-		return $response;
+		return $response.$acl_dump;
 	}
 
 	public function errorAction(Request $request)

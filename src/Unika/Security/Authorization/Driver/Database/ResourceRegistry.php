@@ -20,7 +20,7 @@ class ResourceRegistry implements ResourceRegistryInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->resource_table = $this->app->config['acl.Database.resource_table'];
+		$this->resource_table = $this->app->config('acl.Database.resource_table');
 	}
 
 	protected function getTable()

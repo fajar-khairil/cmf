@@ -38,10 +38,9 @@
     	"illuminate/config": "5.0.*@dev",
     	"illuminate/remote": "5.0.*@dev",
         "illuminate/events": "5.0.*@dev",
+        "illuminate/database": "5.0.*@dev",
     	"evenement/evenement": "2.0.*@dev",
         "brandonwamboldt/utilphp": "dev-master",
-        "PasswordLib/PasswordLib": "dev-master",
-        "j4mie/idiorm": "1.5.1",
-        "j4mie/paris": "1.5.4"
+        "PasswordLib/PasswordLib": "dev-master"
     }
 }

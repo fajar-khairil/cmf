@@ -16,7 +16,7 @@ class ViewServiceProvider implements ServiceProviderInterface
     public function register(Container $app)
     {
     	$app['view'] = function($app){
-    		$paths = array($app::$ROOT_DIR.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$app->config['app.default_theme']);
+    		$paths = array($app::$ROOT_DIR.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$app->config('app.default_theme'));
             
 
             $engineResolver = new \Illuminate\View\Engines\EngineResolver();

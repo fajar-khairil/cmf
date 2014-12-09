@@ -21,7 +21,7 @@ class Application extends SilexApp
 	//static Application instance
 	protected static $instance = null;
 
-	public $config;
+	protected $config;
 
 	public static function instance()
 	{
@@ -62,6 +62,14 @@ class Application extends SilexApp
 		);
 
 		static::$instance = $this;
+	}
+
+	public function config($key = null)
+	{
+		if( $key === null )
+			return $this->config;
+		
+		return $this->config[$key];
 	}
 
 	public function createResponse($body,$code = 200)

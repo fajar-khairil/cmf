@@ -16,6 +16,7 @@ return array(
                 'limit_clause_style' => null, // if this is null, will be autodetected
                 'logging' => false,
                 'caching' => false,
-                'cache_driver' => null
+                'cache_expiration' => 5, // in minutes
+                'cache_driver' => 'File' // refer to config cache
 	)
 );

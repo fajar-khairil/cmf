@@ -20,7 +20,7 @@ class RoleRegistry implements RoleRegistryInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->role_table = $this->app->config['acl.Database.role_table'];
+		$this->role_table = $this->app->config('acl.Database.role_table');
 	}
 
 	protected function getTable()
