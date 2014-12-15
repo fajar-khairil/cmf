@@ -6,7 +6,7 @@
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-use Unika\Application;
+namespace Unika;
 
 Abstract class BaseController
 {

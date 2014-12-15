@@ -6,6 +6,8 @@
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
  
-require_once '../vendor/autoload.php';
+$app = require_once 'bootstrap.php';
 
-echo "Unika-Commander!! Work In Progress!".PHP_EOL;
+$Commander = new \Symfony\Component\Console\Application('Unika-Commander','0.1-dev');
+
+$Commander->run();

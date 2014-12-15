@@ -6,10 +6,11 @@
  *	@license MIT
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
+namespace Unika\Module\Page\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class Controller_IndexController extends BaseController
+class IndexController extends \Unika\BaseController
 {
 	public function indexAction(Request $request)
 	{

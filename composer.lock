@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "810ab68fa8ca108808b4f7e5c817bd5b",
+    "hash": "653051f65f2388d7e08063888d20b821",
     "packages": [
         {
             "name": "brandonwamboldt/utilphp",
@@ -1333,7 +1333,6 @@
         "illuminate/cache": 20,
         "illuminate/config": 20,
         "illuminate/database": 20,
-        "evenement/evenement": 20,
         "brandonwamboldt/utilphp": 20,
         "passwordlib/passwordlib": 20
     },

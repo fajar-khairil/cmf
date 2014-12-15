@@ -50,10 +50,10 @@ class Application extends SilexApp
 			$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
 
-		$this->register(
-			new \Unika\Provider\MonologServiceProvider(),
+		$this->register(new \Unika\Provider\MonologServiceProvider(),
 			array(
-				'monolog.logfile'	=>	$this::$ROOT_DIR.DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'logs'.DIRECTORY_SEPARATOR.'application.log'
+				'monolog.logfile'		=>	$this::$ROOT_DIR.'/tmp/logs/application.log',
+				'monolog.permission'	=> '0777'
 			)
 		);
 
