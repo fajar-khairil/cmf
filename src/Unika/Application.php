@@ -52,8 +52,8 @@ class Application extends SilexApp
 
 		$this->register(new \Unika\Provider\MonologServiceProvider(),
 			array(
-				'monolog.logfile'		=>	$this::$ROOT_DIR.'/tmp/logs/application.log',
-				'monolog.permission'	=> '0777'
+				'monolog.logfile'		=>	$this::$ROOT_DIR.'/var/logs/application.log',
+				'monolog.permission'	=>  0777
 			)
 		);
 

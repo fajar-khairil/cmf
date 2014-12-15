@@ -1,20 +1,20 @@
 #!/bin/bash
 #
 # use this script while commit
-# removing garbage on tmp folder
+# removing garbage on var folder
 #
 
 echo "removing garbage files.."
-rm -rf tmp/cache/*
-rm -rf tmp/sessions/*
-rm -rf tmp/views/*
-rm -rf tmp/logs/*
+rm -rf var/cache/*
+rm -rf var/sessions/*
+rm -rf var/views/*
+rm -rf var/logs/*
 
 echo "keep temporary diretories.."
-touch tmp/cache/.gitkeep
-touch tmp/sessions/.gitkeep
-touch tmp/views/.gitkeep
-touch tmp/logs/.gitkeep
+touch var/cache/.gitkeep
+touch var/sessions/.gitkeep
+touch var/views/.gitkeep
+touch var/logs/.gitkeep
 touch config/local/.gitkeep
 touch config/testing/.gitkeep
 touch config/staging/.gitkeep

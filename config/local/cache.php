@@ -3,7 +3,7 @@ return array(
 	'default'	=>	'File',
 	'prefix'	=> 'cache_',
 	'File'	=>	array(
-		'dir'		=> \Unika\Application::$ROOT_DIR.'/tmp/cache',
+		'dir'		=> \Unika\Application::$ROOT_DIR.'/var/cache',
 		'prefix'	=> 'cache_',
 		'expired'	=> 5, // in minutes
 	),

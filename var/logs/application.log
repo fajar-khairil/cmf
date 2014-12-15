@@ -1,0 +1,6 @@
+[2014-12-16 02:12:52] myapp.INFO: Matched route "default" (parameters: "_controller": "{}", "args": "", "_route": "default") [] []
+[2014-12-16 02:12:52] myapp.DEBUG: > GET / [] []
+[2014-12-16 02:12:53] myapp.DEBUG: < 200 [] []
+[2014-12-16 02:12:53] myapp.INFO: Matched route "default" (parameters: "_controller": "{}", "args": "", "_route": "default") [] []
+[2014-12-16 02:12:53] myapp.DEBUG: > GET / [] []
+[2014-12-16 02:12:53] myapp.DEBUG: < 200 [] []
