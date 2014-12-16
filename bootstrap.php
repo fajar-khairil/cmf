@@ -7,9 +7,6 @@
  */
 
 require_once 'vendor/autoload.php';
-
-error_reporting(-1);
-
 use Unika\Application as Application;
 
 //define the root directory
@@ -39,7 +36,6 @@ $app = new Application();
  * Registering some ServiceProvider you can disabled if you dont need it
  */
 $app->register(new \Unika\Provider\IlluminateServiceProvider());
-
 $app->register(new \Unika\Provider\MonologServiceProvider(),
     array(
         'monolog.logfile'       =>  $app::$ROOT_DIR.'/var/logs/application.log',
@@ -47,10 +43,9 @@ $app->register(new \Unika\Provider\MonologServiceProvider(),
     )
 );
 
-$app->register(new \Unika\Provider\ViewServiceProvider());
-
 $app->register(new Unika\Provider\CacheServiceProvider());
-//$app->register(new Unika\Provider\DatabaseServiceProvider());
+$app->register(new Unika\Provider\DatabaseServiceProvider());
+$app->register(new \Unika\Provider\ViewServiceProvider());
 $app->register(new Unika\Provider\AclServiceProvider());
 
 return $app;

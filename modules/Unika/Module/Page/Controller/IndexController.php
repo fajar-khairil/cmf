@@ -14,6 +14,7 @@ class IndexController extends \Unika\BaseController
 {
 	public function indexAction(Request $request)
 	{
+		//dd( $this->app['database'] );
 		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());
 		return $response;
 	}

@@ -15,19 +15,21 @@ class DatabaseServiceProvider implements ServiceProviderInterface
 {
 	public function register(Container $app)
     {
-        $app['capsule'] = function($app){
+        $app['database'] = function($app)
+        {
             $Capsule = new \Illuminate\Database\Capsule\Manager();
             $Capsule->setAsGlobal();
-            $defaultConn = $app['config']->get('database.default','mysqlconn');
+            $defaultConn = $app['config']->get('database.driver','master');
             $Capsule->addConnection(
-                $app['config']['database'][$defaultConn]
+                $app['config']['database.connections'][$defaultConn]
             );
-            $Capsule->setEventDispatcher(new \Illuminate\Events\Dispatcher($app['Illuminate.container']));
-            $Capsule->setCacheManager( $app['cache_manager'] );         
+            $Capsule->setEventDispatcher( $app['Illuminate.events'] );
+            $Capsule->setCacheManager( $app['cache.manager'] );         
             return $Capsule;
         };
         
-        $app['capsule']->bootEloquent();
+        $app['database']->bootEloquent();
+
         $app['setting'] = function($app){
             return new \Unika\Common\Config\Repository( 
                 new \Unika\Common\Config\Eloquent(

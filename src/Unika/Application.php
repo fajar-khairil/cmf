@@ -45,7 +45,8 @@ class Application extends SilexApp
 		if( $this['debug'] )
 		{
 			\Symfony\Component\Debug\ErrorHandler::register();
-			$this->register(new \Unika\Provider\WhoopsServiceProvider());
+			if( !extension_loaded('xdebug') )
+				$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
 
 		static::$instance = $this;
