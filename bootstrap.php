@@ -38,7 +38,17 @@ $app = new Application();
 /**
  * Registering some ServiceProvider you can disabled if you dont need it
  */
-$app['Illuminate.Memcached'] = new Illuminate\Cache\MemcachedConnector;
+$app->register(new \Unika\Provider\IlluminateServiceProvider());
+
+$app->register(new \Unika\Provider\MonologServiceProvider(),
+    array(
+        'monolog.logfile'       =>  $app::$ROOT_DIR.'/var/logs/application.log',
+        'monolog.permission'    =>  0777
+    )
+);
+
+$app->register(new \Unika\Provider\ViewServiceProvider());
+
 $app->register(new Unika\Provider\CacheServiceProvider());
 //$app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new Unika\Provider\AclServiceProvider());

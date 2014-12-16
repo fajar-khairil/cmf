@@ -39,8 +39,6 @@ class Application extends SilexApp
 			new \Unika\Provider\ConfigServiceProvider()
 		);
 
-		$this['illuminate.filesystem'] = new \Illuminate\Filesystem\Filesystem();
-
 		$this->config = $this['config'];
 		$this['debug'] = $this->config['app.debug'];
 
@@ -49,17 +47,6 @@ class Application extends SilexApp
 			\Symfony\Component\Debug\ErrorHandler::register();
 			$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
-
-		$this->register(new \Unika\Provider\MonologServiceProvider(),
-			array(
-				'monolog.logfile'		=>	$this::$ROOT_DIR.'/var/logs/application.log',
-				'monolog.permission'	=>  0777
-			)
-		);
-
-		$this->register(
-			new \Unika\Provider\ViewServiceProvider()
-		);
 
 		static::$instance = $this;
 	}

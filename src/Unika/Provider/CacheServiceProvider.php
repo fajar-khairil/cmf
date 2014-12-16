@@ -26,12 +26,6 @@ class CacheServiceProvider implements ServiceProviderInterface
 
     	$self = $this;
     	$app['cache.factory'] = $app->protect(function($storeName) use($app,$self){
-    		//dd($this->config);
-    		// its ugly
-    		//$self = new static();
-	    	//$this->app = $app;
-	    	//$this->config = $this->app->config('cache');
-
     		return new \Illuminate\Cache\Repository( $self->getDefaultStore($app,$storeName) ); 
     	});
     }
@@ -60,7 +54,7 @@ class CacheServiceProvider implements ServiceProviderInterface
 	{
 		$path = $this->config['File']['dir'];
 
-		return new \Illuminate\Cache\FileStore(new \Illuminate\Filesystem\Filesystem, $path);
+		return new \Illuminate\Cache\FileStore($this->app['Illuminate.filesystem'], $path);
 	}
 
 	protected function createNullDriver()
@@ -80,7 +74,7 @@ class CacheServiceProvider implements ServiceProviderInterface
 
 	protected function createMemcachedDriver()
 	{
-		$memcached = $this->app['Illuminate.Memcached']->connect( $this->config['Memcached'] );
+		$memcached = $this->app['Illuminate.memcached']->connect( $this->config['Memcached'] );
 
 		return new \Illuminate\Cache\MemcachedStore($memcached, $this->getPrefixFor('Memcached'));
 	}

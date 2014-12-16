@@ -27,10 +27,8 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             return $app['monolog'];
         };
 
-        $app['monolog.logger.class'] = 'Monolog\Logger';
-
         $app['monolog'] = function ($app) {
-            $log = new $app['monolog.logger.class']($app['monolog.name']);
+            $log = new \Monolog\Logger($app['monolog.name']);
 
             $log->pushHandler($app['monolog.handler']);
 

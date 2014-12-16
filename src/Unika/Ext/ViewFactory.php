@@ -33,7 +33,7 @@ class ViewFactory {
 	/**
 	 * The IoC container instance.
 	 *
-	 * @var \Illuminate\Container\Container
+	 * @var \Unika\Application
 	 */
 	protected $container;
 
@@ -595,7 +595,7 @@ class ViewFactory {
 	/**
 	 * Get the IoC container instance.
 	 *
-	 * @return \Illuminate\Container\Container
+	 * @return \Unika\Application
 	 */
 	public function getContainer()
 	{
@@ -605,7 +605,7 @@ class ViewFactory {
 	/**
 	 * Set the IoC container instance.
 	 *
-	 * @param  \Illuminate\Container\Container  $container
+	 * @param  \Unika\Application  $container
 	 * @return void
 	 */
 	public function setContainer(Container $container)

@@ -18,7 +18,6 @@ class ViewServiceProvider implements ServiceProviderInterface
     	$app['view'] = function($app){
     		$paths = array($app::$ROOT_DIR.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$app->config('app.default_theme'));
             
-
             $engineResolver = new \Illuminate\View\Engines\EngineResolver();
 
             $engineResolver->register('php',function(){
@@ -28,14 +27,14 @@ class ViewServiceProvider implements ServiceProviderInterface
             $engineResolver->register('blade',function() use($app){
             	$cache_path = $app::$ROOT_DIR.DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'views';
                 
-                $blade = new \Illuminate\View\Compilers\BladeCompiler($app['illuminate.filesystem'],$cache_path);
+                $blade = new \Illuminate\View\Compilers\BladeCompiler($app['Illuminate.filesystem'],$cache_path);
                 return new \Illuminate\View\Engines\CompilerEngine($blade);
             });
 
             $viewFactory = new \Unika\Ext\ViewFactory(
             	$engineResolver,
             	new \Illuminate\View\FileViewFinder(
-            		$app['illuminate.filesystem'],
+            		$app['Illuminate.filesystem'],
             		$paths,
                     array('blade','php')
             	)

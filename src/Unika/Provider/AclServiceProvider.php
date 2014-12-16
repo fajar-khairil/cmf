@@ -29,10 +29,11 @@ class AclServiceProvider implements ServiceProviderInterface
                 if( $app['debug'] === False )
                 {
                     $this->registerAclDatabase($app);
-                    $app['logger']->addCritical($defaultImpl.' : Invalid implementation name of Acl Implementation.  use Database as fallback.');
+                    $app['logger']->addError($defaultImpl.' : Invalid implementation name of Acl Implementation.  use Database as fallback.');
                 }
                 else
                 {
+                    $app['logger']->addCritical($defaultImpl.' : Invalid implementation name of Acl Implementation.');
                     throw new \RuntimeException(sprintf('%s is invalid Acl Implementation name',$defaultImpl));
     			}
                 break;
