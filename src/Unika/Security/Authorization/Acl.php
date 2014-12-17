@@ -33,13 +33,13 @@ class Acl
 		$this->auth = $auth;
 	}
 
-    protected function getAuth()
-    {
-        if( $this->auth === NULL )
-            throw new AclException('Auth not set');
+  protected function getAuth()
+  {
+      if( $this->auth === NULL )
+          throw new AclException('Auth not set');
 
-        return $this->auth;
-    }
+      return $this->auth;
+  }
 
 	public function addResource($name)
 	{

@@ -10,7 +10,6 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\AclDriverInterface;
 use Unika\Application;
-use ORM;
 
 class AclRegistry implements AclDriverInterface
 {
