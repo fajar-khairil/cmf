@@ -18,7 +18,7 @@ class ControllerServiceProvider implements ControllerProviderInterface
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{args}', function (Application $app) {
+        $controllers->get('/{args}', function (Application $app,$args) {
 			//get controller and action
 			if( empty($args[0]) )
 				$classController = '\Unika\Module\Page\Controller\IndexController';

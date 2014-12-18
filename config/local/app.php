@@ -1,5 +1,5 @@
 <?php
 return array(
-	'debug'			=> 	False,
+	'debug'			=> 	True,
 	'default_theme'	=> 'default'
 );

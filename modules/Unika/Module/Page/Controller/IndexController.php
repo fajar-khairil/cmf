@@ -14,13 +14,15 @@ class IndexController extends \Unika\BaseController
 {
 	public function indexAction(Request $request)
 	{
-		//dd( $this->app['database'] );
+		$acl = $this->app['acl'];
+		$acl->isAllowed('Post','read','Editor');
+
 		$response = $this->app->createResponse($this->app['view']->make('home')->with('page_title','<strong>Welcome</strong>')->render());
 		return $response;
 	}
 
 	public function errorAction(Request $request)
 	{
-		throw new RuntimeException('Maho');
+		throw new \RuntimeException('Maho');
 	}
 }

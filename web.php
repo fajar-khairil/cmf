@@ -34,7 +34,7 @@ $app->error(function ($e,$request) use ($app)
     }
     else
     {
-        return new \Symfony\Component\HttpFoundation\Response('Ooops.. something went terribly wrong.', $code);
+       throw $e;
     }
 });
 

@@ -14,8 +14,6 @@ Interface ResourceRegistryInterface{
 
 	public function addResource(Array $resource);
 
-	public function createResource($name);
-
 	public function removeResource($resource);
 
 	public function hasResource($resource);

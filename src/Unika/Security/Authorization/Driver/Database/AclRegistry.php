@@ -10,6 +10,7 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\AclDriverInterface;
 use Unika\Application;
+use Unika\Security\Authorization\AclException;
 
 class AclRegistry implements AclDriverInterface
 {
@@ -20,6 +21,7 @@ class AclRegistry implements AclDriverInterface
 	{
 		$this->app = $app;
 		$this->acl_table = $this->app->config('acl.Database.acl_table');
+		$this->Table = $this->app['database']->table($this->acl_table);
 	}
 
 	/**
@@ -30,12 +32,14 @@ class AclRegistry implements AclDriverInterface
 	 */
 	public function queryAcl($role,$resource,$operation = null)
 	{	
-		$acl = ORM::for_table($this->acl_table)->where(array(
-			'role_id'	=> $role,
-			'aco_id'	=> $resource
-		))->find_one();
+		$acl = $this->Table->where(
+			[
+				'role_id'	=> $role,
+				'aco_id'	=> $resource
+			]
+		)->first();
 
-		$permissions = json_decode($acl->permissions,True);
+		$permissions = json_decode($acl['permissions'],True);
 
 		//should we throw an exception ?
 		if( !$permissions ){ 
@@ -55,43 +59,44 @@ class AclRegistry implements AclDriverInterface
 	 */
 	public function setRules($roleId,$resourceId,array $operations = array('*'),$allow = True)
 	{
-		$acl = ORM::for_table($this->acl_table)->where(array(
-					'role_id'	=> $roleId,
-					'aco_id'	=> $resourceId
-		))->find_one();
+		$values = array(
+			'role_id'	=> $roleId,
+			'aco_id'	=> $resourceId
+		);
+		$acl = $this->Table->where($values)->first();
 
 		if( !$acl )
 		{
 			if( $allow === True )
 			{
 				// new fresh acl rule
-				$acl = ORM::for_table($this->acl_table)->create(array(
-					'role_id'	=> $resourceId,
+				return $this->Table->insert(array(
+					'role_id'	=> $roleId,
 					'aco_id'	=> $resourceId,
 					'permissions'	=> json_encode($operations)
 				));
-				$acl->save();
 			}
 		}
 		else
 		{
-			$permissions = json_decode($acl->permissions,True);
-		
+			$permissions = json_decode($acl['permissions'],True);
+			
 			if( $allow === True ){
-				$new_permissions = array_merge($permissions,$operations);
+				if( is_array($permissions) )
+					$new_permissions = array_intersect($permissions,$operations);
+				else
+					$new_permissions = $operations;
 			}else{				
 				foreach ($permissions as $key => $value) {
 					if( in_array($value, $operations) ){
-						print_r($value.' : removed <br>');
 						unset($permissions[$key]);
 					}
 				}
 				$new_permissions = $permissions;
 			}
-			
-			dd($new_permissions);
-			$acl->permissions = json_encode($new_permissions);
-			$acl->save();
+
+			$sql = 'update '.$this->acl_table.' SET permissions = ? where role_id = ? AND aco_id = ?';
+			$this->Table->getConnection()->update($sql,[ json_encode($new_permissions), $roleId,$resourceId ]);
 		}
 	}
 }

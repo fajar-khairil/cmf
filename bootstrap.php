@@ -21,16 +21,22 @@ $environtments = array(
     )
 );
 
-foreach( $environtments as $env=>$machine )
-{
-	if( in_array(gethostname(),$machine) )
-	{
-		Application::$ENVIRONMENT = $env;
-		break;
-	}
-}
-
 $app = new Application();
+
+//detect environment
+$app->detectEnvironment(function() use($environtments){
+    
+    $env = 'production';
+    foreach( $environtments as $env=>$machine )
+    {
+        if( in_array(gethostname(),$machine) )
+        {
+            $result = $env;
+            break;
+        }    
+    }
+    return $env;
+});
 
 /**
  * Registering some ServiceProvider you can disabled if you dont need it

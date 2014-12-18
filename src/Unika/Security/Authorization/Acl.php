@@ -41,16 +41,14 @@ class Acl
       return $this->auth;
   }
 
-	public function addResource($name)
+	public function addResource($name,$description = 'no description given')
 	{
-	   $resource = $this->resourceRegistry->createResource($name);
-	   return $this->resourceRegistry->addResource($resource);
+	   return $this->resourceRegistry->addResource(['name' => $name,'description' => $description]);
     }
 
-	public function addRole($name,$description)
+	public function addRole($name,$description = 'no description given')
 	{
-       $role = $this->roleRegistry->createRole(['name' => $name,'description' => $description]);
-       return $this->roleRegistry->addRole($role);
+       return $this->roleRegistry->addRole(['name' => $name,'description' => $description]);
 	}
 
     /**
@@ -78,16 +76,12 @@ class Acl
     public function isAllowed($resource, $operation = '*',$role = null)
     {     
     	  $role = $this->getRole($role);
-        if( !$role ){
-            throw new AclException( 'cannot find Supplied Role '.$role );
-        }
+        if( !$role['id'] ){ throw new AclException('Role not found.'); }
 
         $resource = $this->getResource($resource);
- 
-        if( !$role->id ){ throw new AclException('Role not found.'); }
-        if( !$resource->id ){ throw new AclException('Resource not found.'); }  
+        if( !$resource['id'] ){ throw new AclException('Resource not found.'); }  
 
-        return $this->aclDriver->queryAcl($role->id,$resource->id,$operation);
+        return $this->aclDriver->queryAcl($role['id'],$resource['id'],$operation);
     }
 
     public function allowAssert(AssertInterface $assertInstance)
@@ -109,12 +103,12 @@ class Acl
     {
         $role = $this->getRole($role);
         $res = $this->getResource($resource); 
-        
+
         if($res === NULL){
-            $res = $this->resourceRegistry->addResource($this->resourceRegistry->createResource($resource));
+            $res = $this->resourceRegistry->addResource(['id' => $resource]);
         }
 
-        $this->aclDriver->setRules($role->id,$res->id,$operations,$allow);     
+        $this->aclDriver->setRules($role['id'],$res['id'],$operations,$allow);     
     }
 
     //return ResourceInterface

@@ -10,17 +10,19 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\ResourceRegistryInterface;
 use Unika\Application;
-use ORM;
+use Unika\Security\Authorization\AclException;
 
 class ResourceRegistry implements ResourceRegistryInterface
 {
 	protected $app;
 	protected $resource_table;
+	protected $Table;
 
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
 		$this->resource_table = $this->app->config('acl.Database.resource_table');
+		$this->Table = $this->app['database']->table($this->resource_table);
 	}
 
 	protected function getTable()
@@ -31,63 +33,63 @@ class ResourceRegistry implements ResourceRegistryInterface
 
 	public function addResource(Array $resource)
 	{
-		$res = isset($resource['id']) ? $resource['id'] : $resource['name'];
-		$Role = $this->getResource($res);
+		$res = isset($resource['id']) ? $resource['id'] : preg_replace('/[.," "]/', '_',$resource['name']);
 		
-		if( !$Role )
+		$Resource = $this->getResource($res);
+
+		if( !$Resource )
 		{
-			$Role = $this->getTable()->create();
-			$Role->created_at = date('Y-m-d H:i:s');
+			return $this->Table->insert(
+				[
+					'created_at' => date('Y-m-d H:i:s'),
+					'name'		=> $Resource['name'],
+				]
+			);
 		}
 		else
 		{
-			$Role->updated_at = date('Y-m-d H:i:s');
-		}
-
-		$Role->name = $resource['name'];
-
-		return $Role->save();		
-	}
-
-	public function createResource($name)
-	{
-		$name = preg_replace('/[.," "]/', '_', $name);
-		$res = $this->getTable()->where(['name' => $name])->find_one();
-		if( $res )
-			return $res;
-
-		return $this->getTable()->create(array(
-			'name'	=> $name,
-			'created_at' => date('Y-m-d H:i:s')
-		));
+			return $this->Table->update(
+				[
+					'updated_at' => date('Y-m-d H:i:s'),
+					'name'		=> $Resource['name'],
+				]
+			);
+		}	
 	}
 
 	public function removeResource($resource)
 	{
 		if( is_numeric($resource) )
-			return $this->getTable()->find_one($resource)->delete();	
+		{
+			return $this->Table->find($resource)->delete();	
+		}
+		elseif( is_string( $resource ) )
+		{
+			return $this->Table->where(['name' => $resource])->delete();		
+		}
 		else
-			return $this->getTable()->where(['name' => $resource])->delete();		
+		{
+			$errmsg = $resource.' invalid resource given in '.__FILE__.' : '.__FUNCTION__.' ['.__LINE__.']'.PHP_EOL.$_SERVER['REMOTE_ADDR'];
+			$this->app['logger']->addCritical($errmsg);
+			throw new AclException($errmsg);						
+		}
 	}
 
 	public function hasResource($resource)
 	{
-		if( is_numeric($resource) )
-			return (boolean)$this->getTable()->find_one($resource);	
-		else
-			return (boolean)$this->getTable()->where(['name' => $resource])->find_one();			
+		return (boolean)$this->getResource($resource);				
 	}
 
 	public function allResource()
 	{
-		return $this->getTable()->find_many();
+		return $this->Table->all();
 	}
 
 	public function getResource($resource)
 	{
 		if( is_numeric($resource) )
-			return $this->getTable()->find_one($resource);	
+			return $this->Table->find($resource);	
 		else
-			return $this->getTable()->where(['name' => $resource])->find_one();				
+			return $this->Table->where(['name' => $resource])->first();				
 	}
 }

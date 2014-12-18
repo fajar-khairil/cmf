@@ -12,11 +12,17 @@ return array(
                 ],
 
                 'master' => [
+                        /*'read' => []
+                            'host' => '192.168.1.1',
+                         ],
+                        'write' => [
+                                'host' => '196.168.1.2'
+                        ],*/             
                         'driver'    => 'mysql',
                         'host'      => 'localhost',
                         'database'  => 'cmf',
-                        'username'  => 'masterkey',
-                        'password'  => '',
+                        'username'  => 'root',
+                        'password'  => 'masterkey',
                         'charset'   => 'utf8',
                         'collation' => 'utf8_unicode_ci',
                         'prefix'    => '',

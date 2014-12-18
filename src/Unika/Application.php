@@ -16,7 +16,8 @@ class Application extends SilexApp
 
 	//public static constant
 	public static $ROOT_DIR = '';
-	public static $ENVIRONMENT = 'production';//production by default
+	public static $ENVIRONMENT  = 'production';
+	
 
 	//static Application instance
 	protected static $instance = null;
@@ -63,5 +64,14 @@ class Application extends SilexApp
 	public function createResponse($body,$code = 200)
 	{
 		return new \Symfony\Component\HttpFoundation\Response($body,$code);
+	}
+
+	public function detectEnvironment($detectfunct)
+	{
+        if (!is_object($detectfunct) || !method_exists($detectfunct, '__invoke')) {
+            throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
+        }
+
+		self::$ENVIRONMENT = $detectfunct();
 	}
 }

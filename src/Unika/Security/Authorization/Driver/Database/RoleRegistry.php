@@ -10,82 +10,93 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\RoleRegistryInterface;
 use Unika\Application;
-use ORM;
+use Unika\Security\Authorization\AclException;
 
 class RoleRegistry implements RoleRegistryInterface
 {
 	protected $app;
 	protected $role_table;
+	protected $Table;
 
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
 		$this->role_table = $this->app->config('acl.Database.role_table');
-	}
-
-	protected function getTable()
-	{
-		return ORM::for_table($this->role_table);
+		$this->Table = $this->app['database']->table($this->role_table);
 	}
 
 	public function addRole(array $role)
 	{
-		$Role = $this->getTable()->find_one($role['id']);
+		$roleID = isset($role['id']) ? $role['id'] : preg_replace('/[.," "]/', '_',$role['name']);
+
+		$Role = $this->getRole( $roleID );unset($roleID);
 		
 		if( !$Role )
 		{
-			$Role = $this->getTable()->create();
-			$Role->created_at = date('Y-m-d H:i:s');
+			return $this->Table->insert(
+				[
+					'created_at' => date('Y-m-d H:i:s'),
+					'name'		=> $role['name'],
+					'description' => $role['description']
+				]
+			);
 		}
 		else
 		{
-			$Role->updated_at = date('Y-m-d H:i:s');
+			return $this->Table->update(
+				[
+					'updated_at' => date('Y-m-d H:i:s'),
+					'name'		=> $role['name'],
+					'description' => $role['description']
+				]
+			);
 		}
-
-		$Role->name = $role['name'];
-		$Role->description = $role['description'];		
-
-		return $Role->save();
 	}
 
-	public function createRole(array $attributes)
+	public function removeRole($role)
 	{
-		if( isset($attributes['id']) ){
-			$res = $this->getRole($attributes['id']);
-			if( $res )
-				return $res;
-
-			unset($attributes['id']);
+		if( is_numeric($role) )
+		{
+			return $this->Table->find($role)->delete();	
 		}
-
-		if( isset($attributes['name']) ){
-			$attributes['name'] = preg_replace('/[.," "]/', '_', $attributes['name']);
-			$res = $this->get($attributes['name']);
-			if( $res )
-				return $res;
+		elseif( is_string( $role ) )
+		{
+			return $this->Table->where(['name' => $role])->delete();		
 		}
-
-		$attributes['created_at'] = date('Y-m-d H:i:s');
-		return $this->getTable()->create($attributes);
+		else
+		{
+			$errmsg = $role.' invalid resource given in '.__FILE__.' : '.__FUNCTION__.' ['.__LINE__.']'.PHP_EOL.$_SERVER['REMOTE_ADDR'];
+			$this->app['logger']->addCritical($errmsg);
+			throw new AclException($errmsg);						
+		}
 	}
 
-	public function removeRole($roleId)
+	public function hasRole($role)
 	{
-		return $this->getTable()->find_one($roleId)->delete();
-	}
-
-	public function hasRole($roleId)
-	{
-		return (boolean)$this->getTable()->find_one();
+		return (boolean)$this->getRole();
 	}
 
 	public function allRole()
 	{
-		return $this->getTable()->find_many();
+		return $this->Table->all();
 	}
 
-	public function getRole($roleId)
+	public function getRole($role)
 	{
-		return $this->getTable()->find_one($roleId);
+		if( is_numeric($role) )
+		{
+			return $this->Table->find($role);
+		}
+		elseif( is_string( $role ) )
+		{
+			return $this->Table->where(['name' => $role])->first();
+		}
+		else
+		{
+			$errmsg = $role.' invalid role given in '.__FILE__.' : '.__FUNCTION__.' ['.__LINE__.']'.PHP_EOL.$_SERVER['REMOTE_ADDR'];
+			$this->app['logger']->addCritical($errmsg);
+			throw new AclException($errmsg);
+		}
+		
 	}
 }
