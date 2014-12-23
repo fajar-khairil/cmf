@@ -8,7 +8,7 @@
  
 $app = require_once 'bootstrap.php';
 
-$Commander = new \Symfony\Component\Console\Application('Unika-Commander','0.1-dev');
+$Commander = new \Symfony\Component\Console\Application('UnikaCommander','0.1-dev');
 
 // Register default Command here
 

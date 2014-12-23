@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Unika-CMF project
+ * This file is part of the UnikaCMF project
  *
  * @author Fajar Khairil <fajar.khairil@gmail.com>
  * @license MIT
@@ -9,7 +9,7 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Unika\ServiceProviderInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
@@ -91,5 +91,39 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
         }
 
         return $levels[$upper];
+    }
+
+    /**
+     *
+     *  return description of provider
+     */
+    public function getDescription()
+    {
+        return 'Monolog Service Provider';
+    }
+
+    /**
+     *
+     *  return array of service with each description
+     */
+    public function getServices()
+    {
+        return array(
+            'logger'  => 'Monolog\Logger'
+        );
+    }
+
+    /**
+     *
+     *  return an array('author' => '','license' => '','url' => '');
+     */
+    public function getInfo()
+    {
+        return array(
+            'author'    => 'Fajar Khairil',
+            'license'   => 'MIT',
+            'url'       => 'http://www.unikacreative.com/',
+            'version'   => '0.1'
+        );
     }
 }

@@ -1,6 +1,6 @@
 <?php 
 /**
- * This file is part of the Unika-CMF project
+ * This file is part of the UnikaCMF project
  *
  * @author Fajar Khairil <fajar.khairil@gmail.com>
  * @license MIT
@@ -29,7 +29,7 @@ class CacheManager extends \Illuminate\Cache\CacheManager
 
 	protected function createFileDriver()
 	{
-		return new \Illuminate\Cache\FileStore($this->app['Illuminate.filesystem'], $this->app->config('cache.File.dir') );
+		return new \Illuminate\Cache\FileStore($this->app['Illuminate.filesystem'], $this->app->config('cache.path') );
 	}
 
 	protected function createNullDriver()

@@ -1,6 +1,6 @@
 <?php
 /**
- *	This file is part of the Unika-CMF project.
+ *	This file is part of the UnikaCMF project.
  *	
  *	@license MIT
  *	@author Fajar Khairil
@@ -10,7 +10,7 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\ResourceRegistryInterface;
 use Unika\Application;
-use Unika\Security\Authorization\AclException;
+use Unika\Security\Authorization\AccessDeniedHttpException;
 
 class ResourceRegistry implements ResourceRegistryInterface
 {
@@ -24,12 +24,6 @@ class ResourceRegistry implements ResourceRegistryInterface
 		$this->resource_table = $this->app->config('acl.Database.resource_table');
 		$this->Table = $this->app['database']->table($this->resource_table);
 	}
-
-	protected function getTable()
-	{
-		return ORM::for_table($this->resource_table);
-	}
-
 
 	public function addResource(Array $resource)
 	{
@@ -71,7 +65,7 @@ class ResourceRegistry implements ResourceRegistryInterface
 		{
 			$errmsg = $resource.' invalid resource given in '.__FILE__.' : '.__FUNCTION__.' ['.__LINE__.']'.PHP_EOL.$_SERVER['REMOTE_ADDR'];
 			$this->app['logger']->addCritical($errmsg);
-			throw new AclException($errmsg);						
+			throw new AccessDeniedHttpException($errmsg);						
 		}
 	}
 

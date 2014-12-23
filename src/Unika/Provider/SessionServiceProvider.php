@@ -11,10 +11,10 @@
  * modified by Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-namespace Silex\Provider;
+namespace Unika\Provider;
 
 use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Unika\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Session\SessionListener;
 use Silex\Provider\Session\TestSessionListener;
@@ -86,5 +86,39 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         if ($app['session.test']) {
             $app['dispatcher']->addSubscriber($app['session.listener.test']);
         }
+    }
+
+    /**
+     *
+     *  return description of provider
+     */
+    public function getDescription()
+    {
+        return 'Session Service Provider';
+    }
+
+    /**
+     *
+     *  return array of service with each description
+     */
+    public function getServices()
+    {
+        return array(
+            'session'  => 'Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage'
+        );
+    }
+
+    /**
+     *
+     *  return an array('author' => '','license' => '','url' => '');
+     */
+    public function getInfo()
+    {
+        return array(
+            'author'    => 'Fajar Khairil',
+            'license'   => 'MIT',
+            'url'       => 'http://www.unikacreative.com/',
+            'version'   => '0.1'
+        );
     }
 }

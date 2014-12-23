@@ -26,7 +26,7 @@ $app = new Application();
 //detect environment
 $app->detectEnvironment(function() use($environtments){
     
-    $env = 'production';
+    $env = 'production';//default
     foreach( $environtments as $env=>$machine )
     {
         if( in_array(gethostname(),$machine) )

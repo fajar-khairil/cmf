@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Unika-CMF project
+ * This file is part of the UnikaCMF project
  *
  * @author Fajar Khairil <fajar.khairil@gmail.com>
  * @license MIT
@@ -9,7 +9,7 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Pimple\ServiceProviderInterface;
+use Unika\ServiceProviderInterface;
 
 class IlluminateServiceProvider implements ServiceProviderInterface
 {
@@ -20,4 +20,41 @@ class IlluminateServiceProvider implements ServiceProviderInterface
     	$app['Illuminate.memcached'] = new \Illuminate\Cache\MemcachedConnector();
     	$app['Illuminate.events'] = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
     }	
+
+    /**
+     *
+     *  return description of provider
+     */
+    public function getDescription()
+    {
+        return 'Ussefull Illuminate Components';
+    }
+
+    /**
+     *
+     *  return array of service with each description
+     */
+    public function getServices()
+    {
+        return array(
+            'Illuminate.container'	=> 'Illuminate\Container\Container',
+            'Illuminate.filesystem' => 'Illuminate\Filesystem\Filesystem', 
+            'Illuminate.memcached'	=> 'Illuminate\Cache\MemcachedConnector',
+            'Illuminate.events'		=> 'Illuminate\Events\Dispatcher'
+        );
+    }
+
+    /**
+     *
+     *  return an array('author' => '','license' => '','url' => '');
+     */
+    public function getInfo()
+    {
+        return array(
+            'author'    => 'Fajar Khairil',
+            'license'   => 'MIT',
+            'url'       => 'http://www.unikacreative.com/',
+            'version'   => '0.1'
+        );
+    }
 }

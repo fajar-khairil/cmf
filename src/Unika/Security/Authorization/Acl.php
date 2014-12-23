@@ -1,6 +1,6 @@
 <?php
 /**
- *	This file is part of the Unika-CMF project.
+ *	This file is part of the UnikaCMF project.
  *	Acl Implementation
  *
  *	@license MIT
@@ -9,13 +9,14 @@
 
 namespace Unika\Security\Authorization;
 
+use Unika\Security\Authorization\AccessDeniedHttpException;
+
 class Acl
 {	
 	protected $roleRegistry;
 	protected $resourceRegistry;
-    protected $aclDriver;
-	//cache
-	protected $cache;
+  protected $aclDriver;
+
 	protected $auth;
 
 	public function __construct(
@@ -36,7 +37,7 @@ class Acl
   protected function getAuth()
   {
       if( $this->auth === NULL )
-          throw new AclException('Auth not set');
+          throw new AccessDeniedHttpException('Auth not set');
 
       return $this->auth;
   }
@@ -44,100 +45,104 @@ class Acl
 	public function addResource($name,$description = 'no description given')
 	{
 	   return $this->resourceRegistry->addResource(['name' => $name,'description' => $description]);
-    }
+  }
 
 	public function addRole($name,$description = 'no description given')
 	{
        return $this->roleRegistry->addRole(['name' => $name,'description' => $description]);
 	}
 
-    /**
-     * Returns true if and only if the Resource exists in the ACL
-     *
-     * The $resource parameter can either be a Resource or a Resource identifier.
-     *
-     * @param  Resource\ResourceInterface|string $resource
-     * @return bool
-     */
+  /**
+   * Returns true if and only if the Resource exists in the ACL
+   *
+   * The $resource parameter can either be a Resource or a Resource identifier.
+   *
+   * @param  Resource\ResourceInterface|string $resource
+   * @return bool
+   */
 	public function hasResource($resource)
 	{
 		return $this->resourceRegistry->has($resource);
 	}
 
-    /**
-     * Returns true if and only if the Role has access to the Resource
-     *
-     * @param  Resource\ResourceInterface|string    $resource
-     * @param  string                               $privilege
-     * @param  Callback                             $assertInterface
-     * @param  Role\RoleInterface|string            $role
-     * @return bool
-     */
-    public function isAllowed($resource, $operation = '*',$role = null)
-    {     
-    	  $role = $this->getRole($role);
-        if( !$role['id'] ){ throw new AclException('Role not found.'); }
+  public function hasRole($role)
+  {
+    return $this->roleRegistry->has($role);
+  }
 
-        $resource = $this->getResource($resource);
-        if( !$resource['id'] ){ throw new AclException('Resource not found.'); }  
-
-        return $this->aclDriver->queryAcl($role['id'],$resource['id'],$operation);
-    }
-
-    public function allowAssert(AssertInterface $assertInstance)
+  /**
+   * Returns true if and only if the Role has access to the Resource
+   *
+   * @param  Resource\ResourceInterface|string    $resource
+   * @param  string                               $privilege
+   * @param  Callback                             $assertInterface
+   * @param  Role\RoleInterface|string            $role
+   * @return bool
+   */
+  public function isGranted($resource, $operation = '*',$role = null,$assertion = null)
+  {     
+    if( $assertion === null )
     {
-        return (boolean)$assert->assert($this,$role,$resource,$operations);      
-    }
+      $role = $this->getRole($role);
+      if( !$role['id'] ){ throw new AccessDeniedHttpException('Role not found.'); }
 
-    public function deny($role,$resource,array $operation = array('*'))
+      $resource = $this->getResource($resource);
+      if( !$resource['id'] ){ throw new AccessDeniedHttpException('Resource not found.'); }  
+
+      return $this->aclDriver->queryAcl($role['id'],$resource['id'],$operation);        
+    }
+    elseif( $assertion instanceof AssertInterface  )
     {
-        return $this->setRules($role,$resource,$operation,False);
+      return (boolean)$assertion->assert($this,$role,$resource,$operations);
     }
 
-    public function allow($role,$resource,array $operation = array('*'))
-    {
-        return $this->setRules($role,$resource,$operation,True);
-    }
+    return False;
+  }
 
-    protected function setRules($role,$resource,array $operations = array('*'),$allow)
-    {
-        $role = $this->getRole($role);
-        $res = $this->getResource($resource); 
+  public function assert( \Closure $assert )
+  {
+    return $assert($this);
+  }
 
-        if($res === NULL){
-            $res = $this->resourceRegistry->addResource(['id' => $resource]);
-        }
+  public function deny($role,$resource,array $operation = array('*'))
+  {
+      return $this->setRules($role,$resource,$operation,False);
+  }
 
-        $this->aclDriver->setRules($role['id'],$res['id'],$operations,$allow);     
-    }
+  public function allow($role,$resource,array $operation = array('*'))
+  {
+      return $this->setRules($role,$resource,$operation,True);
+  }
 
-    //return ResourceInterface
-    protected function getResource($resource)
-    {
-      $resource = $this->resourceRegistry->getResource($resource);
+  protected function setRules($role,$resource,array $operations = array('*'),$allow)
+  {
+      $role = $this->getRole($role);
+      $res = $this->getResource($resource); 
 
-      return $resource;
-    }
+      if($res === NULL){
+          $res = $this->resourceRegistry->addResource(['id' => $resource]);
+      }
 
-    protected function getRole($role)
-    {
-    	if( $role === null )
-    	{
-  			if( ! $this->getAuth()->check() )
-  				throw new AclException('role no supplied and there are no logged in user on Auth.');
+      $this->aclDriver->setRules($role['id'],$res['id'],$operations,$allow);     
+  }
 
-  			$user = $this->getAuth()->user();
-  			if( ! $user instanceof RoleInterface )
-  				throw new AclException('Invalid Role on Auth.');
-    		
-    		return $user->role;
-    	}
-    	else
-    	{
-    		$role_instance = $this->roleRegistry->getRole($role);
-    		if( $role_instance === NULL )
-    			throw new AclException($role.' Role not found.');
-    		return $role_instance;
-    	}
-    }
+  //return ResourceInterface
+  protected function getResource($resource)
+  {
+    return $this->resourceRegistry->getResource($resource);
+  }
+
+  protected function getRole($role)
+  {
+  	if( $role === null )
+  	{
+			if( ! $this->auth->check() )
+				throw new AccessDeniedHttpException('role no supplied and there are no logged in user on Auth.');
+
+			$user = $this->auth->user();
+			$role = $user->role_id;
+  	}
+
+		return $this->roleRegistry->getRole($role);
+  }
 }

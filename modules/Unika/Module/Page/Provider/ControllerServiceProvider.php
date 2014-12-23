@@ -19,13 +19,14 @@ class ControllerServiceProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('/{args}', function (Application $app,$args) {
-			//get controller and action
-			if( empty($args[0]) )
-				$classController = '\Unika\Module\Page\Controller\IndexController';
-			else
-				$classController = '\Unika\Module\Page\Controller\\'.ucfirst($args[0]).'Controller';
+
+        	$ctrlName = ( empty($args[0]) ) ? 'Index' : ucfirst($args[0]);
+
+			$classController = '\Unika\Module\Page\Controller\\'.$ctrlName.'Controller';
 			
-			$action = (isset($args[1])) ? strtolower($args[1]).'Action': 'indexAction';
+			$actionName = ( empty($args[1]) ) ? 'index' : strtolower($args[1]);
+
+			$action = $actionName.'Action';
 
 			//checking classController
 			if( !class_exists($classController) ){
@@ -47,7 +48,8 @@ class ControllerServiceProvider implements ControllerProviderInterface
 		->convert('args', function ($args) {
 		    return explode('/', $args);
 		})
-		->bind('default');
+		->bind('Page.default')
+		->compile();
 
         return $controllers;
     }	

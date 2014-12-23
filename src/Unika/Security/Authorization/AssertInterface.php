@@ -1,6 +1,6 @@
 <?php
 /**
- *  This file is part of the Unika-CMF project.
+ *  This file is part of the UnikaCMF project.
  *  Authorization AssertInterface , intended checking resource access which require more logic
  *  
  *  @license MIT
@@ -19,15 +19,15 @@ interface AssertInterface
      * privileges, respectively.
      *
      * @param  AclInterface             $acl
-     * @param  RoleInterface            $role
-     * @param  ResourceInterface        $resource
-     * @param  mixed string or array    privilege
+     * @param  mixed                    $role
+     * @param  mixed                    $resource
+     * @param  mixed string or array    operation
      *
      * @return boolean
      */
     public function assert(
         AclInterface $acl, 
-        RoleInterface $role = null, 
-        ResourceInterface $resource = null,
-        $privilege = null);
+        $role, 
+        $resource,
+        $operation);
 }

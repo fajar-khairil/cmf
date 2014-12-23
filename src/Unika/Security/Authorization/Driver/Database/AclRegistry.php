@@ -1,6 +1,6 @@
 <?php
 /**
- *	This file is part of the Unika-CMF project.
+ *	This file is part of the UnikaCMF project.
  *	
  *	@license MIT
  *	@author Fajar Khairil
@@ -10,7 +10,7 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\AclDriverInterface;
 use Unika\Application;
-use Unika\Security\Authorization\AclException;
+use Unika\Security\Authorization\AccessDeniedHttpException;
 
 class AclRegistry implements AclDriverInterface
 {
@@ -43,7 +43,7 @@ class AclRegistry implements AclDriverInterface
 
 		//should we throw an exception ?
 		if( !$permissions ){ 
-			throw new AclException('AclRegistry cannot decode permission.');
+			throw new AccessDeniedHttpException('AclRegistry cannot decode permission.');
 		}
 
 		if( $permissions[0] == "*" ){ return True; }

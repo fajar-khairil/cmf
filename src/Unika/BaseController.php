@@ -1,6 +1,6 @@
 <?php
 /**
- *	This file is part of the Unika-CMF project
+ *	This file is part of the UnikaCMF project
  *	
  *	@license MIT
  *	@author Fajar Khairil <fajar.khairil@gmail.com>

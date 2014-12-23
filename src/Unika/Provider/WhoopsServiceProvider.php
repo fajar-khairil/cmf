@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the Unika-CMF project
+ * This file is part of the UnikaCMF project
  *
  * @author Fajar Khairil <fajar.khairil@gmail.com>
  * @license MIT
@@ -10,7 +10,7 @@ namespace Unika\Provider;
 
 use RuntimeException;
 use Silex\Application;
-use Pimple\ServiceProviderInterface;
+use Unika\ServiceProviderInterface;
 use Silex\Api\BootableProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,5 +98,39 @@ class WhoopsServiceProvider implements ServiceProviderInterface
         };
 
         $app['whoops']->register();
+    }
+
+    /**
+     *
+     *  return description of provider
+     */
+    public function getDescription()
+    {
+        return 'Whoops Service Provider php error for cool kids';
+    }
+
+    /**
+     *
+     *  return array of service with each description
+     */
+    public function getServices()
+    {
+        return array(
+            'whoops'  => 'Whoops\Run'
+        );
+    }
+
+    /**
+     *
+     *  return an array('author' => '','license' => '','url' => '');
+     */
+    public function getInfo()
+    {
+        return array(
+            'author'    => 'Fajar Khairil',
+            'license'   => 'MIT',
+            'url'       => 'http://www.unikacreative.com/',
+            'version'   => '0.1'
+        );
     }
 }
