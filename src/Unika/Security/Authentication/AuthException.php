@@ -8,15 +8,4 @@
 
 namespace Unika\Security\Authentication;
 
-abstract class BaseAuthDriver
-{
-
-	/**
-	 *
-	 *	@param string AuthUserClass
-	 */
-	public function __construct($authUserClass)
-	{
-
-	}
-}
+class AuthException extends \Exception{}

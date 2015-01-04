@@ -8,15 +8,12 @@
 
 namespace Unika\Security\Authentication;
 
-abstract class BaseAuthDriver
+interface AuthDriverInterface
 {
-
 	/**
-	 *
-	 *	@param string AuthUserClass
+	 *	@param array or AuthUserInterface $credentials
+	 *	@return AuthUserInteface
+	 *	@throw AuthException
 	 */
-	public function __construct($authUserClass)
-	{
-
-	}
+	public function authenticate($credentials);
 }

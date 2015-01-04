@@ -14,10 +14,12 @@ class Auth
 {
 	protected $session;
 	protected $authDriver;
-	protected $authUserClass;
-
-	protected $app = NULL;
-
+	protected $authUserClass = null;
+	protected $defaultTimeout = 30;
+	protected $failureReason = null;
+	protected $sessionName = "app_sess";
+	protected $app = null;
+	protected $cache = null;
 	/**
 	 *
 	 *	@param AuthDriverInterface $authDriver Authentication Driver instance 
@@ -28,6 +30,11 @@ class Auth
 	{
 		$this->session = $session;
 		$this->authDriver = $authDriver;
+	}
+
+	public function getSession()
+	{
+		return $this->session;
 	}
 
 	public function setAuthUserClass($authUserClass = null)
@@ -41,7 +48,7 @@ class Auth
 	public function getAuthUserClass()
 	{
 		if( $this->authUserClass === null ){
-			$this->authUserClass = 'SimpleAuthUserClass';
+			$this->authUserClass = 'AuthUser';
 		}
 
 		return $this->authUserClass;
@@ -57,7 +64,43 @@ class Auth
 		if( $this->app === NULL ){
 			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setApplication method.')
 		}
+
+		return $this->app;
 	}
+
+	public function setCache(\Illuminate\Cache\StoreInterface $cache)
+	{
+		$this->cache = $cache;
+	}
+
+	public function getCache()
+	{
+		if( $this->cache === NULL ){
+			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setCache method.')
+		}
+
+		return $this->cache;
+	}
+
+	public function setAuthSessionName($sessionName)
+	{
+		$this->sessionName = $sessionName;
+	}
+
+	public function getAuthSessionName()
+	{
+		return $this->sessionName;
+	}
+
+	/*public function setGuard()
+	{
+
+	}
+
+	public function getGuard()
+	{
+
+	}*/
 
 	/**
 	 *	@param integer $minutes take effect if login with remember True, give it -1 to remember forever 
@@ -82,8 +125,57 @@ class Auth
 	 *	@return boolean
 	 */
 	public function login($credentials,$remember = False,$timeout = null)
-	{
+	{		
+		$user = $this->internalAuthenticate($credentials);
 
+		if( $user )
+		{
+			$this->session->set($this->sessionName,$user);
+			$this->getApplication()['Illuminate.events']->fire('auth.success',[$this,$credentials]);
+		}
+		else
+		{
+			$this->getApplication()['Illuminate.events']->fire('auth.failure',[$credentials]);
+		}
+	}
+
+	/**
+	 *	@return AuthUser on Success False or Exception on Failure
+	 */
+	protected function internalAuthenticate($credentials)
+	{
+		try
+		{
+			$user = $this->authDriver->authenticate($credentials);
+			if( $user )
+			{
+				
+				$this->resetFailureReason();
+				return $user;
+			}
+		}
+		catch(\Exception $e)
+		{
+			$this->failureReason = $e->getMessage();
+			if( $this->getApplication() )
+			{
+				if( True === $this->getApplication()['debug'] )
+				{
+					throw $e;
+				}
+			}
+			return False;
+		}
+	}
+
+	protected function resetFailureReason()
+	{
+		return $this->failureReason;
+	}
+
+	public function getFailureReason()
+	{
+		return __FUNCTION__.' not yet implemented.';
 	}
 
 	/**
@@ -91,7 +183,9 @@ class Auth
 	 */
 	public function logout()
 	{
-
+		$user = $this->session->get($this->sessionName);
+		$this->session->remove($this->sessionName);
+		$this->getApplication()['Illuminate.events']->fire('auth.logout',[$credentials]);
 	}
 
 	/**
@@ -102,7 +196,7 @@ class Auth
 	 */
 	public function validate($credentials)
 	{
-
+		return (boolean)internalAuthenticate($credentials);
 	}
 
 	/**
@@ -112,7 +206,7 @@ class Auth
 	 */
 	public function check()
 	{
-
+		return $this->session->has($this->sessionName);
 	}
 
 	/**
@@ -122,7 +216,7 @@ class Auth
 	 */
 	public function once($credentials)
 	{
-
+		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
 	}
 
 	/**
@@ -132,7 +226,7 @@ class Auth
 	 */
 	public function forceLogin($user)
 	{
-
+		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
 	}
 
 	/**
@@ -142,7 +236,10 @@ class Auth
 	 */
 	public function user()
 	{
-
+		if( $this->check )
+			return $this->session->get($this->sessionName);
+		else
+			return null;
 	}
 
 	/**
@@ -151,6 +248,6 @@ class Auth
 	 */
 	public function viaRemember()
 	{
-
+		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
 	}
 }
