@@ -41,7 +41,7 @@
  	public function verifyPasswordHash($password, $hash)
  	{
  		$passwordLib = new \PasswordLib\PasswordLib();
- 		return $passwordLib($password,$hash);
+ 		return $passwordLib->verifyPasswordHash($password,$hash);
  	}
 
     /**

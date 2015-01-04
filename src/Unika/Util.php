@@ -20,6 +20,7 @@ class Util extends \utilphp\util {
 	public static function classImplements($class,$interface)
 	{
 		$intfs = class_implements($class);
+
 		return in_array($interface, $intfs);
 	}
 }
