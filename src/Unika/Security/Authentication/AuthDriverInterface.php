@@ -12,8 +12,16 @@ interface AuthDriverInterface
 {
 	/**
 	 *	@param array or AuthUserInterface $credentials
-	 *	@return AuthUserInteface
+	 *	@return AuthUserInteface or throw AuthException if failure
 	 *	@throw AuthException
 	 */
 	public function authenticate($credentials);
+
+	/**
+	 *	check if user is on blocked
+	 *
+	 *	@param array $credentials
+	 *	@return True on blocked , null if credential not found
+	 */
+	public function isBlocked($credentials);
 }

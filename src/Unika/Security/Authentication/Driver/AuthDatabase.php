@@ -16,11 +16,14 @@ class AuthDatabase implements AuthDriverInterface
 {
 	protected $app;
 	protected $db;
+	protected $throttle;
+	protected $user = null; //cached user
 
-	public function __construct(\Unika\Application $app)
+	public function __construct(\Unika\Application $app,$throttle_guard = True)
 	{
 		$this->app = $app;
 		$this->db = $this->app['database']->table( $this->app->config('auth.database.users_table') );
+		$this->throttle = (boolean)$throttle_guard;
 		$this->init();
 	}
 
@@ -33,26 +36,78 @@ class AuthDatabase implements AuthDriverInterface
 
 		$this->app['Illuminate.events']->listen('auth.failure',function($credentials) use($self){
 			$self->doOnFailure($credentials);
-		});		
-
-		$this->app['Illuminate.events']->listen('auth.logout',function($credentials) use($self){
-			$self->doOnLogout($credentials);
-		});				
+		});			
 	}
 
 	protected function doOnFailure($credentials)
 	{
+		$_sql = 'UPDATE '.$this->app->config('auth.database.users_table').
+			' SET last_failed_count = last_failed_count + 1
+			WHERE username = "'.$credentials['username'].'"';
 
+		$this->app['database']->getConnection()->update($_sql);
 	}
 
-	protected function doOnLogout($credentials)
+	/**
+	 *
+	 *	@return user or null if not found
+	 */
+	protected function resolveUser($credentials)
 	{
+		if( $this->user === null )
+		{
+			if( is_array($credentials) )
+			{
+				$username = $credentials['username'];
+			}
+			elseif( \Unika\Util::classImplements($credentials,'AuthUserInterface') )
+			{
+				$credentialsObj = $credentials;
+				$credentials = array(
+					'username'	=> 	$credentialsObj->getUsername(),
+					'password'	=> $credentialsObj->getPassword()
+				);
+				$username = $credentials['username'];	
+				unset($credentialsObj);
+			}
+			else
+			{
+				throw new AuthException('Invalid Credentials supplied');
+			}
+
+			$this->user = $this->db->where('username','=',$username)->first();
+		}
+		return $this->user;
+	}
+
+	/**
+	 *
+	 *	@return True on blocked , null if credential not found
+	 */
+	public function isBlocked($credentials)
+	{
+		$user = $this->resolveUser($credentials);
 		
+		if( $user )
+		{
+			if( (int)$user['last_failed_count'] >= (int)$this->app->config('auth.guard.throttling_count') )
+			{
+				$this->db->where('id' ,'=',$user['id'])->update(['active' => 0,'updated_at' =>  date('Y-m-d H:i:s')]);
+				return True;
+			}
+			else
+			{
+				return False;
+			}
+		}
+
+		return $user;
 	}
 
 	protected function doOnSucess($auth,$credentials)
 	{
-
+		$now = date('Y-m-d H:i:s');
+		$this->db->where('username' ,'=',$credentials['username'])->update(['last_login' => $now,'updated_at' =>  $now]);
 	}
 
 	/**
@@ -62,26 +117,7 @@ class AuthDatabase implements AuthDriverInterface
 	 */
 	public function authenticate($credentials)
 	{
-		if( is_array($credentials) )
-		{
-			$username = $credentials['username'];
-		}
-		elseif( \Unika\Util::classImplements($credentials,'AuthUserInterface') )
-		{
-			$credentialsObj = $credentials;
-			$credentials = array(
-				'username'	=> 	$credentialsObj->getUsername(),
-				'password'	=> $credentialsObj->getPassword()
-			);
-			$username = $credentials['username'];	
-			unset($credentialsObj);
-		}
-		else
-		{
-			throw new AuthException('Invalid Credentials supplied');
-		}
-
-		$user = $this->db->where('username','=',$username)->first();
+		$user = $this->resolveUser($credentials);
 
 		if( !$user )
 		{
@@ -95,11 +131,18 @@ class AuthDatabase implements AuthDriverInterface
 	
 		if( !\Unika\Util::classImplements($passwordLibClass,'Unika\Security\PasswordHasherInterface') )
 		{
-			throw new \RuntimeException('invalid password_hasher_class please check your auth config.');
+			throw new AuthException('invalid password_hasher_class please check your auth config.');
 		}
 
 		$passwordLib = new $passwordLibClass();
 
-		return $passwordLib->verifyPasswordHash( $credentials['password'].$user['salt'],$user['pass'] );
+		$isValidPassword = $passwordLib->verifyPasswordHash( $credentials['password'].$user['salt'],$user['pass'] );
+
+		if( !$isValidPassword )
+		{
+			throw new AuthException('invalid password supplied.');
+		}
+
+		return $user;
 	}
 }

@@ -48,10 +48,11 @@ $app->register(new \Unika\Provider\MonologServiceProvider(),
         'monolog.permission'    =>  0777
     )
 );
-
+$app->register(new Unika\Provider\SessionServiceProvider());
 $app->register(new Unika\Provider\CacheServiceProvider());
 $app->register(new Unika\Provider\DatabaseServiceProvider());
 $app->register(new \Unika\Provider\ViewServiceProvider());
+$app->register(new Unika\Provider\AuthServiceProvider());
 $app->register(new Unika\Provider\AclServiceProvider());
 
 return $app;

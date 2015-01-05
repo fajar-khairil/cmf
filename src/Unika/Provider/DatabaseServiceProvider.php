@@ -17,14 +17,20 @@ class DatabaseServiceProvider implements ServiceProviderInterface
     {
         $app['database'] = function($app)
         {
-            $Capsule = new \Illuminate\Database\Capsule\Manager();
-            $Capsule->setAsGlobal();
-            $defaultConn = $app['config']->get('database.driver','master');
-            $Capsule->addConnection(
-                $app['config']['database.connections'][$defaultConn]
-            );
+            $Capsule = new \Illuminate\Database\Capsule\Manager($app['Illuminate.container']);
+
+            $connections = $app->config('database.connections');
+            $app['Illuminate.container']['config']['database.default'] = $app->config('database.default','master');
+
+            foreach(  $connections as $connName => $connection )
+            {         
+                $Capsule->addConnection($connection,$connName);
+            }
+
             $Capsule->setEventDispatcher( $app['Illuminate.events'] );
             $Capsule->setCacheManager( $app['cache.manager'] );         
+            $Capsule->setAsGlobal();
+
             return $Capsule;
         };
         

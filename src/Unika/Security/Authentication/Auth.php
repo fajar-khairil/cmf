@@ -62,13 +62,13 @@ class Auth
 	public function getApplication()
 	{
 		if( $this->app === NULL ){
-			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setApplication method.')
+			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setApplication method.');
 		}
 
 		return $this->app;
 	}
 
-	public function setCache(\Illuminate\Cache\StoreInterface $cache)
+	public function setCache(\Illuminate\Cache\Repository $cache)
 	{
 		$this->cache = $cache;
 	}
@@ -76,7 +76,7 @@ class Auth
 	public function getCache()
 	{
 		if( $this->cache === NULL ){
-			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setCache method.')
+			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setCache method.');
 		}
 
 		return $this->cache;
@@ -89,6 +89,8 @@ class Auth
 
 	public function getAuthSessionName()
 	{
+		if( !$this->sessionName )
+			$this->sessionName = $this->getApplication()->config('auth.session_name');
 		return $this->sessionName;
 	}
 
@@ -126,16 +128,29 @@ class Auth
 	 */
 	public function login($credentials,$remember = False,$timeout = null)
 	{		
+		$this->getApplication()['Illuminate.events']->fire('auth.beforeLogin',[$credentials]);
+		
+		if( $this->getApplication()->config('auth.guard.active') )
+		{
+			if( $this->authDriver->isBlocked($credentials) )
+			{
+				$this->failureReason = 'this account on Blocked.';
+				return False;
+			}
+		}
+
 		$user = $this->internalAuthenticate($credentials);
 
 		if( $user )
 		{
 			$this->session->set($this->sessionName,$user);
 			$this->getApplication()['Illuminate.events']->fire('auth.success',[$this,$credentials]);
+			return True;
 		}
 		else
 		{
 			$this->getApplication()['Illuminate.events']->fire('auth.failure',[$credentials]);
+			return False;
 		}
 	}
 
@@ -143,10 +158,11 @@ class Auth
 	 *	@return AuthUser on Success False or Exception on Failure
 	 */
 	protected function internalAuthenticate($credentials)
-	{
+	{	
 		try
 		{
 			$user = $this->authDriver->authenticate($credentials);
+
 			if( $user )
 			{
 				
@@ -155,7 +171,7 @@ class Auth
 			}
 		}
 		catch(\Exception $e)
-		{
+		{	
 			$this->failureReason = $e->getMessage();
 			if( $this->getApplication() )
 			{
@@ -170,12 +186,12 @@ class Auth
 
 	protected function resetFailureReason()
 	{
-		return $this->failureReason;
+		return $this->failureReason = null;
 	}
 
 	public function getFailureReason()
 	{
-		return __FUNCTION__.' not yet implemented.';
+		return $this->failureReason;
 	}
 
 	/**
@@ -196,7 +212,7 @@ class Auth
 	 */
 	public function validate($credentials)
 	{
-		return (boolean)internalAuthenticate($credentials);
+		return (boolean)$this->internalAuthenticate($credentials);
 	}
 
 	/**
