@@ -257,17 +257,17 @@ class Auth
 	 *	@param mixed $credentials
 	 *	@return boolean 
 	 */
-	public function once($credentials)
+	public function once(array $credentials)
 	{
 		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
 	}
 
 	/**
-	 *	force given user/credential to login
-	 *	@param mixed $user array of credentials 
+	 *	force given userId to login
+	 *	@param integer | string $userId
 	 *	@return boolean
 	 */
-	public function forceLogin($user)
+	public function forceLogin($userId)
 	{
 		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
 	}
