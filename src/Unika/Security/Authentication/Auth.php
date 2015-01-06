@@ -9,6 +9,7 @@
 namespace Unika\Security\Authentication;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class Auth 
 {
@@ -116,11 +117,34 @@ class Auth
 		{
 			$this->session->set($this->sessionName,$user);
 			$this->getApplication()['Illuminate.events']->fire('auth.success',[$this,$credentials]);
+
+			if( True === (bool)$remember )
+			{
+				//** remember me */
+				$this->app->after(function($request,$response,$app) use($user,$timeout)
+				{
+					if( !is_numeric($timeout) )
+					{
+						$timeout = $this->getDefaultRememberTimeout();
+					}
+
+					// nesbot\carbon
+					$carbon = new \Carbon\Carbon( \Carbon\Carbon::now() );
+					$carbon->addMinutes($timeout);
+
+					$response->headers->setCookie(new Cookie(
+						$app->config('auth.remember_me.cookie_name','auth_remember'),
+						json_encode(['id' => $user['id'],'scrt' => \Unika\Security\Util::generateRandomString(32)]),
+						$carbon
+					));
+				});
+			}
 			return True;
 		}
 		else
 		{
 			$this->getApplication()['Illuminate.events']->fire('auth.failure',[$credentials]);
+
 			return False;
 		}
 	}
@@ -173,6 +197,18 @@ class Auth
 		$user = $this->session->get($this->sessionName);
 		$this->session->remove($this->sessionName);
 		$this->getApplication()['Illuminate.events']->fire('auth.logout',[$this]);
+
+
+		//** remember me , on logout remove remember cookie for this user */
+		$this->app->after(function($request,$response,$app){
+			
+			if( !is_numeric($timeout) )
+			{
+				$timeout = $this->getDefaultRememberTimeout();
+			}
+
+			$response->headers->clearCookie($app->config('auth.remember_me.cookie_name','auth_remember'));
+		});
 	}
 
 	/**
@@ -193,7 +229,19 @@ class Auth
 	 */
 	public function check()
 	{
-		return $this->session->has($this->sessionName);
+		$valid = $this->session->has($this->sessionName);
+		if( !$valid )
+		{
+			$raw_cookie = $this->app['request_stack']->getCurrentRequest()->cookies->get($app->config('auth.remember_me.cookie_name','auth_remember'));
+			$cookie = json_decode( $raw_cookie,True );
+			
+			if( is_array( $cookie ) )
+			{
+				//check the validity of remember_me cookie
+			}
+		}
+
+		return $valid;
 	}
 
 	/**

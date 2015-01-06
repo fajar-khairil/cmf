@@ -51,7 +51,7 @@
      *
      * @return string The generated token string
      */
- 	public function generateRandomString($length = 8)
+ 	public static function generateRandomString($length = 8)
  	{
  		$passwordLib = new \PasswordLib\PasswordLib();
  		return $passwordLib->getRandomToken($length);

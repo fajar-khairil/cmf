@@ -35,6 +35,7 @@ class AuthServiceProvider implements ServiceProviderInterface
     		);
 
             $auth->setApplication($app);
+            $auth->setDefaultRememberTimeout( $app->config('auth.remember_me.default_timeout',30) );
             $auth->setCache($app['cache']);
 
             return $auth;

@@ -12,6 +12,11 @@ return array(
 		'active'	=>	False,
 		'throttling_count'	=> 5
 	),
+	/** remember me */
+	'remember_me'	=>	array(
+		'cookie_name'		=>	'auth_remember',
+		'default_timeout'	=> 30
+	),
 	/** availables drivers */
 	'database'	=> array(
 		'users_table'	=>	'users'

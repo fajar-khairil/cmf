@@ -55,12 +55,12 @@ class Application extends SilexApp
 		static::$instance = $this;
 	}
 
-	public function config($key = null)
+	public function config($key = null,$default = null)
 	{
 		if( $key === null )
 			return $this->config;
 		
-		return $this->config[$key];
+		return $this->config->get($key,$default);
 	}
 
 	public function createResponse($body,$code = 200)
