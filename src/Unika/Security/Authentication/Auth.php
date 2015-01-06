@@ -20,6 +20,8 @@ class Auth
 	protected $sessionName = "app_sess";
 	protected $app = null;
 	protected $cache = null;
+	protected $viaRemember = False;
+
 	/**
 	 *
 	 *	@param AuthDriverInterface $authDriver Authentication Driver instance 
@@ -116,28 +118,30 @@ class Auth
 		if( $user )
 		{
 			$this->session->set($this->sessionName,$user);
-			$this->getApplication()['Illuminate.events']->fire('auth.success',[$this,$credentials]);
+			$this->getApplication()['Illuminate.events']->fire('auth.success',[$credentials,$remember,$timeout,$this]);
 
 			if( True === (bool)$remember )
 			{
+				if( !is_numeric($timeout) )
+					$timeout = $this->getDefaultRememberTimeout();
+
+				// nesbot\carbon
+				$carbon = new \Carbon\Carbon( \Carbon\Carbon::now() );
+				$carbon->addMinutes($timeout);
+
+				$token = \Unika\Security\Util::generateRandomString(32);
+
 				//** remember me */
-				$this->app->after(function($request,$response,$app) use($user,$timeout)
+				$this->app->after(function($request,$response,$app) use($user,$timeout,$token,$carbon)
 				{
-					if( !is_numeric($timeout) )
-					{
-						$timeout = $this->getDefaultRememberTimeout();
-					}
-
-					// nesbot\carbon
-					$carbon = new \Carbon\Carbon( \Carbon\Carbon::now() );
-					$carbon->addMinutes($timeout);
-
 					$response->headers->setCookie(new Cookie(
 						$app->config('auth.remember_me.cookie_name','auth_remember'),
-						json_encode(['id' => $user['id'],'scrt' => \Unika\Security\Util::generateRandomString(32)]),
+						json_encode(['id' => $user['id'],'scrt' => $token]),
 						$carbon
 					));
 				});
+
+				$this->authDriver->setRememberMeToken($user['id'],$token,$carbon->toDateTimeString());
 			}
 			return True;
 		}
@@ -232,12 +236,16 @@ class Auth
 		$valid = $this->session->has($this->sessionName);
 		if( !$valid )
 		{
-			$raw_cookie = $this->app['request_stack']->getCurrentRequest()->cookies->get($app->config('auth.remember_me.cookie_name','auth_remember'));
+			$raw_cookie = $this->app['request_stack']->getCurrentRequest()->cookies->get($this->app->config('auth.remember_me.cookie_name','auth_remember'));
 			$cookie = json_decode( $raw_cookie,True );
-			
+
 			if( is_array( $cookie ) )
 			{
-				//check the validity of remember_me cookie
+				if( True === $this->authDriver->checkRememberMeToken($cookie['id'],$cookie['scrt']) )
+				{
+					$this->viaRemember = True;
+					$valid = True;
+				}
 			}
 		}
 
@@ -283,6 +291,6 @@ class Auth
 	 */
 	public function viaRemember()
 	{
-		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
+		return $this->viaRemember;
 	}
 }

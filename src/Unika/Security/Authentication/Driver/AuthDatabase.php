@@ -29,8 +29,8 @@ class AuthDatabase implements AuthDriverInterface
 	protected function init()
 	{
 		$self = $this;
-		$this->app['Illuminate.events']->listen('auth.success',function($auth,$credentials) use($self){
-			$self->doOnSucess($auth,$credentials);
+		$this->app['Illuminate.events']->listen('auth.success',function($credentials,$remember,$timeout,$auth) use($self){
+			$self->doOnSucess($credentials,$remember,$timeout,$auth);
 		});
 
 		$this->app['Illuminate.events']->listen('auth.failure',function($credentials) use($self){
@@ -85,7 +85,59 @@ class AuthDatabase implements AuthDriverInterface
 		return $user;
 	}
 
-	protected function doOnSucess($auth,$credentials)
+	/**
+	 *	check the valiity of remember_me cookie
+	 *
+	 *	@param integer|string $userId
+	 *	@param string $token
+	 *	
+	 *	@return boolean
+	 */
+	public function checkRememberMeToken($userId,$token)
+	{
+		$info = $this->app['database']
+				->table('session_info')
+				->where('user_id',$userId)
+				->where('token',$token)
+				->first();
+	
+		if( null === $info ) return False;
+
+		// compare expired token with current datetime, if expired delete the token
+		if( True === ( strtotime(date('Y-m-d H:i:s')) >= strtotime($info['expired']) ) )
+		{
+			$this->app['database']->table('session_info')
+				->where('user_id',$userId)
+				->delete();
+
+			return False;
+		}
+
+		return True;
+	}
+
+	/**
+	 *	set remember_me token
+	 *
+	 *	@param integer|string $userId
+	 *	@param string $token
+	 *	@param Date | string $timeout
+	 *	@return void
+	 */
+	public function setRememberMeToken($userId,$token,$timeout)
+	{
+		$request = $this->app['request_stack']->getCurrentRequest();
+
+		$this->app['database']->table('session_info')->insert([
+			'token'			=> $token,
+			'user_id'		=> $userId,
+			'user_agent'	=> $request->server->get('HTTP_USER_AGENT'),
+			'ip_address'	=> $request->server->get('REMOTE_ADDR'),
+			'expired'		=> $timeout
+		]);		
+	}
+
+	protected function doOnSucess($credentials,$remember,$timeout,$auth)
 	{
 		$now = date('Y-m-d H:i:s');
 		$this->db->where('username' ,'=',$credentials['username'])->update(['last_login' => $now,'updated_at' =>  $now]);
