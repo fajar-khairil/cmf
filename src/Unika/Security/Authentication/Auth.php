@@ -10,6 +10,7 @@ namespace Unika\Security\Authentication;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Unika\Application;
 
 class Auth 
 {
@@ -27,8 +28,9 @@ class Auth
 	 *	@param AuthDriverInterface $authDriver Authentication Driver instance 
 	 *  @param SessionInterface $session Session instance to use
 	 */
-	public function __construct(AuthDriverInterface $authDriver,SessionInterface $session)
+	public function __construct(Application $app ,AuthDriverInterface $authDriver,SessionInterface $session)
 	{
+		$this->app = $app;
 		$this->session = $session;
 		$this->authDriver = $authDriver;
 	}
@@ -36,20 +38,6 @@ class Auth
 	public function getSession()
 	{
 		return $this->session;
-	}
-
-	public function setApplication(\Unika\Application $app)
-	{
-		$this->app = $app;
-	}
-
-	public function getApplication()
-	{
-		if( $this->app === NULL ){
-			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setApplication method.');
-		}
-
-		return $this->app;
 	}
 
 	public function setCache(\Illuminate\Cache\Repository $cache)
@@ -74,7 +62,7 @@ class Auth
 	public function getAuthSessionName()
 	{
 		if( !$this->sessionName )
-			$this->sessionName = $this->getApplication()->config('auth.session_name');
+			$this->sessionName = $this->app->config('auth.session_name');
 		return $this->sessionName;
 	}
 
@@ -102,9 +90,9 @@ class Auth
 	 */
 	public function login($credentials,$remember = False,$timeout = null)
 	{		
-		$this->getApplication()['Illuminate.events']->fire('auth.beforeLogin',[$credentials]);
+		$this->app['Illuminate.events']->fire('auth.beforeLogin',[$credentials]);
 		
-		if( $this->getApplication()->config('auth.guard.active') )
+		if( $this->app->config('auth.guard.active') )
 		{
 			if( $this->authDriver->isBlocked($credentials) )
 			{
@@ -118,7 +106,7 @@ class Auth
 		if( $user )
 		{
 			$this->session->set($this->sessionName,$user);
-			$this->getApplication()['Illuminate.events']->fire('auth.success',[$credentials,$remember,$timeout,$this]);
+			$this->app['Illuminate.events']->fire('auth.success',[$credentials,$remember,$timeout,$this]);
 
 			if( True === (bool)$remember )
 			{
@@ -147,7 +135,7 @@ class Auth
 		}
 		else
 		{
-			$this->getApplication()['Illuminate.events']->fire('auth.failure',[$credentials]);
+			$this->app['Illuminate.events']->fire('auth.failure',[$credentials]);
 
 			return False;
 		}
@@ -172,9 +160,9 @@ class Auth
 		catch(\Exception $e)
 		{	
 			$this->failureReason = $e->getMessage();
-			if( $this->getApplication() )
+			if( $this->app )
 			{
-				if( True === $this->getApplication()['debug'] )
+				if( True === $this->app['debug'] )
 				{
 					throw $e;
 				}
@@ -200,7 +188,7 @@ class Auth
 	{
 		$user = $this->session->get($this->sessionName);
 		$this->session->remove($this->sessionName);
-		$this->getApplication()['Illuminate.events']->fire('auth.logout',[$this]);
+		$this->app['Illuminate.events']->fire('auth.logout',[$this]);
 
 
 		//** remember me , on logout remove remember cookie for this user */

@@ -30,11 +30,11 @@ class AuthServiceProvider implements ServiceProviderInterface
     		}
     		
     		$auth = new \Unika\Security\Authentication\Auth(
+                $app,
     			$authDriver,
     			$app['session']
     		);
 
-            $auth->setApplication($app);
             $auth->setDefaultRememberTimeout( $app->config('auth.remember_me.default_timeout',30) );
             $auth->setCache($app['cache']);
 
