@@ -56,7 +56,7 @@ class MonologServiceProvider implements ServiceProviderInterface, BootableProvid
             if( $app['debug'] )
                 return Logger::DEBUG;
             else
-                return Logger::ERROR;
+                return $app->config('app.debug_level');
         };
 
         $app['monolog.listener'] = function () use ($app) {

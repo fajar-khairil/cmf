@@ -1,5 +1,7 @@
 <?php
 /**
+ *  This file is part of the UnikaCMF project
+ *
  *	Custom execution script
  *	
  *	@license MIT
@@ -39,7 +41,7 @@ $app->detectEnvironment(function() use($environtments){
 });
 
 /**
- * Registering some ServiceProvider you can disabled if you dont need it
+ * Registering ServiceProvider you can disabled if you dont need it
  */
 $app->register(new \Unika\Provider\IlluminateServiceProvider());
 $app->register(new \Unika\Provider\MonologServiceProvider(),

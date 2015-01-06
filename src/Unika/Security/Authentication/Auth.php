@@ -14,7 +14,6 @@ class Auth
 {
 	protected $session;
 	protected $authDriver;
-	protected $authUserClass = null;
 	protected $defaultTimeout = 30;
 	protected $failureReason = null;
 	protected $sessionName = "app_sess";
@@ -24,7 +23,6 @@ class Auth
 	 *
 	 *	@param AuthDriverInterface $authDriver Authentication Driver instance 
 	 *  @param SessionInterface $session Session instance to use
-	 *	@param string $AuthUserClass class of AuthUserInterface
 	 */
 	public function __construct(AuthDriverInterface $authDriver,SessionInterface $session)
 	{
@@ -35,23 +33,6 @@ class Auth
 	public function getSession()
 	{
 		return $this->session;
-	}
-
-	public function setAuthUserClass($authUserClass = null)
-	{
-		if( class_exists($authUserClass) AND \Unika\Util::classImplements($authUserClass,'AuthUserInterface') )
-		{
-			$this->authUserClass = $authUserClass;
-		}
-	}
-
-	public function getAuthUserClass()
-	{
-		if( $this->authUserClass === null ){
-			$this->authUserClass = 'AuthUser';
-		}
-
-		return $this->authUserClass;
 	}
 
 	public function setApplication(\Unika\Application $app)
@@ -94,16 +75,6 @@ class Auth
 		return $this->sessionName;
 	}
 
-	/*public function setGuard()
-	{
-
-	}
-
-	public function getGuard()
-	{
-
-	}*/
-
 	/**
 	 *	@param integer $minutes take effect if login with remember True, give it -1 to remember forever 
 	 *
@@ -120,7 +91,7 @@ class Auth
 	}
 
 	/**
-	 *	@param mixed $credentials it can be array or AuthUserInterface
+	 *	@param mixed $credentials it can be array
 	 *  @param boolean $remember remember this user
 	 *	@param integer $timeout take effect if $remember is True , if null defaultRememberTimeout will be used
 	 *
@@ -201,7 +172,7 @@ class Auth
 	{
 		$user = $this->session->get($this->sessionName);
 		$this->session->remove($this->sessionName);
-		$this->getApplication()['Illuminate.events']->fire('auth.logout',[$credentials]);
+		$this->getApplication()['Illuminate.events']->fire('auth.logout',[$this]);
 	}
 
 	/**
@@ -237,7 +208,7 @@ class Auth
 
 	/**
 	 *	force given user/credential to login
-	 *	@param mixed $user array of credentials or AuthUserInterface 
+	 *	@param mixed $user array of credentials 
 	 *	@return boolean
 	 */
 	public function forceLogin($user)
@@ -248,11 +219,11 @@ class Auth
 	/**
 	 *	login user only for single request
 	 *	@param mixed $credentials
-	 *	@return AuthUserInterface | NULL
+	 *	@return array | NULL
 	 */
 	public function user()
 	{
-		if( $this->check )
+		if( $this->check() )
 			return $this->session->get($this->sessionName);
 		else
 			return null;

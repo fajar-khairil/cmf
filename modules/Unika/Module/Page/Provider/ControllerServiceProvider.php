@@ -33,7 +33,7 @@ class ControllerServiceProvider implements ControllerProviderInterface
 				$app->abort(404);
 			}
 
-			//build classController and execute
+			//build classController
 			$controller = new $classController($app);
 
 			//check existence of methodAction

@@ -10,11 +10,8 @@ return array(
 	/**  guard configuration */
 	'guard'	=> array(
 		'active'	=>	False,
-		'throttling_count'	=> 5,
-		// in minutes
-		'throttling_reset'	=> 10,
+		'throttling_count'	=> 5
 	),
-
 	/** availables drivers */
 	'database'	=> array(
 		'users_table'	=>	'users'

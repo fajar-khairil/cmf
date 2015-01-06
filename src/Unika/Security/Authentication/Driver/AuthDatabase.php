@@ -9,7 +9,6 @@
 namespace Unika\Security\Authentication\Driver;
 
 use Unika\Security\Authentication\AuthDriverInterface;
-use Unika\Security\Authentication\AuthUserInterface;
 use Unika\Security\Authentication\AuthException;
 
 class AuthDatabase implements AuthDriverInterface
@@ -52,31 +51,13 @@ class AuthDatabase implements AuthDriverInterface
 	 *
 	 *	@return user or null if not found
 	 */
-	protected function resolveUser($credentials)
+	protected function resolveUser(array $credentials)
 	{
 		if( $this->user === null )
 		{
-			if( is_array($credentials) )
-			{
-				$username = $credentials['username'];
-			}
-			elseif( \Unika\Util::classImplements($credentials,'AuthUserInterface') )
-			{
-				$credentialsObj = $credentials;
-				$credentials = array(
-					'username'	=> 	$credentialsObj->getUsername(),
-					'password'	=> $credentialsObj->getPassword()
-				);
-				$username = $credentials['username'];	
-				unset($credentialsObj);
-			}
-			else
-			{
-				throw new AuthException('Invalid Credentials supplied');
-			}
-
-			$this->user = $this->db->where('username','=',$username)->first();
+			$this->user = $this->db->where('username','=',$credentials['username'])->first();
 		}
+
 		return $this->user;
 	}
 
@@ -84,7 +65,7 @@ class AuthDatabase implements AuthDriverInterface
 	 *
 	 *	@return True on blocked , null if credential not found
 	 */
-	public function isBlocked($credentials)
+	public function isBlocked(array $credentials)
 	{
 		$user = $this->resolveUser($credentials);
 		
@@ -111,11 +92,11 @@ class AuthDatabase implements AuthDriverInterface
 	}
 
 	/**
-	 *	@param array or AuthUserInterface $credentials
+	 *	@param array $credentials
 	 *	@return AuthUserInteface
 	 *	@throw AuthException
 	 */
-	public function authenticate($credentials)
+	public function authenticate(array $credentials)
 	{
 		$user = $this->resolveUser($credentials);
 

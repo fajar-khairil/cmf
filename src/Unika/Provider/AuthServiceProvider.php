@@ -23,8 +23,7 @@ class AuthServiceProvider implements ServiceProviderInterface
     		switch ($authDriverClass) {
     			case 'database':
     				$authDriver = new \Unika\Security\Authentication\Driver\AuthDatabase($app,$app->config('auth.guard.active'));
-    				break;
-    			
+    				break;  			
     			default:
     				throw new \RuntimeException($authDriverClass.' not yet implemented.');
     				break;
