@@ -6,6 +6,7 @@
  *	@license MIT
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
+
 namespace Unika\Module\Page\Controller;
 
 use Symfony\Component\HttpFoundation\Request;

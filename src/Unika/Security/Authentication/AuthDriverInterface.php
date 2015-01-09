@@ -44,4 +44,10 @@ interface AuthDriverInterface
 	 *	@return True on blocked , null if credential not found
 	 */
 	public function isBlocked(array $credentials);
+
+	/**
+	 *	get user by credential(username)
+	 *	@return user or null if not found
+	 */
+	public function resolveUser(array $credentials)
 }

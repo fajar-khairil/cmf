@@ -247,7 +247,23 @@ class Auth
 	 */
 	public function once(array $credentials)
 	{
-		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
+		$user = $this->internalAuthenticate($credentials);
+
+		if( $user )
+		{
+			$this->session->set($this->sessionName,$user);
+			$sessionName = $this->sessionName;
+
+			$this->app->after(function($app)use($sessionName){
+				$app['session']->remove($sessionName);
+			});
+			
+			return True;
+		}
+		else
+		{
+			return False;
+		}
 	}
 
 	/**
@@ -257,7 +273,17 @@ class Auth
 	 */
 	public function forceLogin($userId)
 	{
-		throw new \RuntimeException(__FUNCTION__.'not yet implemented');
+		$user = $this->authDriver->resolveUser(['username' => $userId]);
+
+		if( $user )
+		{
+			$this->session->set($this->sessionName,$user);
+			return True;
+		}
+		else
+		{
+			return False;
+		}
 	}
 
 	/**

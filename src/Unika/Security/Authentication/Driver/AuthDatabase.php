@@ -51,7 +51,7 @@ class AuthDatabase implements AuthDriverInterface
 	 *
 	 *	@return user or null if not found
 	 */
-	protected function resolveUser(array $credentials)
+	public function resolveUser(array $credentials)
 	{
 		if( $this->user === null )
 		{
