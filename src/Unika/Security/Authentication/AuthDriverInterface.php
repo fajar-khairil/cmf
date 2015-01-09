@@ -49,5 +49,5 @@ interface AuthDriverInterface
 	 *	get user by credential(username)
 	 *	@return user or null if not found
 	 */
-	public function resolveUser(array $credentials)
+	public function resolveUser(array $credentials);
 }

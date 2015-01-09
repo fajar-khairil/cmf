@@ -76,4 +76,9 @@ class Application extends SilexApp
 
 		self::$ENVIRONMENT = $detectfunct();
 	}
+
+	function __get($name)
+	{
+		return $this[$name];
+	}
 }

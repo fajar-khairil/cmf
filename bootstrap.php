@@ -8,6 +8,9 @@
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
+/** Uncomment this function when you are ready to production*/
+//function dd(){return;};
+
 require_once 'vendor/autoload.php';
 use Unika\Application as Application;
 

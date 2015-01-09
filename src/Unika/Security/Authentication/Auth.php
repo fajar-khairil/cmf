@@ -249,7 +249,7 @@ class Auth
 			$this->session->set($this->sessionName,$user);
 			$sessionName = $this->sessionName;
 
-			$this->app->after(function($app)use($sessionName){
+			$this->app->after(function($request,$response,$app)use($sessionName){
 				$app['session']->remove($sessionName);
 			});
 			

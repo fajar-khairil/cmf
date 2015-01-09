@@ -23,4 +23,10 @@ class Util extends \utilphp\util {
 
 		return in_array($interface, $intfs);
 	}
+
+     
+     public static function boolToStr($value)
+     {
+     	return ( True === (bool)$value ) ? 'True' : 'False';
+     }
 }
