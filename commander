@@ -2,4 +2,4 @@
 
 <?php
 
-include 'commander.php';
+require_once 'commander.php';

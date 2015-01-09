@@ -192,13 +192,8 @@ class Auth
 
 
 		//** remember me , on logout remove remember cookie for this user */
-		$this->app->after(function($request,$response,$app){
-			
-			if( !is_numeric($timeout) )
-			{
-				$timeout = $this->getDefaultRememberTimeout();
-			}
-
+		$this->app->after(function($request,$response,$app)
+		{
 			$response->headers->clearCookie($app->config('auth.remember_me.cookie_name','auth_remember'));
 		});
 	}

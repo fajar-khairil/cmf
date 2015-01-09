@@ -15,6 +15,7 @@ class IndexController extends \Unika\BaseController
 {
 	public function indexAction(Request $request)
 	{
+		$this->app['cache']->put('test','kamu maho!!',5);
 		$response = $this->app->createResponse($this->app['view']->make('home')->render());
 		return $response;
 	}
