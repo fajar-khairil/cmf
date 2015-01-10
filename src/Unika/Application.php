@@ -52,6 +52,8 @@ class Application extends SilexApp
 				$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
 
+		$this['console'] = new \Symfony\Component\Console\Application('UnikaCommander','0.1-dev');
+
 		static::$instance = $this;
 	}
 

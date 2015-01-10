@@ -8,10 +8,8 @@
  
 $app = require_once 'bootstrap.php';
 
-$Commander = new \Symfony\Component\Console\Application('UnikaCommander','0.1-dev');
-
 // Register default Command here
-$Commander->add(new \Unika\Command\CacheCommand());
-$Commander->add(new \Unika\Command\ViewCommand());
+$app['console']->add(new \Unika\Command\CacheCommand());
+$app['console']->add(new \Unika\Command\ViewCommand());
 
-$Commander->run();
+$app['console']->run();
