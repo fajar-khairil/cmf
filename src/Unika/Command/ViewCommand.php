@@ -15,17 +15,23 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Unika\Ext\Command;
 
-class CacheCommand extends Command
+class ViewCommand extends Command
 {
     protected function configure()
     {
-    	$this->setName('cache:clear')->setDescription('clear the system cache.');
+    	$this->setName('view:flush')->setDescription('flush the system views');
     }	
 
    protected function execute(InputInterface $input, OutputInterface $output)
    {
- 			$output->writeln('<info>using default cache  '.get_class($this->container['cache']->getStore()).'</info>');
- 			$output->writeln('clearing system cache..');
- 			$this->container->cache->getStore()->flush();
+      $directories = $this->container['Illuminate.filesystem']->files(\Unika\Application::$ROOT_DIR.'/var/views');
+
+      foreach ( $directories as $directory)
+      {
+        $output->writeln('deleting '.$directory.'..');
+        $this->container['Illuminate.filesystem']->delete($directory);
+      }
+
+      $output->writeln('<info>done</info>');
    }
 }

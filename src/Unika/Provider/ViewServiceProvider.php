@@ -25,8 +25,7 @@ class ViewServiceProvider implements ServiceProviderInterface
             });
 
             $engineResolver->register('blade',function() use($app){
-            	$cache_path = $app::$ROOT_DIR.DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'views';
-                
+            	$cache_path = $app::$ROOT_DIR.DIRECTORY_SEPARATOR.'var'.DIRECTORY_SEPARATOR.'views';              
                 $blade = new \Illuminate\View\Compilers\BladeCompiler($app['Illuminate.filesystem'],$cache_path);
                 return new \Illuminate\View\Engines\CompilerEngine($blade);
             });

@@ -46,6 +46,7 @@ $app->detectEnvironment(function() use($environtments){
 /**
  * Registering ServiceProvider you can disabled if you dont need it
  */
+$app->register(new Unika\Provider\SymfonyServiceProvider());
 $app->register(new \Unika\Provider\IlluminateServiceProvider());
 $app->register(new \Unika\Provider\MonologServiceProvider(),
     array(

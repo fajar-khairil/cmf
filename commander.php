@@ -12,5 +12,6 @@ $Commander = new \Symfony\Component\Console\Application('UnikaCommander','0.1-de
 
 // Register default Command here
 $Commander->add(new \Unika\Command\CacheCommand());
+$Commander->add(new \Unika\Command\ViewCommand());
 
 $Commander->run();

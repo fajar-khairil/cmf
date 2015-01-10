@@ -18,7 +18,7 @@ class ControllerServiceProvider implements ControllerProviderInterface
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('/{args}', function (Application $app,$args) {
+        $controllers->match('/{args}', function (Application $app,$args) {
 
         	$ctrlName = ( empty($args[0]) ) ? 'Index' : ucfirst($args[0]);
 
@@ -49,6 +49,7 @@ class ControllerServiceProvider implements ControllerProviderInterface
 		    return explode('/', $args);
 		})
 		->bind('Page.default')
+		->method('GET|POST|PUT')
 		->compile();
 
         return $controllers;
