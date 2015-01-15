@@ -9,7 +9,7 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Unika\ServiceProviderInterface;
+use Unika\Interfaces\ServiceProviderInterface;
 
 class IlluminateServiceProvider implements ServiceProviderInterface
 {

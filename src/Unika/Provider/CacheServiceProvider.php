@@ -9,9 +9,10 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Unika\ServiceProviderInterface;
+use Unika\Interfaces\ServiceProviderInterface;
+use Unika\Console;
 
-class CacheServiceProvider implements ServiceProviderInterface
+class CacheServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\CommandProviderInterface
 {
 	public function register(Container $app)
     {
@@ -19,7 +20,15 @@ class CacheServiceProvider implements ServiceProviderInterface
     	$app['cache'] = function($app){
     		return new \Illuminate\Cache\Repository( $app['cache.manager']->driver() );
     	};
-   
+    }
+
+    /**
+     *
+     *  register command if any
+     */
+    public function command(Console $app)
+    {
+        $app->add(new \Unika\Command\CacheCommand('cache:flush'));
     }
 
     /**

@@ -15,15 +15,8 @@ class Command extends SymfonyCommand
 {
 	protected $container = null;
 
-    public function __construct($name = null,Unika\Application $container = null)
+    public function setContainer(\Pimple\Container $container)
     {
-    	parent::__construct($name);
-
-    	if( null === $container )
-    	{
-    		$container = \Unika\Application::instance();
-    	}
-
-    	$this->container = $container;
-    }	
+        $this->container = $container;
+    }
 }

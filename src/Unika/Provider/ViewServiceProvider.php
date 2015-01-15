@@ -9,9 +9,10 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Unika\ServiceProviderInterface;
+use Unika\Interfaces\ServiceProviderInterface;
+use Unika\Console;
 
-class ViewServiceProvider implements ServiceProviderInterface
+class ViewServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\CommandProviderInterface
 {
     public function register(Container $app)
     {
@@ -42,7 +43,12 @@ class ViewServiceProvider implements ServiceProviderInterface
             $viewFactory->setContainer($app);
 
             return $viewFactory;
-    	};
+    	};       
+    }
+
+    public function command(Console $app)
+    {
+        $app->add(new \Unika\Command\ViewCommand('view:flush'));
     }
 
     /**

@@ -25,8 +25,6 @@ class Application extends SilexApp
 	//static Application instance
 	protected static $instance = null;
 
-	protected $config;
-
 	public static function instance()
 	{
         if( static::$instance === NULL ){
@@ -43,7 +41,6 @@ class Application extends SilexApp
 			new \Unika\Provider\ConfigServiceProvider()
 		);
 
-		$this->config = $this['config'];
 		$this['debug'] = $this->config['app.debug'];
 
 		if( $this['debug'] )
@@ -51,17 +48,39 @@ class Application extends SilexApp
 			\Symfony\Component\Debug\ErrorHandler::register();
 		}
 
-		$this['console'] = new \Symfony\Component\Console\Application('UnikaCommander','0.1-dev');
+		/** register console if on cli mode */
+		if( 'cli' === PHP_SAPI ){
+			$this['console'] = new \Unika\Console('UnikaCommander','0.1-dev');
+			$this['console']->setContainer($this);
+		}
 
 		static::$instance = $this;
 	}
 
+    /**
+     * Registers a service provider.
+     *
+     * @param ServiceProviderInterface $provider A ServiceProviderInterface instance
+     * @param array                    $values   An array of values that customizes the provider
+     *
+     * @return Application
+     */
+    public function register(\Pimple\ServiceProviderInterface $provider, array $values = array())
+    {
+    	parent::register($provider,$values);
+    	if( 'cli' === PHP_SAPI AND $provider instanceof \Unika\Interfaces\CommandProviderInterface ){
+    		$provider->command($this['console']);
+    	}
+
+    	return $this;
+    }
+
 	public function config($key = null,$default = null)
 	{
 		if( $key === null )
-			return $this->config;
+			return $this['config'];
 		
-		return $this->config->get($key,$default);
+		return $this['config']->get($key,$default);
 	}
 
 	public function createResponse($body,$code = 200)
@@ -76,6 +95,16 @@ class Application extends SilexApp
         }
 
 		self::$ENVIRONMENT = $detectfunct();
+	}
+
+	public function getProvider($providerName)
+	{
+		return $this->providers[$providerName];
+	}
+
+	public function getProviders()
+	{
+		return $this->providers;
 	}
 
 	function __get($name)

@@ -11,10 +11,11 @@ namespace Unika\Module\Page\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
-class IndexController extends \Unika\BaseController
+class IndexController extends \Unika\Controller
 {
 	public function indexAction(Request $request)
 	{
+		//dd($this->app->getProviders());
 		$response = $this->app->createResponse($this->app['view']->make('home')->render());
 		return $response;
 	}

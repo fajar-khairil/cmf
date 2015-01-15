@@ -14,7 +14,7 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Unika\ServiceProviderInterface;
+use Unika\Interfaces\ServiceProviderInterface;
 use Silex\Api\EventListenerProviderInterface;
 use Silex\Provider\Session\SessionListener;
 use Silex\Provider\Session\TestSessionListener;

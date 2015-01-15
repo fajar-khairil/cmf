@@ -6,11 +6,10 @@
  * @license MIT
  */
 
-namespace Unika;
+namespace Unika\Interfaces;
 
 interface ServiceProviderInterface extends \Pimple\ServiceProviderInterface
 {
-
 	/**
 	 *
 	 *	return description of provider

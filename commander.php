@@ -8,8 +8,6 @@
  
 $app = require_once 'bootstrap.php';
 
-// Register default Command here
-$app['console']->add(new \Unika\Command\CacheCommand());
-$app['console']->add(new \Unika\Command\ViewCommand());
+// want to register your command ?
 
 $app['console']->run();

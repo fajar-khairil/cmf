@@ -8,7 +8,7 @@
 
 namespace Unika;
 
-Abstract class BaseController
+Abstract class Controller
 {
 	protected $app;
 

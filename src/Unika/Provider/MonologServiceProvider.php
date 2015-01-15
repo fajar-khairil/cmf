@@ -9,7 +9,7 @@
 namespace Unika\Provider;
 
 use Pimple\Container;
-use Unika\ServiceProviderInterface;
+use Unika\Interfaces\ServiceProviderInterface;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;

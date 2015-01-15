@@ -1,6 +1,6 @@
 <?php
 return array(
-	'driver'	=> 'master',//default connection
+	'default'	=> 'master',//default connection
         'fetch'         => PDO::FETCH_ASSOC,
 
         'connections' => [
