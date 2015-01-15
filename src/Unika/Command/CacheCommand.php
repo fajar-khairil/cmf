@@ -19,13 +19,13 @@ class CacheCommand extends Command
 {
     protected function configure()
     {
-    	$this->setName('cache:clear')->setDescription('clear the system cache.');
+    	$this->setName('cache:flush')->setDescription('flush the system cache.');
     }	
 
    protected function execute(InputInterface $input, OutputInterface $output)
    {
- 			$output->writeln('<info>using default cache  '.get_class($this->container['cache']->getStore()).'</info>');
- 			$output->writeln('clearing system cache..');
- 			$this->container->cache->getStore()->flush();
+		$output->writeln('<info>using default cache  '.get_class($this->container['cache']->getStore()).'</info>');
+		$output->writeln('flushing system cache..');
+		$this->container->cache->getStore()->flush();
    }
 }

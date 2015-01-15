@@ -13,6 +13,7 @@ use Silex\Application as SilexApp;
 class Application extends SilexApp
 {
 	use \Silex\Application\UrlGeneratorTrait;
+	use \Silex\Application\TranslationTrait;
 
 	const VERSION = '0.0.1-DEV';
 
@@ -48,8 +49,6 @@ class Application extends SilexApp
 		if( $this['debug'] )
 		{
 			\Symfony\Component\Debug\ErrorHandler::register();
-			if( !extension_loaded('xdebug') )
-				$this->register(new \Unika\Provider\WhoopsServiceProvider());
 		}
 
 		$this['console'] = new \Symfony\Component\Console\Application('UnikaCommander','0.1-dev');

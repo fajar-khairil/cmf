@@ -40,19 +40,7 @@ $app->error(function ($e,$request) use ($app)
     
     if( $app['debug'] )
     {
-        if( !extension_loaded('xdebug') )
-        {
-            $method = \Whoops\Run::EXCEPTION_HANDLER;
-            ob_start();
-            $app['whoops']->$method($e);
-            $response = ob_get_clean();
-            
-            return new \Symfony\Component\HttpFoundation\Response($response, $code);
-        }
-        else
-        {
-            throw $e;
-        }
+        VarDumper::dump($e);
     }
     else
     {

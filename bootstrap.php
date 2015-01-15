@@ -47,6 +47,10 @@ $app->detectEnvironment(function() use($environtments){
  * Registering ServiceProvider you can disabled if you dont need it
  */
 $app->register(new Unika\Provider\SymfonyServiceProvider());
+$app->register(new \Silex\Provider\LocaleServiceProvider(),array(
+    'locale_fallbacks'  => 'en'
+));
+$app->register(new \Silex\Provider\TranslationServiceProvider());
 $app->register(new \Unika\Provider\IlluminateServiceProvider());
 $app->register(new \Unika\Provider\MonologServiceProvider(),
     array(
