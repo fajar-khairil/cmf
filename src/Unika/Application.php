@@ -48,11 +48,14 @@ class Application extends SilexApp
 			\Symfony\Component\Debug\ErrorHandler::register();
 		}
 
-		/** register console if on cli mode */
+		/** register console if we are on cli mode */
 		if( 'cli' === PHP_SAPI ){
 			$this['console'] = new \Unika\Console('UnikaCommander','0.1-dev');
 			$this['console']->setContainer($this);
 		}
+
+		$this['util'] = new \Unika\Util;
+		$this['sec.util'] = new \Unika\Security\Util;
 
 		static::$instance = $this;
 	}
@@ -77,7 +80,7 @@ class Application extends SilexApp
 
 	public function config($key = null,$default = null)
 	{
-		if( $key === null )
+		if( null === $key )
 			return $this['config'];
 		
 		return $this['config']->get($key,$default);

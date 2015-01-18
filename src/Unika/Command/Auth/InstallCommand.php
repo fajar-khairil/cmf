@@ -13,9 +13,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Unika\Ext\Command;
 
-class InstallCommand extends Command
+class InstallCommand extends \Unika\Ext\Command
 {
     protected function configure()
     {
@@ -33,30 +34,25 @@ class InstallCommand extends Command
 
       if( $schema->hasTable($tableUsers) )
       {
-          $input->setInteractive(True);
+          $answer = $this->getHelper('question')->ask(
+            $input,
+            $output,
+            new ConfirmationQuestion('Table '.$tableUsers.' already exists, do you want to recreate it ? (y/n) : ',True)
+          );
 
-          $qConfirm = new \Symfony\Component\Console\Question\ConfirmationQuestion($tableUsers.' already exists do you want to recreate it?',True);
-
-          /*$schema->drop($tableUsers);
-          $schema->create($tableUsers,function($blueprint){
-
-          $blueprint->integer('id',True,True);
-          $blueprint->string('firstname');
-          $blueprint->string('lastname')->nullable();
-          $blueprint->string('username');
-          $blueprint->string('primary_email');
-          $blueprint->string('pass');
-          $blueprint->string('salt',128);
-          
-          $blueprint->tinyInteger('active');
-
-          $blueprint->dateTime('last_login')->nullable();
-          $blueprint->tinyInteger('last_failed_count')->nullable();
-          $blueprint->integer('role_id');
-
-          $blueprint->nullableTimestamps();
-
-        });*/
+          if( True === $answer )
+          {
+              $output->writeln('drop table '.$tableUsers.'..');
+              $schema->drop($tableUsers);
+          }
+          else
+          {
+              $output->writeln('<info>Command Canceled by user</info>');
+              return False;
+          }
       }
+
+      $output->writeln('creating table '.$tableUsers.'..');
+      \Unika\Security\Authentication\Driver\AuthDatabase::createUsersTable($this->container,$schema);   
    }	
 }

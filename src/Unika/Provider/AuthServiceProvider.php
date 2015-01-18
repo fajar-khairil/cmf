@@ -10,8 +10,10 @@ namespace Unika\Provider;
 
 use Pimple\Container;
 use Unika\Interfaces\ServiceProviderInterface;
+use Unika\Interfaces\CommandProviderInterface;
+use Unika\Console;
 
-class AuthServiceProvider implements ServiceProviderInterface
+class AuthServiceProvider implements ServiceProviderInterface,CommandProviderInterface
 {
 	public function register(Container $app)
     {
@@ -40,6 +42,15 @@ class AuthServiceProvider implements ServiceProviderInterface
 
             return $auth;
     	};
+    }
+
+    /**
+     *
+     *  register command if any
+     */
+    public function command(Console $app)
+    {
+        $app->add(new \Unika\Command\Auth\InstallCommand('auth:install'));
     }
 
     /**

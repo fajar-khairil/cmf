@@ -178,4 +178,31 @@ class AuthDatabase implements AuthDriverInterface
 
 		return $user;
 	}
+
+	public static function createUsersTable(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema = null)
+	{
+		if( null === $schema )
+		{
+			$schema = $app['database']->schema();
+		}	
+
+		return $schema->create($app->config('auth.database.users_table'),function($blueprint)
+		{
+		  $blueprint->integer('id',True,True);
+		  $blueprint->string('firstname');
+		  $blueprint->string('lastname')->nullable();
+		  $blueprint->string('username');
+		  $blueprint->string('primary_email');
+		  $blueprint->string('pass');
+		  $blueprint->string('salt',128);
+		  
+		  $blueprint->tinyInteger('active');
+
+		  $blueprint->dateTime('last_login')->nullable();
+		  $blueprint->tinyInteger('last_failed_count')->nullable();
+		  $blueprint->integer('role_id');
+
+		  $blueprint->nullableTimestamps();
+		});		
+	}
 }
