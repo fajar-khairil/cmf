@@ -24,8 +24,8 @@ class CacheCommand extends Command
 
    protected function execute(InputInterface $input, OutputInterface $output)
    {
-		$output->writeln('<info>using default cache  '.get_class($this->container['cache']->getStore()).'</info>');
-		$output->writeln('flushing system cache..');
-		$this->container->cache->getStore()->flush();
+      $this->comment($output,'using default cache  '.get_class($this->container['cache']->getStore()));
+      $this->info($output,'flushing system cache..');
+      $this->container->cache->getStore()->flush();
    }
 }

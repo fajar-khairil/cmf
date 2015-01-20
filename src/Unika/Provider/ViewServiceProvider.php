@@ -17,7 +17,7 @@ class ViewServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\
     public function register(Container $app)
     {
     	$app['view'] = function($app){
-    		$paths = array($app::$ROOT_DIR.DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.$app->config('app.default_theme'));
+    		$paths = array($app['path.themes'].'/'.$app->config('app.default_theme'));
             
             $engineResolver = new \Illuminate\View\Engines\EngineResolver();
 
@@ -43,10 +43,10 @@ class ViewServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\
             $viewFactory->setContainer($app);
 
             return $viewFactory;
-    	};       
+    	};
     }
 
-    public function command(Console $app)
+    public function addCommand(Console $app)
     {
         $app->add(new \Unika\Command\ViewCommand('view:flush'));
     }

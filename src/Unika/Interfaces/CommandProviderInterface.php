@@ -15,5 +15,5 @@ interface CommandProviderInterface
      *
      *  register command if any
      */
-    public function command(Console $app);
+    public function addCommand(Console $app);
 }

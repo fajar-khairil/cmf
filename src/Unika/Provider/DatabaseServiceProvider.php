@@ -10,8 +10,10 @@ namespace Unika\Provider;
 
 use Pimple\Container;
 use Unika\Interfaces\ServiceProviderInterface;
+use Unika\Interfaces\CommandProviderInterface;
+use Unika\Console;
 
-class DatabaseServiceProvider implements ServiceProviderInterface
+class DatabaseServiceProvider implements ServiceProviderInterface,CommandProviderInterface
 {
 	public function register(Container $app)
     {
@@ -35,6 +37,15 @@ class DatabaseServiceProvider implements ServiceProviderInterface
         };
         
         $app['database']->bootEloquent();
+    }
+
+    /**
+     *
+     *  register command if any
+     */
+    public function addCommand(Console $app)
+    {
+        $app->add(new \Unika\Command\Migrations\InstallCommand());
     }
 
     /**

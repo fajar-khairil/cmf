@@ -14,7 +14,7 @@
     "autoload": {
         "psr-0": {
             "Unika\\": "src/",
-            "Unika\\Module\\": "code/"
+            "Unika\\Module\\Page\\": "code/page/src"
         }
     },
     "require": {
@@ -23,10 +23,10 @@
         "symfony/stopwatch": "2.7.*@dev",
         "symfony/var-dumper": "2.7.*@dev",
         "symfony/yaml": "2.7.*@dev",
+        "symfony/console": "2.7.*@dev",
         "symfony/process": "2.7.*@dev",
         "monolog/monolog": "1.12.*@dev",
     	"illuminate/view": "4.2.*@dev",
-        "illuminate/console": "4.2.*@dev",
     	"illuminate/cache": "4.2.*@dev",
     	"illuminate/config": "4.2.*@dev",
         "illuminate/database": "4.2.*@dev",

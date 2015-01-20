@@ -35,6 +35,11 @@ class Auth
 		$this->authDriver = $authDriver;
 	}
 
+	public function driver()
+	{
+		return $this->authDriver;
+	}
+
 	public function getSession()
 	{
 		return $this->session;

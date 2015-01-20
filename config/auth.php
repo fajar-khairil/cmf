@@ -1,7 +1,7 @@
 <?php
 return array(
 	// default authentication driver implementation
-	'driver'	=> 'database',
+	'default'	=> 'database',
 
 	// session name to store authentication session
 	'session_name'	=> 'app_auth',
@@ -22,7 +22,11 @@ return array(
 	),
 	
 	/** availables drivers */
-	'database'	=> array(
-		'users_table'	=>	'users'
+	'drivers'	=> array(
+		'database'	=> array(
+			'connection_name'		=> 'master',
+			'users_table'			=>	'users',
+			'session_info_table'	=> 'session_info'
+		)
 	)
 );

@@ -19,12 +19,16 @@ class AuthServiceProvider implements ServiceProviderInterface,CommandProviderInt
     {
     	$app['auth'] = function($app){
     		
-    		$authDriverClass = $app->config('auth.driver');
+    		$authDriverClass = $app->config('auth.default');
     		$authDriver = null;
 
     		switch ($authDriverClass) {
     			case 'database':
-    				$authDriver = new \Unika\Security\Authentication\Driver\AuthDatabase($app,$app->config('auth.guard.active'));
+    				$authDriver = new \Unika\Security\Authentication\Driver\AuthDatabase(
+                        $app,
+                        $app->config('auth.drivers.connection_name'),
+                        $app->config('auth.guard.active')
+                    );
     				break;  			
     			default:
     				throw new \RuntimeException($authDriverClass.' not yet implemented.');
@@ -48,7 +52,7 @@ class AuthServiceProvider implements ServiceProviderInterface,CommandProviderInt
      *
      *  register command if any
      */
-    public function command(Console $app)
+    public function addCommand(Console $app)
     {
         $app->add(new \Unika\Command\Auth\InstallCommand('auth:install'));
     }

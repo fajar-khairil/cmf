@@ -10,7 +10,8 @@
 
 /** Uncomment this function when you are ready to production*/
 //function dd(){return;};
-require_once 'vendor/autoload.php';
+$loader = require_once 'vendor/autoload.php';
+
 use Unika\Application as Application;
 
 //define the root directory
@@ -25,10 +26,8 @@ $environtments = array(
     )
 );
 
-$app = new Application();
-
 //detect environment
-$app->detectEnvironment(function() use($environtments){
+Application::detectEnvironment(function() use($environtments){
     
     $env = 'production';//default
     foreach( $environtments as $env=>$machine )
@@ -42,26 +41,27 @@ $app->detectEnvironment(function() use($environtments){
     return $env;
 });
 
+$app = new Application();
+$app->setLoader($loader);
+
 /**
- * Registering ServiceProvider you can disabled if you dont need it
+ * Registering Core ServiceProvider you can disabled if you dont need it
  */
-$app->register(new Unika\Provider\SymfonyServiceProvider());
 $app->register(new \Silex\Provider\LocaleServiceProvider(),array(
     'locale_fallbacks'  => 'en'
 ));
 $app->register(new \Silex\Provider\TranslationServiceProvider());
-$app->register(new \Unika\Provider\IlluminateServiceProvider());
 $app->register(new \Unika\Provider\MonologServiceProvider(),
     array(
-        'monolog.logfile'       =>  $app::$ROOT_DIR.'/var/logs/application.log',
+        'monolog.logfile'       =>  $app['path.var'].'/logs/'.$app->config('app.name').'.log',
         'monolog.permission'    =>  0777
     )
 );
-$app->register(new Unika\Provider\SessionServiceProvider());
-$app->register(new Unika\Provider\CacheServiceProvider());
-$app->register(new Unika\Provider\DatabaseServiceProvider());
+$app->register(new \Unika\Provider\SessionServiceProvider());
+$app->register(new \Unika\Provider\CacheServiceProvider());
+$app->register(new \Unika\Provider\DatabaseServiceProvider());
 $app->register(new \Unika\Provider\ViewServiceProvider());
-$app->register(new Unika\Provider\AuthServiceProvider());
-$app->register(new Unika\Provider\AclServiceProvider());
+$app->register(new \Unika\Provider\AuthServiceProvider());
+$app->register(new \Unika\Provider\AclServiceProvider());
 
 return $app;

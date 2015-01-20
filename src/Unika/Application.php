@@ -25,6 +25,9 @@ class Application extends SilexApp
 	//static Application instance
 	protected static $instance = null;
 
+	// instance of Composer\Autoload\ClassLoader
+	protected $loader;
+
 	public static function instance()
 	{
         if( static::$instance === NULL ){
@@ -37,15 +40,15 @@ class Application extends SilexApp
 	{
 		parent::__construct($values);
 
-		$this->register(
-			new \Unika\Provider\ConfigServiceProvider()
-		);
-
+		$this->register(new \Unika\Provider\IlluminateServiceProvider());
+		$this->register(new \Unika\Provider\ConfigServiceProvider());
+		$this->register(new \Unika\Provider\SymfonyServiceProvider());
+		
 		$this['debug'] = $this->config['app.debug'];
 
 		if( $this['debug'] )
 		{
-			\Symfony\Component\Debug\ErrorHandler::register();
+			\Symfony\Component\Debug\Debug::enable(E_ALL);
 		}
 
 		/** register console if we are on cli mode */
@@ -56,6 +59,10 @@ class Application extends SilexApp
 
 		$this['util'] = new \Unika\Util;
 		$this['sec.util'] = new \Unika\Security\Util;
+		$this['path.base'] = static::$ROOT_DIR;
+		$this['path.module'] = $this['path.base'].'/code';
+		$this['path.themes'] = $this['path.base'].'/themes';
+		$this['path.var']	=	$this['path.base'].'/var';
 
 		static::$instance = $this;
 	}
@@ -72,7 +79,7 @@ class Application extends SilexApp
     {
     	parent::register($provider,$values);
     	if( 'cli' === PHP_SAPI AND $provider instanceof \Unika\Interfaces\CommandProviderInterface ){
-    		$provider->command($this['console']);
+    		$provider->addCommand($this['console']);
     	}
 
     	return $this;
@@ -91,7 +98,7 @@ class Application extends SilexApp
 		return new \Symfony\Component\HttpFoundation\Response($body,$code);
 	}
 
-	public function detectEnvironment($detectfunct)
+	public static function detectEnvironment($detectfunct)
 	{
         if (!is_object($detectfunct) || !method_exists($detectfunct, '__invoke')) {
             throw new \InvalidArgumentException('Service definition is not a Closure or invokable object.');
@@ -100,14 +107,36 @@ class Application extends SilexApp
 		self::$ENVIRONMENT = $detectfunct();
 	}
 
-	public function getProvider($providerName)
+	public function getProvider($providerName = null)
 	{
+		if( null === $providerName )
+			return $this->providers;
+
 		return $this->providers[$providerName];
 	}
 
-	public function getProviders()
+	public function setLoader(\Composer\Autoload\ClassLoader $loader)
 	{
-		return $this->providers;
+		$this->loader = $loader;
+	}
+
+	public function getLoader()
+	{
+		return $this->loader;
+	}
+
+	public function convertRequestUri($uri)
+	{
+	    $argv = explode('/', $uri);
+
+    	$ctrlName = ( empty($argv[1]) ) ? 'Index' : ucfirst($argv[1]);
+		
+		$actionName = ( empty($argv[2]) ) ? 'index' : strtolower($argv[2]);
+
+		return array(
+			'controller'	=> $ctrlName,
+			'action'		=> $actionName 
+		);
 	}
 
 	function __get($name)

@@ -36,7 +36,7 @@ class SymfonyServiceProvider implements ServiceProviderInterface
 
     /**
      *
-     *  return array of service with each description
+     *  return array of service with each class
      */
     public function getServices()
     {
@@ -52,7 +52,7 @@ class SymfonyServiceProvider implements ServiceProviderInterface
     public function getInfo()
     {
         return array(
-            'name'      => 'ACL',
+            'name'      => 'Symfony Component Shorcut',
             'author'    => 'Fajar Khairil',
             'license'   => 'MIT',
             'url'       => 'http://www.unikacreative.com/',

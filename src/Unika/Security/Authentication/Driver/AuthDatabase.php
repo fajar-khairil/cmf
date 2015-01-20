@@ -15,13 +15,18 @@ class AuthDatabase implements AuthDriverInterface
 {
 	protected $app;
 	protected $db;
+	protected $connectionName;
 	protected $throttle;
 	protected $user = null; //cached user
 
-	public function __construct(\Unika\Application $app,$throttle_guard = True)
+	public function __construct(\Unika\Application $app,$connectionName = null,$throttle_guard = True)
 	{
 		$this->app = $app;
-		$this->db = $this->app['database']->table( $this->app->config('auth.database.users_table') );
+		if( null === $connectionName )
+			$connectionName = $this->app->config('database.default');
+
+		$this->connectionName = $connectionName;
+		$this->db = $this->app['database']->table( $this->app->config('auth.drivers.database.users_table') ,$this->connectionName );
 		$this->throttle = (boolean)$throttle_guard;
 		$this->init();
 	}
@@ -40,11 +45,11 @@ class AuthDatabase implements AuthDriverInterface
 
 	protected function doOnFailure($credentials)
 	{
-		$_sql = 'UPDATE '.$this->app->config('auth.database.users_table').
+		$_sql = 'UPDATE '.$this->app->config('auth.drivers.database.users_table').
 			' SET last_failed_count = last_failed_count + 1
 			WHERE username = "'.$credentials['username'].'"';
 
-		$this->app['database']->getConnection()->update($_sql);
+		$this->app['database']->getConnection($this->connectionName)->update($_sql);
 	}
 
 	/**
@@ -96,7 +101,7 @@ class AuthDatabase implements AuthDriverInterface
 	public function checkRememberMeToken($userId,$token)
 	{
 		$info = $this->app['database']
-				->table('session_info')
+				->table($this->app->config('auth.drivers.database.session_info_table'),$this->connectionName)
 				->where('user_id',$userId)
 				->where('token',$token)
 				->first();
@@ -106,7 +111,7 @@ class AuthDatabase implements AuthDriverInterface
 		// compare expired token with current datetime, if expired delete the token
 		if( True === ( strtotime(date('Y-m-d H:i:s')) >= strtotime($info['expired']) ) )
 		{
-			$this->app['database']->table('session_info')
+			$this->app['database']->table($this->app->config('auth.drivers.database.session_info_table'),$this->connectionName)
 				->where('user_id',$userId)
 				->delete();
 
@@ -128,7 +133,7 @@ class AuthDatabase implements AuthDriverInterface
 	{
 		$request = $this->app['request_stack']->getCurrentRequest();
 
-		$this->app['database']->table('session_info')->insert([
+		$this->app['database']->table($this->app->config('auth.drivers.database.session_info_table'),$this->connectionName)->insert([
 			'token'			=> $token,
 			'user_id'		=> $userId,
 			'user_agent'	=> $request->server->get('HTTP_USER_AGENT'),
@@ -158,8 +163,6 @@ class AuthDatabase implements AuthDriverInterface
 			throw new AuthException('Invalid Username supplied');
 		}
 
-		$credentials['salt'] = $user['salt'];
-
 		$passwordLibClass = $this->app->config('auth.password_hasher_class');
 	
 		if( !\Unika\Util::classImplements($passwordLibClass,'Unika\Security\PasswordHasherInterface') )
@@ -179,14 +182,31 @@ class AuthDatabase implements AuthDriverInterface
 		return $user;
 	}
 
-	public static function createUsersTable(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema = null)
+	public static function createAllTables(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema)
 	{
-		if( null === $schema )
-		{
-			$schema = $app['database']->schema();
-		}	
+		static::createUsersTable($app,$schema);
+		static::createSessionInfo($app,$schema);
+	}
 
-		return $schema->create($app->config('auth.database.users_table'),function($blueprint)
+	public static function createSessionInfo(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema)
+	{
+		return $schema->create($app->config('auth.drivers.database.session_info_table'),function($blueprint)
+		{
+		  $blueprint->integer('id',True,True);
+		  $blueprint->string('token');
+		  $blueprint->string('user_agent')->nullable();
+		  $blueprint->string('ip_address',128);
+		  $blueprint->integer('user_id');
+		  $blueprint->dateTime('expired');
+
+		  $blueprint->softDeletes();
+		  $blueprint->nullableTimestamps();
+		});
+	}
+
+	public static function createUsersTable(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema)
+	{
+		return $schema->create($app->config('auth.drivers.database.users_table'),function($blueprint)
 		{
 		  $blueprint->integer('id',True,True);
 		  $blueprint->string('firstname');
@@ -202,6 +222,7 @@ class AuthDatabase implements AuthDriverInterface
 		  $blueprint->tinyInteger('last_failed_count')->nullable();
 		  $blueprint->integer('role_id');
 
+		  $blueprint->softDeletes();
 		  $blueprint->nullableTimestamps();
 		});		
 	}

@@ -45,7 +45,7 @@ class AclServiceProvider implements ServiceProviderInterface
         $app['acl'] = new \Unika\Security\Authorization\Acl(
                 new \Unika\Security\Authorization\Driver\Database\RoleRegistry($app),
                 new \Unika\Security\Authorization\Driver\Database\ResourceRegistry($app),
-                new \Unika\Security\Authorization\Driver\Database\AclRegistry($app)
+                new \Unika\Security\Authorization\Driver\Database\AclDriver($app)
             );
     }
 

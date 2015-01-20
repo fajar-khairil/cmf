@@ -21,38 +21,38 @@ class InstallCommand extends \Unika\Ext\Command
     protected function configure()
     {
       $this->setName('auth:install')
-      ->addOption('connection','c',InputOption::VALUE_OPTIONAL,'Select coneection to use',$this->container->config('database.default'))
-      ->setDescription('Authentication Command');
+      ->addOption('connection','c',InputOption::VALUE_OPTIONAL,'Select conection to use',$this->container->config('database.default'))
+      ->setDescription('Install Authentication Tables dependencies.');
     }	
 
    protected function execute(InputInterface $input, OutputInterface $output)
    {
-      $connName = $input->getOption('connection');
       // get schema builder
-      $schema = $this->container['database']->schema();
-      $tableUsers = $this->container->config('auth.database.users_table');
+      $schema = $this->container['database']->schema($input->getOption('connection'));
+      $tableUsers = $this->container->config('auth.drivers.database.users_table');
 
       if( $schema->hasTable($tableUsers) )
       {
-          $answer = $this->getHelper('question')->ask(
+          $confirmed = $this->getHelper('question')->ask(
             $input,
             $output,
-            new ConfirmationQuestion('Table '.$tableUsers.' already exists, do you want to recreate it ? (y/n) : ',True)
+            new ConfirmationQuestion('Depenencies Table already exists, do you want to recreate it ? (y/n) : ',True)
           );
 
-          if( True === $answer )
+          if( True === $confirmed )
           {
-              $output->writeln('drop table '.$tableUsers.'..');
+              $this->info($output,'drop table users and session_info..');
               $schema->drop($tableUsers);
+              $schema->drop($this->container->config('auth.drivers.database.session_info_table'));
           }
           else
           {
-              $output->writeln('<info>Command Canceled by user</info>');
+              $this->info($output,'Command Canceled by user');
               return False;
           }
       }
 
-      $output->writeln('creating table '.$tableUsers.'..');
-      \Unika\Security\Authentication\Driver\AuthDatabase::createUsersTable($this->container,$schema);   
+      $this->info($output,'creating tables...');
+      \Unika\Security\Authentication\Driver\AuthDatabase::createAllTables($this->container,$schema);   
    }	
 }

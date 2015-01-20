@@ -12,7 +12,7 @@ use Unika\Security\Authorization\AclDriverInterface;
 use Unika\Application;
 use Unika\Security\Authorization\AccessDeniedHttpException;
 
-class AclRegistry implements AclDriverInterface
+class AclDriver implements AclDriverInterface
 {
 	protected $acl_table;
 	protected $app;

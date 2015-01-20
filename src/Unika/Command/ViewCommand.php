@@ -28,10 +28,10 @@ class ViewCommand extends Command
 
       foreach ( $directories as $directory)
       {
-        $output->writeln('deleting '.$directory.'..');
+        $this->info($output,'deleting '.$directory.'..');
         $this->container['Illuminate.filesystem']->delete($directory);
       }
 
-      $output->writeln('<info>done</info>');
+      $this->comment($output,'done');
    }
 }

@@ -8,25 +8,24 @@
 
 $app = require_once 'bootstrap.php';
 
-/**
- * managing Asset Path
+/** 
+ *  Generic before middleware, you can calways alter it
  */
-$app->before(function ($request, $app) {
-
-    //or it can be yor own cdn url!!
+$app->before(function ($request,$app){
+    // asset path or it can be yor own cdn url!!
     $app['asset_path'] = $request->getBasePath();
     $app['stylesheets'] = $app['asset_path'].'/css/';
     $app['scripts'] = $app['asset_path'].'/js/';
     $app['img'] = $app['asset_path'].'/img/';
 
-});
-
-/** 
- *  Generic before middleware, you can calways alter it
- */
-$app->before(function ($request,$app){
     $app['view']->share( 'page_title',$app->config('app.name').' &mdash; ');
 });
+
+$app->before(function ($request,$app){
+    $uris = $app->convertRequestUri($request->getRequestUri());
+    //dd('request.'.$uris['controller'].'.'.$uris['action']);
+    $app['Illuminate.events']->fire('request.'.$uris['controller'].'.'.$uris['action'],array($request,$app));
+},-512);
 
 require_once 'routes.php';
 
@@ -40,7 +39,7 @@ $app->error(function ($e,$request) use ($app)
     
     if( $app['debug'] )
     {
-        VarDumper::dump($e);
+        dump($e);
     }
     else
     {

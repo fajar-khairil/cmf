@@ -11,8 +11,9 @@ namespace Unika\Provider;
 use Pimple\Container;
 use Unika\Interfaces\ServiceProviderInterface;
 use Unika\Console;
+use Unika\Interfaces\CommandProviderInterface;
 
-class CacheServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\CommandProviderInterface
+class CacheServiceProvider implements ServiceProviderInterface,CommandProviderInterface
 {
 	public function register(Container $app)
     {
@@ -26,7 +27,7 @@ class CacheServiceProvider implements ServiceProviderInterface,\Unika\Interfaces
      *
      *  register command if any
      */
-    public function command(Console $app)
+    public function addCommand(Console $app)
     {
         $app->add(new \Unika\Command\CacheCommand('cache:flush'));
     }

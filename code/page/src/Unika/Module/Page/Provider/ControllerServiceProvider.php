@@ -19,12 +19,27 @@ class ControllerServiceProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->match('/{args}', function (Application $app,$args) {
+			//build classController
+			$controller = new $args['controller']($app);
+			$action = $args['action'];
 
-        	$ctrlName = ( empty($args[0]) ) ? 'Index' : ucfirst($args[0]);
+			//check existence of methodAction
+			if( !method_exists($controller, $action) ){
+				$app->abort(404);
+			}	
+
+			//all is ok, execute the controller
+		    return $controller->{$action}( \Symfony\Component\HttpFoundation\Request::createFromGlobals() );
+        })
+        ->assert('args', '.*')
+		->convert('args', function ($args,$app) {
+		    $argv = explode('/', $args);
+
+        	$ctrlName = ( empty($argv[0]) ) ? 'Index' : ucfirst($argv[0]);
 
 			$classController = '\Unika\Module\Page\Controller\\'.$ctrlName.'Controller';
 			
-			$actionName = ( empty($args[1]) ) ? 'index' : strtolower($args[1]);
+			$actionName = ( empty($argv[1]) ) ? 'index' : strtolower($argv[1]);
 
 			$action = $actionName.'Action';
 
@@ -33,22 +48,12 @@ class ControllerServiceProvider implements ControllerProviderInterface
 				$app->abort(404);
 			}
 
-			//build classController
-			$controller = new $classController($app);
-
-			//check existence of methodAction
-			if( !method_exists($classController, $action) ){
-				$app->abort(404);
-			}	
-
-			//all is ok, create main request
-		    return $controller->{$action}( \Symfony\Component\HttpFoundation\Request::createFromGlobals() );
-        })
-        ->assert('args', '.*')
-		->convert('args', function ($args) {
-		    return explode('/', $args);
+			return array(
+				'controller'	=> $classController,
+				'action'		=> $action 
+			);
 		})
-		->bind('Page.default')
+		->bind('page')
 		->method('GET|POST|PUT')
 		->compile();
 
