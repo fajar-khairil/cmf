@@ -12,12 +12,14 @@ use Pimple\Container;
 use Unika\Interfaces\ServiceProviderInterface;
 use Unika\Security\Authorization\ResourceRegistryInterface;
 use Unika\Security\Authorization\RoleRegistryInterface;
+use Unika\Interfaces\CommandProviderInterface;
+use Unika\Console;
 
-class AclServiceProvider implements ServiceProviderInterface
+class AclServiceProvider implements ServiceProviderInterface,CommandProviderInterface
 {
 	public function register(Container $app)
     {
-    	$defaultImpl = $app->config('acl.driver');
+    	$defaultImpl = $app->config('acl.default');
 
     	switch ($defaultImpl) 
     	{
@@ -38,6 +40,15 @@ class AclServiceProvider implements ServiceProviderInterface
     			}
                 break;
     	}
+    }
+
+    /**
+     *
+     *  register command if any
+     */
+    public function addCommand(Console $app)
+    {
+        $app->add(new \Unika\Command\ACL\InstallCommand());
     }
 
     protected function registerAclDatabase(Container $app)

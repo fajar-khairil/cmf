@@ -23,8 +23,7 @@ $app->before(function ($request,$app){
 
 $app->before(function ($request,$app){
     $uris = $app->convertRequestUri($request->getRequestUri());
-    //dd('request.'.$uris['controller'].'.'.$uris['action']);
-    $app['Illuminate.events']->fire('request.'.$uris['controller'].'.'.$uris['action'],array($request,$app));
+    $app['Illuminate.events']->fire('request.'.$uris['controller'].':'.$uris['action'],array($request,$app));
 },-512);
 
 require_once 'routes.php';

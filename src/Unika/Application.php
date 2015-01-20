@@ -132,7 +132,6 @@ class Application extends SilexApp
     	$ctrlName = ( empty($argv[1]) ) ? 'Index' : ucfirst($argv[1]);
 		
 		$actionName = ( empty($argv[2]) ) ? 'index' : strtolower($argv[2]);
-
 		return array(
 			'controller'	=> $ctrlName,
 			'action'		=> $actionName 

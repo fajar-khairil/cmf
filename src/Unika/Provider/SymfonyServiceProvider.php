@@ -11,8 +11,6 @@ namespace Unika\Provider;
 
 use Pimple\Container;
 use Unika\Interfaces\ServiceProviderInterface;
-use Unika\Security\Authorization\ResourceRegistryInterface;
-use Unika\Security\Authorization\RoleRegistryInterface;
 
 class SymfonyServiceProvider implements ServiceProviderInterface
 {
@@ -21,9 +19,13 @@ class SymfonyServiceProvider implements ServiceProviderInterface
     	$app['sf.finder'] = function($app){
             $finder = new \Symfony\Component\Finder\Finder();
             $finder->useBestAdapter();
+            return $finder;
         };
-    }
 
+        $app['sf.stopwatch'] = $app->factory(function(){
+            return new \Symfony\Component\Stopwatch\Stopwatch();
+        });
+    }
 
     /**
      *
@@ -41,7 +43,8 @@ class SymfonyServiceProvider implements ServiceProviderInterface
     public function getServices()
     {
         return array(
-            'sf.finder'   =>  'Symfony\Component\Finder\Finder'
+            'sf.finder'   =>  'Symfony\Component\Finder\Finder',
+            'sf.stopwatch'   =>  'Symfony\Component\Stopwatch\Stopwatch'
         );
     }
 

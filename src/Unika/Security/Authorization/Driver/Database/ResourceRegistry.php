@@ -21,7 +21,7 @@ class ResourceRegistry implements ResourceRegistryInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->resource_table = $this->app->config('acl.Database.resource_table');
+		$this->resource_table = $this->app->config('acl.drivers.Database.resource_table');
 		$this->Table = $this->app['database']->table($this->resource_table);
 	}
 

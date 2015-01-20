@@ -1,5 +1,8 @@
 <?php
 return array(
-	'debug'			=> 	False,
+	'name'			=> 'UnikaCMF',
+	'debug'			=> 	True,
+	// Monolog\Logger CONSTANT
+	'debug_level'	=> 400,
 	'default_theme'	=> 'default'
 );

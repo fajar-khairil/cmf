@@ -43,7 +43,9 @@ class InstallCommand extends Command
           if( !$confirmed ){
             $this->comment($output,'Canceled by user.');
             return False;
-          }          
+          }       
+
+          $this->container['database']->schema($conn)->drop($this->container->config('database.migrations'));
       }
 
    	  $Migrator = new DatabaseMigrationRepository(

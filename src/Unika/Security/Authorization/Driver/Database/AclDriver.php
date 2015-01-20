@@ -10,7 +10,6 @@ namespace Unika\Security\Authorization\Driver\Database;
 
 use Unika\Security\Authorization\AclDriverInterface;
 use Unika\Application;
-use Unika\Security\Authorization\AccessDeniedHttpException;
 
 class AclDriver implements AclDriverInterface
 {
@@ -20,7 +19,7 @@ class AclDriver implements AclDriverInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->acl_table = $this->app->config('acl.Database.acl_table');
+		$this->acl_table = $this->app->config('acl.drivers.Database.acl_table');
 		$this->Table = $this->app['database']->table($this->acl_table);
 	}
 
@@ -41,12 +40,11 @@ class AclDriver implements AclDriverInterface
 
 		$permissions = json_decode($acl['permissions'],True);
 
-		//should we throw an exception ?
-		if( !$permissions ){ 
-			throw new AccessDeniedHttpException('AclRegistry cannot decode permission.');
-		}
+		if( !is_array($permissions) ) return False;
 
-		if( $permissions[0] == "*" ){ return True; }
+		$permission = isset($permissions[0]) ? $permissions[0] : null;
+		if(  $permission == "*" ){ return True; }
+
 		return in_array($operation, $permissions);
 	}
 
@@ -73,30 +71,77 @@ class AclDriver implements AclDriverInterface
 				return $this->Table->insert(array(
 					'role_id'	=> $roleId,
 					'aco_id'	=> $resourceId,
-					'permissions'	=> json_encode($operations)
+					'permissions'	=> json_encode($operations),
+					'created_at'	=> date('Y-m-d H:i:s')
 				));
 			}
 		}
 		else
 		{
 			$permissions = json_decode($acl['permissions'],True);
-			
-			if( $allow === True ){
+
+			if( $allow === True )
+			{
 				if( is_array($permissions) )
-					$new_permissions = array_intersect($permissions,$operations);
+				{
+					$new_permissions = array_unique(array_merge($permissions,$operations));
+				}
 				else
+				{
 					$new_permissions = $operations;
-			}else{				
-				foreach ($permissions as $key => $value) {
+				}
+			}
+			else
+			{			
+				$new_permissions = array();	
+				foreach ($permissions as $key => $value) 
+				{
 					if( in_array($value, $operations) ){
 						unset($permissions[$key]);
+					}else{
+						$new_permissions[] = $value;
 					}
 				}
-				$new_permissions = $permissions;
+
+				sort($permissions,SORT_NUMERIC);
+				$new_permissions = $permissions;				
 			}
 
-			$sql = 'update '.$this->acl_table.' SET permissions = ? where role_id = ? AND aco_id = ?';
+			$sql = 'update '.$this->acl_table.' SET permissions = ? , updated_at = NOW() where role_id = ? AND aco_id = ?';
 			$this->Table->getConnection()->update($sql,[ json_encode($new_permissions), $roleId,$resourceId ]);
 		}
+	}
+
+	public static function createTablesDependencies(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema)
+	{
+		$schema->create($app->config('acl.drivers.Database.role_table'),function($blueprint)
+		{
+		  $blueprint->integer('id',True,True);
+		  $blueprint->string('name');
+		  $blueprint->string('description');
+
+		  $blueprint->softDeletes();
+		  $blueprint->nullableTimestamps();
+		});		
+
+		$schema->create($app->config('acl.drivers.Database.resource_table'),function($blueprint)
+		{
+		  $blueprint->integer('id',True,True);
+		  $blueprint->string('name');
+
+		  $blueprint->softDeletes();
+		  $blueprint->nullableTimestamps();
+		});		
+
+		$schema->create($app->config('acl.drivers.Database.acl_table'),function($blueprint)
+		{
+		  $blueprint->integer('id',True,True);
+		  $blueprint->integer('role_id');
+		  $blueprint->integer('aco_id');
+		  $blueprint->text('permissions');
+
+		  $blueprint->softDeletes();
+		  $blueprint->nullableTimestamps();
+		});				
 	}
 }

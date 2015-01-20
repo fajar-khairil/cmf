@@ -21,7 +21,7 @@ class RoleRegistry implements RoleRegistryInterface
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->role_table = $this->app->config('acl.Database.role_table');
+		$this->role_table = $this->app->config('acl.drivers.Database.role_table');
 		$this->Table = $this->app['database']->table($this->role_table);
 	}
 

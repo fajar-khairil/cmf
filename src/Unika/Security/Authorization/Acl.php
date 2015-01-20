@@ -9,7 +9,7 @@
 
 namespace Unika\Security\Authorization;
 
-use Unika\Security\Authorization\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Acl
 {	
@@ -81,6 +81,8 @@ class Acl
    */
   public function isGranted($resource, $operation = '*',$role = null,$assertion = null)
   {     
+    if( !is_string($operation) ) throw new \RuntimeException('operation must be string');
+
     if( $assertion === null )
     {
       $role = $this->getRole($role);
@@ -109,7 +111,7 @@ class Acl
       return $this->setRules($role,$resource,$operation,False);
   }
 
-  public function allow($role,$resource,array $operation = array('*'))
+  public function grant($role,$resource,array $operation = array('*'))
   {
       return $this->setRules($role,$resource,$operation,True);
   }
