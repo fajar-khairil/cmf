@@ -1,8 +1,23 @@
 <?php
 return array(
+	// name of application
 	'name'			=> 'UnikaCMF',
+
+	// are we on debug mode ?
 	'debug'			=> 	True,
-	// Monolog\Logger CONSTANT
+
+	// multilanguage route support ?
+	'multilanguage'	=>  True,
+
+	// minimal level to log Monolog\Logger CONSTANT
 	'debug_level'	=> 400,
-	'default_theme'	=> 'default'
+	
+	// default theme to use
+	'default_theme'	=> 'default',
+
+	// supported localization
+	'locales'		=> array('id','en','fr'),
+	
+	//default localization or fallback
+	'default_locale'=> 'id',
 );

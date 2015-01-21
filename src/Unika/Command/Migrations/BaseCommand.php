@@ -27,9 +27,9 @@ abstract class BaseCommand extends Command {
 		// If the module is in the list of migration paths we received we will put
 		// the migrations in that path. Otherwise, we will assume the module is
 		// is in the module directories and will place them in that location.
-		if ( ! is_null($module))
+		if ( ! is_null($moduleName))
 		{
-			return $this->container['path.module'].'/'.$module.'/resources/database/migrations';
+			return $this->container['path.module'].'/'.$moduleName.'/resources/database/migrations';
 		}
 
 		return $this->container['path.base'].'/var/database/migrations';

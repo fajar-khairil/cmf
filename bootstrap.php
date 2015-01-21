@@ -47,10 +47,18 @@ $app->setLoader($loader);
 /**
  * Registering Core ServiceProvider you can disabled if you dont need it
  */
-$app->register(new \Silex\Provider\LocaleServiceProvider(),array(
-    'locale_fallbacks'  => 'en'
-));
-$app->register(new \Silex\Provider\TranslationServiceProvider());
+
+if( $app->config('app.multilanguage',False) )
+{
+    $app->register(new \Silex\Provider\LocaleServiceProvider(),array(
+        'locale' => 'id'
+    ));
+    
+    $app->register(new \Silex\Provider\TranslationServiceProvider(),array(
+        'locale_fallbacks' => $app->config('app.locales')
+    ));
+}
+
 $app->register(new \Unika\Provider\MonologServiceProvider(),
     array(
         'monolog.logfile'       =>  $app['path.var'].'/logs/'.$app->config('app.name').'.log',
@@ -63,5 +71,22 @@ $app->register(new \Unika\Provider\DatabaseServiceProvider());
 $app->register(new \Unika\Provider\ViewServiceProvider());
 $app->register(new \Unika\Provider\AuthServiceProvider());
 $app->register(new \Unika\Provider\AclServiceProvider());
+
+$app['translator.domains'] = array(
+    'messages' => array(
+        'en' => array(
+            'hello'     => 'Hello %name%',
+            'goodbye'   => 'Goodbye %name%',
+        ),
+        'id' => array(
+            'hello'     => 'Hallo %name%',
+            'goodbye'   => 'Dadah %name%',
+        ),
+        'fr' => array(
+            'hello'     => 'Bonjour %name%',
+            'goodbye'   => 'Au revoir %name%',
+        ),
+    )
+);
 
 return $app;

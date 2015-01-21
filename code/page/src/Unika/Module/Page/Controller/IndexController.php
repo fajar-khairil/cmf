@@ -19,9 +19,8 @@ class IndexController extends \Unika\Controller
 		return $response;
 	}
 
-	public function errorAction(Request $request)
+	public function testAction(Request $request)
 	{
-		$response = $this->app->createResponse($this->app['view']->make('home')->render());
-		return $response;
+		return $this->app->trans('hello',array('%name%' => 'Fajar'));
 	}
 }

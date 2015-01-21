@@ -18,10 +18,18 @@ class ControllerServiceProvider implements ControllerProviderInterface
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-        $controllers->match('/{args}', function (Application $app,$args) {
+	    $controllers->match('/{controller}/{action}/{_locale}', function (Application $app,$controller,$action,$_locale) 
+        {
+			$classController = '\Unika\Module\Page\Controller\\'.ucfirst($controller).'Controller';
+
+			//checking classController
+			if( !class_exists($classController) ){
+				$app->abort(404);
+			}
+
 			//build classController
-			$controller = new $args['controller']($app);
-			$action = $args['action'];
+			$controller = new $classController($app);
+			$action = strtolower($action).'Action';
 
 			//check existence of methodAction
 			if( !method_exists($controller, $action) ){
@@ -31,31 +39,13 @@ class ControllerServiceProvider implements ControllerProviderInterface
 			//all is ok, execute the controller
 		    return $controller->{$action}( \Symfony\Component\HttpFoundation\Request::createFromGlobals() );
         })
-        ->assert('args', '.*')
-		->convert('args', function ($args,$app) {
-		    $argv = explode('/', $args);
-
-        	$ctrlName = ( empty($argv[0]) ) ? 'Index' : ucfirst($argv[0]);
-
-			$classController = '\Unika\Module\Page\Controller\\'.$ctrlName.'Controller';
-			
-			$actionName = ( empty($argv[1]) ) ? 'index' : strtolower($argv[1]);
-
-			$action = $actionName.'Action';
-
-			//checking classController
-			if( !class_exists($classController) ){
-				$app->abort(404);
-			}
-
-			return array(
-				'controller'	=> $classController,
-				'action'		=> $action 
-			);
-		})
+	    ->value('controller','Index')
+	    ->value('action','index')
+	    ->assert('_locale', implode('|',$app->config('app.locales')) )
+        ->value('_locale',$app->config('app.default_locale'))    
 		->bind('page')
-		->method('GET|POST|PUT')
-		->compile();
+		->method('GET|POST|PUT');
+		//->compile();
 
         return $controllers;
     }	

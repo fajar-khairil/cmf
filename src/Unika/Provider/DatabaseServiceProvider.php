@@ -46,6 +46,7 @@ class DatabaseServiceProvider implements ServiceProviderInterface,CommandProvide
     public function addCommand(Console $app)
     {
         $app->add(new \Unika\Command\Migrations\InstallCommand());
+        $app->add(new \Unika\Command\Migrations\MakeCommand());
     }
 
     /**

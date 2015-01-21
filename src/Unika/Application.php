@@ -39,13 +39,13 @@ class Application extends SilexApp
 	public function  __construct(array $values = array())
 	{
 		parent::__construct($values);
-
 		$this->register(new \Unika\Provider\IlluminateServiceProvider());
 		$this->register(new \Unika\Provider\ConfigServiceProvider());
 		$this->register(new \Unika\Provider\SymfonyServiceProvider());
 		
 		$this['debug'] = $this->config['app.debug'];
-
+		$this['locale'] = $this->config('app.default_locale');
+		
 		if( $this['debug'] )
 		{
 			\Symfony\Component\Debug\Debug::enable(E_ALL);

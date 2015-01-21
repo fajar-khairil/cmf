@@ -35,15 +35,6 @@ $app->error(function ($e,$request) use ($app)
 {
     $code = $e instanceof HttpException ? $e->getStatusCode() : 500;
     $app['logger']->addError($e->getMessage().' : '.$code);
-    
-    if( $app['debug'] )
-    {
-        dump($e);
-    }
-    else
-    {
-       throw $e;
-    }
 });
 
 $app->run();
