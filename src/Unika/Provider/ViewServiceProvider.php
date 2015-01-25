@@ -31,16 +31,19 @@ class ViewServiceProvider implements ServiceProviderInterface,\Unika\Interfaces\
                 return new \Illuminate\View\Engines\CompilerEngine($blade);
             });
 
-            $viewFactory = new \Unika\Ext\ViewFactory(
+            $viewFactory = new \Illuminate\View\Factory(
             	$engineResolver,
             	new \Illuminate\View\FileViewFinder(
             		$app['Illuminate.filesystem'],
             		$paths,
                     array('blade','php')
-            	)
+            	),
+                $app['Illuminate.events']
             );
 
-            $viewFactory->setContainer($app);
+            $viewFactory->share('app',$app);
+            $viewFactory->addExtension('blade','blade');
+            $viewFactory->setContainer($app['Illuminate.container']);
 
             return $viewFactory;
     	};

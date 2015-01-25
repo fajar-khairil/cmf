@@ -9,6 +9,8 @@
 namespace Unika;
 
 use Silex\Application as SilexApp;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Application extends SilexApp
 {
@@ -63,6 +65,18 @@ class Application extends SilexApp
 		$this['path.module'] = $this['path.base'].'/code';
 		$this['path.themes'] = $this['path.base'].'/themes';
 		$this['path.var']	=	$this['path.base'].'/var';
+
+		/** before execute controller */
+		$this->before(function (Request $request,$app){
+		    $uris = $app->convertRequestUri($request->getRequestUri());
+		    $app['Illuminate.events']->fire('on.'.$uris['controller'].':'.$uris['action'],array($request,$app));
+		},-512);
+
+		/** after execute controller */
+		$this->after(function (Request $request, Response $response,$app){
+		    $uris = $app->convertRequestUri($request->getRequestUri());
+		    $app['Illuminate.events']->fire('after.request.'.$uris['controller'].':'.$uris['action'],array($request,$response,$app));
+		},-512);
 
 		static::$instance = $this;
 	}

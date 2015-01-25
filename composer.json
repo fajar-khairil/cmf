@@ -15,7 +15,10 @@
         "psr-0": {
             "Unika\\": "src/",
             "Unika\\Module\\Page\\": "code/page/src"
-        }
+        },
+        "classmap": [
+            "var/database/migrations"
+        ]
     },
     "require": {
         "silex/silex": "2.0.*@dev",

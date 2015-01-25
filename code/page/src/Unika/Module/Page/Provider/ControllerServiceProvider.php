@@ -44,8 +44,8 @@ class ControllerServiceProvider implements ControllerProviderInterface
 	    ->assert('_locale', implode('|',$app->config('app.locales')) )
         ->value('_locale',$app->config('app.default_locale'))    
 		->bind('page')
-		->method('GET|POST|PUT');
-		//->compile();
+		->method('GET|POST|PUT')
+		->compile();
 
         return $controllers;
     }	

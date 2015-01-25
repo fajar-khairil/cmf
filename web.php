@@ -21,11 +21,6 @@ $app->before(function ($request,$app){
     $app['view']->share( 'page_title',$app->config('app.name').' &mdash; ');
 });
 
-$app->before(function ($request,$app){
-    $uris = $app->convertRequestUri($request->getRequestUri());
-    $app['Illuminate.events']->fire('request.'.$uris['controller'].':'.$uris['action'],array($request,$app));
-},-512);
-
 require_once 'routes.php';
 
 /**
