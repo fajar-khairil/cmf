@@ -14,7 +14,7 @@
     "autoload": {
         "psr-0": {
             "Unika\\": "src/",
-            "Unika\\Module\\Page\\": "code/page/src"
+            "Unika\\Page\\": "code/page/src"
         },
         "classmap": [
             "var/database/migrations"
@@ -35,6 +35,7 @@
     	"illuminate/config": "4.2.*@dev",
         "illuminate/database": "4.2.*@dev",
         "brandonwamboldt/utilphp": "dev-master",
-        "PasswordLib/PasswordLib": "dev-master"
+        "PasswordLib/PasswordLib": "dev-master",
+        "anahkiasen/underscore-php": "dev-master"
     }
 }

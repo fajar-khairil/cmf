@@ -52,7 +52,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
         };
 
         $app['session.storage.handler'] = function ($app) {
-            return new NativeFileSessionHandler($app['session.storage.save_path']);
+            return new NativeFileSessionHandler($app['path.var'].'/sessions');
         };
 
         $app['session.storage.native'] = function ($app) {

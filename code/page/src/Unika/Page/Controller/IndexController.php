@@ -7,7 +7,7 @@
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-namespace Unika\Module\Page\Controller;
+namespace Unika\Page\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,6 +21,6 @@ class IndexController extends \Unika\Controller
 
 	public function testAction(Request $request)
 	{
-		return $this->app->trans('hello',array('%name%' => 'Fajar'));
+		return $this->app->trans('Hello',array('%name%' => 'Fajar'));
 	}
 }

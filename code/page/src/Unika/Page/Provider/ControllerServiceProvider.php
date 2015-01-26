@@ -6,7 +6,7 @@
  *	@author Fajar Khairil <fajar.khairil@gmail.com>
  */
 
-namespace Unika\Module\Page\Provider;
+namespace Unika\Page\Provider;
 
 use Silex\Api\ControllerProviderInterface;
 use Silex\Application;
@@ -20,7 +20,7 @@ class ControllerServiceProvider implements ControllerProviderInterface
 
 	    $controllers->match('/{controller}/{action}/{_locale}', function (Application $app,$controller,$action,$_locale) 
         {
-			$classController = '\Unika\Module\Page\Controller\\'.ucfirst($controller).'Controller';
+			$classController = '\Unika\Page\Controller\\'.ucfirst($controller).'Controller';
 
 			//checking classController
 			if( !class_exists($classController) ){
@@ -29,15 +29,9 @@ class ControllerServiceProvider implements ControllerProviderInterface
 
 			//build classController
 			$controller = new $classController($app);
-			$action = strtolower($action).'Action';
-
-			//check existence of methodAction
-			if( !method_exists($controller, $action) ){
-				$app->abort(404);
-			}	
 
 			//all is ok, execute the controller
-		    return $controller->{$action}( \Symfony\Component\HttpFoundation\Request::createFromGlobals() );
+		    return $controller->execute( \Symfony\Component\HttpFoundation\Request::createFromGlobals() , strtolower($action).'Action' );
         })
 	    ->value('controller','Index')
 	    ->value('action','index')

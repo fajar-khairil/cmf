@@ -11,6 +11,7 @@ rm -rf var/views/*
 rm -rf var/logs/*
 rm -rf var/database/migrations/*
 rm -rf var/database/seeds/*
+rm -rf lang/cache
 
 echo "keep temporary diretories.."
 touch var/cache/.gitkeep

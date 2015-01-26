@@ -15,7 +15,9 @@ return array(
 	// default theme to use
 	'default_theme'	=> 'default',
 
-	// supported localization
+	'base_url'		=> 'http://unikacmf.dev/',
+	
+	// supported localizations
 	'locales'		=> array('id','en','fr'),
 	
 	//default localization or fallback

@@ -16,11 +16,11 @@ class SymfonyServiceProvider implements ServiceProviderInterface
 {
 	public function register(Container $app)
     {
-    	$app['sf.finder'] = function($app){
+    	$app['sf.finder'] = $app->factory(function($app){
             $finder = new \Symfony\Component\Finder\Finder();
             $finder->useBestAdapter();
             return $finder;
-        };
+        });
 
         $app['sf.stopwatch'] = $app->factory(function(){
             return new \Symfony\Component\Stopwatch\Stopwatch();

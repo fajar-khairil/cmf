@@ -54,7 +54,7 @@ if( $app->config('app.multilanguage',False) )
         'locale' => 'id'
     ));
     
-    $app->register(new \Silex\Provider\TranslationServiceProvider(),array(
+    $app->register(new \Unika\Provider\TranslationServiceProvider(),array(
         'locale_fallbacks' => $app->config('app.locales')
     ));
 }

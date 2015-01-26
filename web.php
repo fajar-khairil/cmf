@@ -8,18 +8,13 @@
 
 $app = require_once 'bootstrap.php';
 
-/** 
- *  Generic before middleware, you can calways alter it
- */
-$app->before(function ($request,$app){
-    // asset path or it can be yor own cdn url!!
-    $app['asset_path'] = $request->getBasePath();
-    $app['stylesheets'] = $app['asset_path'].'/css/';
-    $app['scripts'] = $app['asset_path'].'/js/';
-    $app['img'] = $app['asset_path'].'/img/';
+// define asset_path
+$app['asset_path'] = $app['baseUrl'];
+$app['css'] = $app['asset_path'].'css/';
+$app['scripts'] = $app['asset_path'].'js/';
+$app['img'] = $app['asset_path'].'img/';
 
-    $app['view']->share( 'page_title',$app->config('app.name').' &mdash; ');
-});
+$app['view']->share( 'page_title','');
 
 require_once 'routes.php';
 

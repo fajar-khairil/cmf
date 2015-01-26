@@ -29,7 +29,7 @@ class Acl
 		$this->aclDriver = $aclDriver;
 	}
 
-	public function setAuth(\Unika\Security\Authentication\AuthInterface $auth)
+	public function setAuth(\Unika\Security\Authentication\Auth $auth)
 	{
 		$this->auth = $auth;
 	}
@@ -136,15 +136,15 @@ class Acl
 
   protected function getRole($role)
   {
-  	if( $role === null )
-  	{
-			if( ! $this->auth->check() )
-				throw new AccessDeniedHttpException('role no supplied and there are no logged in user on Auth.');
+    if( $role === null )
+    {
+      if( ! $this->getAuth()->check() )
+        return 0;// 0 mean public/anonymous
 
-			$user = $this->auth->user();
-			$role = $user->role_id;
-  	}
+      $user = $this->getAuth()->user();
+      $role = $user->role_id;
+    }
 
-		return $this->roleRegistry->getRole($role);
+    return $this->roleRegistry->getRole($role);
   }
 }

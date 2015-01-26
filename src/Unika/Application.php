@@ -41,12 +41,18 @@ class Application extends SilexApp
 	public function  __construct(array $values = array())
 	{
 		parent::__construct($values);
+
+        $this['resolver'] = function ($app){
+            return new Ext\ControllerResolver($app, $app['logger']);
+        };
+
 		$this->register(new \Unika\Provider\IlluminateServiceProvider());
 		$this->register(new \Unika\Provider\ConfigServiceProvider());
 		$this->register(new \Unika\Provider\SymfonyServiceProvider());
 		
 		$this['debug'] = $this->config['app.debug'];
 		$this['locale'] = $this->config('app.default_locale');
+		$this['baseUrl'] = $this->config('app.base_url','/');
 		
 		if( $this['debug'] )
 		{
@@ -65,18 +71,6 @@ class Application extends SilexApp
 		$this['path.module'] = $this['path.base'].'/code';
 		$this['path.themes'] = $this['path.base'].'/themes';
 		$this['path.var']	=	$this['path.base'].'/var';
-
-		/** before execute controller */
-		$this->before(function (Request $request,$app){
-		    $uris = $app->convertRequestUri($request->getRequestUri());
-		    $app['Illuminate.events']->fire('on.'.$uris['controller'].':'.$uris['action'],array($request,$app));
-		},-512);
-
-		/** after execute controller */
-		$this->after(function (Request $request, Response $response,$app){
-		    $uris = $app->convertRequestUri($request->getRequestUri());
-		    $app['Illuminate.events']->fire('after.request.'.$uris['controller'].':'.$uris['action'],array($request,$response,$app));
-		},-512);
 
 		static::$instance = $this;
 	}
