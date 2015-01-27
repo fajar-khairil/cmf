@@ -34,33 +34,36 @@ class AuthDatabase implements AuthDriverInterface
 	protected function init()
 	{
 		$self = $this;
-		$this->app['Illuminate.events']->listen('auth.success',function($credentials,$remember,$timeout,$auth) use($self){
-			$self->doOnSucess($credentials,$remember,$timeout,$auth);
+		$this->app['Illuminate.events']->listen('auth.success',function($credentials,$col,$remember,$timeout,$auth) use($self){
+			$self->doOnSucess($credentials,$col,$remember,$timeout,$auth);
 		});
 
-		$this->app['Illuminate.events']->listen('auth.failure',function($credentials) use($self){
-			$self->doOnFailure($credentials);
+		$this->app['Illuminate.events']->listen('auth.failure',function($credentials,$col) use($self){
+			$self->doOnFailure($credentials,$col);
 		});			
 	}
 
-	protected function doOnFailure($credentials)
+	protected function doOnFailure($credentials,$col)
 	{
-		$_sql = 'UPDATE '.$this->app->config('auth.drivers.database.users_table').
-			' SET last_failed_count = last_failed_count + 1
-			WHERE username = "'.$credentials['username'].'"';
+		$_sql = 'UPDATE '.$this->app->config('auth.drivers.database.users_table').' 
+		SET last_failed_count = last_failed_count + 1 WHERE '.$col.' = ?';
 
-		$this->app['database']->getConnection($this->connectionName)->update($_sql);
+		$bindings = array(
+			$credentials[$col]
+		);
+
+		$this->app['database']->getConnection($this->connectionName)->update($_sql,$bindings);
 	}
 
 	/**
 	 *
 	 *	@return user or null if not found
 	 */
-	public function resolveUser(array $credentials)
+	public function resolveUser($field,$value)
 	{
-		if( $this->user === null )
-		{
-			$this->user = $this->db->where('username','=',$credentials['username'])->first();
+		if( null === $this->user )
+		{		
+			$this->user = $this->db->where($field,'=',$value)->first();
 		}
 
 		return $this->user;
@@ -70,9 +73,9 @@ class AuthDatabase implements AuthDriverInterface
 	 *
 	 *	@return True on blocked , null if credential not found
 	 */
-	public function isBlocked(array $credentials)
+	public function isBlocked(array $credentials,$col)
 	{
-		$user = $this->resolveUser($credentials);
+		$user = $this->resolveUser($credentials,$col);
 		
 		if( $user )
 		{
@@ -142,44 +145,19 @@ class AuthDatabase implements AuthDriverInterface
 		]);		
 	}
 
-	protected function doOnSucess($credentials,$remember,$timeout,$auth)
+	protected function doOnSucess($credentials,$col,$remember,$timeout,$auth)
 	{
 		$now = date('Y-m-d H:i:s');
-		$this->db->where('username' ,'=',$credentials['username'])->update(['last_login' => $now,'updated_at' =>  $now]);
+		$this->db->where($col ,'=',$credentials[$col])->update(['last_login' => $now,'updated_at' =>  $now]);
 	}
 
 	/**
 	 *	@param array $credentials
-	 *	@return AuthUserInteface
-	 *	@throw AuthException
+	 *	@return User
 	 */
-	public function authenticate(array $credentials)
+	public function authenticate($field,$value)
 	{
-		$user = $this->resolveUser($credentials);
-
-		if( !$user )
-		{
-			// @todo : should we localized it?
-			throw new AuthException('Invalid Username supplied');
-		}
-
-		$passwordLibClass = $this->app->config('auth.password_hasher_class');
-	
-		if( !\Unika\Util::classImplements($passwordLibClass,'Unika\Security\PasswordHasherInterface') )
-		{
-			throw new AuthException('invalid password_hasher_class please check your auth config.');
-		}
-
-		$passwordLib = new $passwordLibClass();
-
-		$isValidPassword = $passwordLib->verifyPasswordHash( $credentials['password'].$user['salt'],$user['pass'] );
-
-		if( !$isValidPassword )
-		{
-			throw new AuthException('invalid password supplied.');
-		}
-
-		return $user;
+		return $this->resolveUser($credentials);
 	}
 
 	public static function createAllTables(\Unika\Application $app ,\Illuminate\Database\Schema\Builder $schema)

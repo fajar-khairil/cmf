@@ -10,12 +10,6 @@ namespace Unika\Security\Authentication;
 
 interface AuthDriverInterface
 {
-	/**
-	 *	@param array or AuthUserInterface $credentials
-	 *	@return AuthUserInteface or throw AuthException if failure
-	 *	@throw AuthException
-	 */
-	public function authenticate(array $credentials);
 
 	/**
 	 *	check the valiity of remember_me cookie
@@ -43,11 +37,11 @@ interface AuthDriverInterface
 	 *	@param array $credentials
 	 *	@return True on blocked , null if credential not found
 	 */
-	public function isBlocked(array $credentials);
+	public function isBlocked(array $credentials,$col);
 
 	/**
 	 *	get user by credential(username)
 	 *	@return user or null if not found
 	 */
-	public function resolveUser(array $credentials);
+	public function resolveUser($field,$value);
 }

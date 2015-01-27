@@ -13,11 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 Abstract class Controller
 {
 	protected $app;
+	protected $request;
+	protected $actionName;
+	protected $method;
 
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
-		$this->init();
 	}
 
 	public function execute(Request $request,$actionName)
@@ -27,21 +29,37 @@ Abstract class Controller
 			$this->app->abort(404);
 		}
 
-		$this->before($request);
+		$this->actionName = $actionName;
+		$this->method = $request->getMethod();
 
-		return $this->after($request,$this->{$actionName}($request));
+		$this->request = $request;
+		$this->before();
+
+		return $this->after($this->{$actionName}());
 	}
 	
+	protected function post($field = null,$default = null)
+	{
+		if( null === $field )
+			return $this->request->request;
+
+		return $this->request->request->get($field,$default);
+	}
+
+	protected function query($field = null,$default = null)
+	{
+		if( null === $field )
+			return $this->request->query;
+
+		return $this->request->query->get($field,$default);
+	}
+
 	// to be overide by concreate class
-	protected function init()
+	protected function before()
 	{}
 
 	// to be overide by concreate class
-	protected function before(Request $request)
-	{}
-
-	// to be overide by concreate class
-	protected function after(Request $request,$response)
+	protected function after($response)
 	{
 		return $response;
 	}

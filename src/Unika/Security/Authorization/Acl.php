@@ -86,7 +86,7 @@ class Acl
     if( $assertion === null )
     {
       $role = $this->getRole($role);
-      if( !$role['id'] ){ throw new AccessDeniedHttpException('Role not found.'); }
+      if( !$role['id'] ){ throw new AccessDeniedHttpException(); }
 
       $resource = $this->getResource($resource);
       if( !$resource['id'] ){ throw new AccessDeniedHttpException('Resource not found.'); }  
@@ -136,15 +136,15 @@ class Acl
 
   protected function getRole($role)
   {
-    if( $role === null )
-    {
-      if( ! $this->getAuth()->check() )
-        return 0;// 0 mean public/anonymous
+  	if( $role === null )
+  	{
+			if( ! $this->getAuth()->check() )
+				return 0;// 0 mean public/anonymous
 
-      $user = $this->getAuth()->user();
-      $role = $user->role_id;
-    }
+			$user = $this->getAuth()->user();
+			$role = $user->role_id;
+  	}
 
-    return $this->roleRegistry->getRole($role);
+		return $this->roleRegistry->getRole($role);
   }
 }

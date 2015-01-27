@@ -52,7 +52,7 @@ class Auth
 
 	public function getCache()
 	{
-		if( $this->cache === NULL ){
+		if( null === $this->cache ){
 			throw new \RuntimeException('Application not set, please set it via '.get_class($this).'::setCache method.');
 		}
 
@@ -94,24 +94,38 @@ class Auth
 	 *	@return boolean
 	 */
 	public function login($credentials,$remember = False,$timeout = null)
-	{		
-		$this->app['Illuminate.events']->fire('auth.beforeLogin',[$credentials]);
+	{	
+		// resolve valid credential column
+		$col = 'username';
+		if( !isset($credentials[$col]) ){
+			$col = 'email';
+			if( !isset($credentials[$col]) )
+				$this->app['logger']->addCritical('FATAL : Incorrect credentials supplied.');
+				throw new AuthException('FATAL : Incorrect credentials supplied.');
+		}
+
+		if( False !== strpos($credentials[$col], '@') ){
+			$credentials['email'] = $credentials[$col];
+			$col = 'email';
+		}
+
+		$this->app['Illuminate.events']->fire('auth.beforeLogin',[$credentials,$col]);
 		
 		if( $this->app->config('auth.guard.active') )
 		{
-			if( $this->authDriver->isBlocked($credentials) )
+			if( $this->authDriver->isBlocked($credentials,$col) )
 			{
 				$this->failureReason = 'this account on Blocked.';
 				return False;
 			}
 		}
 
-		$user = $this->internalAuthenticate($credentials);
+		$user = $this->internalAuthenticate($credentials,$col);
 
 		if( $user )
 		{
 			$this->session->set($this->sessionName,$user);
-			$this->app['Illuminate.events']->fire('auth.success',[$credentials,$remember,$timeout,$this]);
+			$this->app['Illuminate.events']->fire('auth.success',[$credentials,$col,$remember,$timeout,$this]);
 
 			if( True === (bool)$remember )
 			{
@@ -140,7 +154,7 @@ class Auth
 		}
 		else
 		{
-			$this->app['Illuminate.events']->fire('auth.failure',[$credentials]);
+			$this->app['Illuminate.events']->fire('auth.failure',[$credentials,$col]);
 
 			return False;
 		}
@@ -149,15 +163,42 @@ class Auth
 	/**
 	 *	@return AuthUser on Success False or Exception on Failure
 	 */
-	protected function internalAuthenticate($credentials)
+	protected function internalAuthenticate($credentials,$col)
 	{	
 		try
 		{
-			$user = $this->authDriver->authenticate($credentials);
+			if( null === array_get($credentials,'password') ){
+				$this->failureReason = 'no password supplied';
+				return False;
+			}
+
+			// resolve user
+			$user = $this->authDriver->resolveUser($col,$credentials[$col]);
+
+			if( !$user )
+			{
+				// @todo : should we localized Exception Message ?
+				throw new AuthException('Invalid Username supplied');
+			}
+
+			$passwordLibClass = $this->app->config('auth.password_hasher_class');
+		
+			if( !\Unika\Util::classImplements($passwordLibClass,'Unika\Security\PasswordHasherInterface') )
+			{
+				throw new AuthException('Fatal Error : invalid password_hasher_class please check your auth config.');
+			}
+
+			$passwordLib = new $passwordLibClass();
+
+			$isValidPassword = $passwordLib->verifyPasswordHash( $credentials['password'].$user['salt'],$user['pass'] );
+
+			if( !$isValidPassword )
+			{
+				throw new AuthException('invalid password supplied.');
+			}
 
 			if( $user )
-			{
-				
+			{				
 				$this->resetFailureReason();
 				return $user;
 			}
@@ -165,13 +206,6 @@ class Auth
 		catch(\Exception $e)
 		{	
 			$this->failureReason = $e->getMessage();
-			if( $this->app )
-			{
-				if( True === $this->app['debug'] )
-				{
-					throw $e;
-				}
-			}
 			return False;
 		}
 	}
@@ -273,7 +307,7 @@ class Auth
 	 */
 	public function forceLogin($userId)
 	{
-		$user = $this->authDriver->resolveUser(['username' => $userId]);
+		$user = $this->authDriver->resolveUser('id', $userId);
 
 		if( $user )
 		{

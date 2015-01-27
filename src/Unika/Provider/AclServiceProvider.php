@@ -58,6 +58,8 @@ class AclServiceProvider implements ServiceProviderInterface,CommandProviderInte
                 new \Unika\Security\Authorization\Driver\Database\ResourceRegistry($app),
                 new \Unika\Security\Authorization\Driver\Database\AclDriver($app)
             );
+
+        $app['acl']->setAuth($app['auth']);
     }
 
     /**

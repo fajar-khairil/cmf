@@ -53,7 +53,7 @@ class Application extends SilexApp
 		$this['debug'] = $this->config['app.debug'];
 		$this['locale'] = $this->config('app.default_locale');
 		$this['baseUrl'] = $this->config('app.base_url','/');
-		
+
 		if( $this['debug'] )
 		{
 			\Symfony\Component\Debug\Debug::enable(E_ALL);
