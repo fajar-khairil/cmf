@@ -52,7 +52,7 @@ class Application extends SilexApp
 		
 		$this['debug'] = $this->config['app.debug'];
 		$this['locale'] = $this->config('app.default_locale');
-		$this['baseUrl'] = $this->config('app.base_url','/');
+		$this['baseUrl'] = $this->config('app.base_url','/').$this['locale'];
 
 		if( $this['debug'] )
 		{
@@ -115,12 +115,9 @@ class Application extends SilexApp
 		self::$ENVIRONMENT = $detectfunct();
 	}
 
-	public function getProvider($providerName = null)
+	public function getProviders()
 	{
-		if( null === $providerName )
-			return $this->providers;
-
-		return $this->providers[$providerName];
+		return $this->providers;
 	}
 
 	public function setLoader(\Composer\Autoload\ClassLoader $loader)

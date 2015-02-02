@@ -85,17 +85,17 @@ class Acl
 
     if( $assertion === null )
     {
-      $role = $this->getRole($role);
-      if( !$role['id'] ){ throw new AccessDeniedHttpException(); }
+        $role = $this->getRole($role);
+        if( !$role['id'] ){ throw new AccessDeniedHttpException(); }
 
-      $resource = $this->getResource($resource);
-      if( !$resource['id'] ){ throw new AccessDeniedHttpException('Resource not found.'); }  
+        $resource = $this->getResource($resource);
+        if( !$resource['id'] ){ throw new AccessDeniedHttpException('Resource not found.'); }  
 
-      return $this->aclDriver->queryAcl($role['id'],$resource['id'],$operation);        
+        return $this->aclDriver->queryAcl($role['id'],$resource['id'],$operation);        
     }
     elseif( $assertion instanceof AssertInterface  )
     {
-      return (boolean)$assertion->assert($this,$role,$resource,$operations);
+        return (boolean)$assertion->assert($this,$role,$resource,$operations);
     }
 
     return False;
@@ -142,7 +142,7 @@ class Acl
 				return 0;// 0 mean public/anonymous
 
 			$user = $this->getAuth()->user();
-			$role = $user->role_id;
+			$role = $user['role_id'];
   	}
 
 		return $this->roleRegistry->getRole($role);

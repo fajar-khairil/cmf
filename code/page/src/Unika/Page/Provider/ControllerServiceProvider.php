@@ -18,8 +18,32 @@ class ControllerServiceProvider implements ControllerProviderInterface
         // creates a new controller based on the default route
         $controllers = $app['controllers_factory'];
 
-	    $controllers->match('/{controller}/{action}/{_locale}', function (Application $app,$controller,$action,$_locale) 
-        {
+        $controllers
+        ->value('_locale',$app->config('app.default_locale'))
+        ->convert('_locale',function($_locale) use($app){
+        	if( !in_array($_locale,$app->config('app.locales')) )
+        	{
+        		return 'id';
+        	}
+
+        	return $_locale;
+        })
+        ->before(function($request,$app){
+        	$path = explode('/',$request->getPathInfo());
+
+        	if( !in_array($path[1],$app->config('app.locales')) )
+        	{
+        		if( '/' === $request->getPathInfo() )
+        			$newUri = $request->getBasePath().'/id';
+        		else
+        			$newUri = $request->getBasePath().'/id'.$request->getPathInfo();
+
+        		return $app->redirect($newUri);
+        	}
+        });
+
+	    $controllers->match('/{_locale}/{controller}/{action}', function (Application $app,$_locale,$controller,$action) 
+        {  
 			$classController = '\Unika\Page\Controller\\'.ucfirst($controller).'Controller';
 
 			//checking classController
@@ -35,10 +59,8 @@ class ControllerServiceProvider implements ControllerProviderInterface
         })
 	    ->value('controller','Index')
 	    ->value('action','index')
-	    ->assert('_locale', implode('|',$app->config('app.locales')) )
-        ->value('_locale',$app->config('app.default_locale'))    
-		->bind('page')
 		->method('GET|POST|PUT')
+		->bind('page')
 		->compile();
 
         return $controllers;

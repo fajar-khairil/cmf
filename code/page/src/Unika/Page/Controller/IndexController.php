@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 class IndexController extends \Unika\Controller
 { 
-	public function indexAction(Request $request)
+	public function indexAction()
 	{
 		$response = $this->app->createResponse($this->app['view']->make('home')->render());
 		return $response;
 	}
 
-	public function testAction(Request $request)
+	public function testAction()
 	{
 		return $this->app->trans('Hello',array('%name%' => 'Fajar'));
 	}

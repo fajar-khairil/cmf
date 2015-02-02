@@ -20,7 +20,7 @@ return array(
                     ],*/             
                     'driver'    => 'mysql',
                     'host'      => 'localhost',
-                    'database'  => 'cmf',
+                    'database'  => 'kaoskeren',
                     'username'  => 'root',
                     'password'  => 'masterkey',
                     'charset'   => 'utf8',
