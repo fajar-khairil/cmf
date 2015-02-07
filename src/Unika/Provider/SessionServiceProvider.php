@@ -33,6 +33,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
 {
     private $app;
 
+    // @todo : respect sessions config
     public function register(Container $app)
     {
         $this->app = $app;
@@ -74,7 +75,7 @@ class SessionServiceProvider implements ServiceProviderInterface, EventListenerP
             return new TestSessionListener($app);
         };
 
-        $app['session.storage.options'] = array();
+        $app['session.storage.options'] = array('name' => $app->config('sessions.drivers.file.name'));
         $app['session.default_locale'] = 'en';
         $app['session.storage.save_path'] = null;
     }

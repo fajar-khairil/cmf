@@ -161,6 +161,23 @@ class Auth
 	}
 
 	/**
+	 *
+	 *	Register the user
+	 */
+	public function register(array $user)
+	{
+		if( !isset($user['password']) )
+			throw new AuthException('password not supplied.');
+
+		$user['salt'] = $this->app['sec.util']->generateRandomString(8);
+		$user['pass'] = $this->app['sec.util']->createPasswordHash($user['password'].$salt);
+		$user['created_at']	= date('Y-m-d H:i:s');
+
+		unset($user['password']);
+		return $this->authDriver->register($user);
+	}
+
+	/**
 	 *	@return AuthUser on Success False or Exception on Failure
 	 */
 	protected function internalAuthenticate($credentials,$col)
@@ -325,10 +342,17 @@ class Auth
 	 *	@param mixed $credentials
 	 *	@return array | NULL
 	 */
-	public function user()
+	public function user($attrName = null,$default = null)
 	{
-		if( $this->check() )
-			return $this->session->get($this->sessionName);
+		if( $this->check())
+		{
+			if( is_string($attrName) ){
+				$user = $this->session->get($this->sessionName);
+				return isset($user[$attrName]) ? $user[$attrName] : $default;
+			}else{
+				return $this->session->get($this->sessionName);
+			}
+		}
 		else
 			return null;
 	}

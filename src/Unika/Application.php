@@ -52,21 +52,19 @@ class Application extends SilexApp
 		
 		$this['debug'] = $this->config['app.debug'];
 		$this['locale'] = $this->config('app.default_locale');
-		$this['baseUrl'] = $this->config('app.base_url','/').$this['locale'];
+
+		if( $this->config('app.multilanguage',False) )
+			$this['baseUrl'] = $this->config('app.base_url','/').$this['locale'];
+		else
+			$this['baseUrl'] = $this->config('app.base_url','/');
 
 		if( $this['debug'] )
 		{
 			\Symfony\Component\Debug\Debug::enable(E_ALL);
 		}
 
-		/** register console if we are on cli mode */
-		if( 'cli' === PHP_SAPI ){
-			$this['console'] = new \Unika\Console('UnikaCommander','0.1-dev');
-			$this['console']->setContainer($this);
-		}
+		$this->register(new \Unika\Provider\CommonServiceProvider());
 
-		$this['util'] = new \Unika\Util;
-		$this['sec.util'] = new \Unika\Security\Util;
 		$this['path.base'] = static::$ROOT_DIR;
 		$this['path.module'] = $this['path.base'].'/code';
 		$this['path.themes'] = $this['path.base'].'/themes';
@@ -128,19 +126,6 @@ class Application extends SilexApp
 	public function getLoader()
 	{
 		return $this->loader;
-	}
-
-	public function convertRequestUri($uri)
-	{
-	    $argv = explode('/', $uri);
-
-    	$ctrlName = ( empty($argv[1]) ) ? 'Index' : ucfirst($argv[1]);
-		
-		$actionName = ( empty($argv[2]) ) ? 'index' : strtolower($argv[2]);
-		return array(
-			'controller'	=> $ctrlName,
-			'action'		=> $actionName 
-		);
 	}
 
 	function __get($name)

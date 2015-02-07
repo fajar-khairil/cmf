@@ -17,6 +17,10 @@ Abstract class Controller
 	protected $actionName;
 	protected $method;
 
+	protected $styles = array();
+	protected $head_scripts = array();
+	protected $scripts = array();
+
 	public function __construct(Application $app)
 	{
 		$this->app = $app;
@@ -37,7 +41,55 @@ Abstract class Controller
 
 		return $this->after($this->{$actionName}());
 	}
-	
+
+	protected function view($view,array $data = null)
+	{
+		if( null === $data )
+			$data = array();
+		
+		$data['head_scripts'] = $this->head_scripts;
+		$data['scripts'] = $this->scripts;
+		$data['styles'] = $this->styles;
+
+		return $this->app['view']->make($view)->with($data);
+	}
+
+	protected function styles($styles)
+	{
+		if( is_array($styles) ){
+			foreach ($styles as $style) {
+				$this->styles[] = $style;
+			}
+		}
+		else{
+			$this->styles[] = $styles;
+		}
+	}
+
+	protected function scripts($scripts)
+	{
+		if( is_array($scripts) ){
+			foreach ($scripts as $script) {
+				$this->scripts[] = $script;
+			}
+		}
+		else{
+			$this->scripts[] = $scripts;
+		}
+	}
+
+	protected function headScripts($head_scripts)
+	{
+		if( is_array($head_scripts) ){
+			foreach ($head_scripts as $script) {
+				$this->head_scripts[] = $script;
+			}
+		}
+		else{
+			$this->head_scripts[] = $head_scripts;
+		}
+	}
+
 	protected function post($field = null,$default = null)
 	{
 		if( null === $field )
@@ -61,6 +113,12 @@ Abstract class Controller
 	// to be overide by concreate class
 	protected function after($response)
 	{
-		return $response;
+		if( $response instanceof \Symfony\Component\HttpFoundation\Response )
+			return $response;
+
+		if( is_object($response) AND method_exists($response, 'render') )
+			return $this->app->createResponse( $response->render() );
+		else
+			return $this->app->createResponse($response);
 	}
 }

@@ -44,4 +44,10 @@ interface AuthDriverInterface
 	 *	@return user or null if not found
 	 */
 	public function resolveUser($field,$value);
+
+	/**
+	 *
+	 *	Register the user
+	 */
+	public function register(array $user);
 }

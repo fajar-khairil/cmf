@@ -26,9 +26,16 @@ class AuthDatabase implements AuthDriverInterface
 			$connectionName = $this->app->config('database.default');
 
 		$this->connectionName = $connectionName;
-		$this->db = $this->app['database']->table( $this->app->config('auth.drivers.database.users_table') ,$this->connectionName );
+		$this->db = $this->getQuery();
 		$this->throttle = (boolean)$throttle_guard;
 		$this->init();
+	}
+
+
+	//return query builder
+	protected function getQuery()
+	{
+		return $this->app['database']->table( $this->app->config('auth.drivers.database.users_table') ,$this->connectionName );
 	}
 
 	protected function init()
@@ -63,7 +70,11 @@ class AuthDatabase implements AuthDriverInterface
 	{
 		if( null === $this->user )
 		{		
-			$this->user = $this->db->where($field,'=',$value)->first();
+			$this->user = $this->db
+				->select('users.*','roles.name as role_name')
+				->join('roles','users.role_id','=','roles.id')
+				->where($field,'=',$value)
+				->first();
 		}
 
 		return $this->user;
@@ -81,7 +92,7 @@ class AuthDatabase implements AuthDriverInterface
 		{
 			if( (int)$user['last_failed_count'] >= (int)$this->app->config('auth.guard.throttling_count') )
 			{
-				$this->db->where('id' ,'=',$user['id'])->update(['active' => 0,'updated_at' =>  date('Y-m-d H:i:s')]);
+				$this->getQuery()->from('users')->where('id' ,'=',$user['id'])->update(['active' => 0,'updated_at' =>  date('Y-m-d H:i:s')]);
 				return True;
 			}
 			else
@@ -91,6 +102,15 @@ class AuthDatabase implements AuthDriverInterface
 		}
 
 		return $user;
+	}
+
+	/**
+	 *
+	 *	Register the user
+	 */
+	public function register(array $user)
+	{
+		return $this->app['database']->table('users')->insert($user);
 	}
 
 	/**
@@ -148,7 +168,7 @@ class AuthDatabase implements AuthDriverInterface
 	protected function doOnSucess($credentials,$col,$remember,$timeout,$auth)
 	{
 		$now = date('Y-m-d H:i:s');
-		$this->db->where($col ,'=',$credentials[$col])->update(['last_login' => $now,'updated_at' =>  $now]);
+		$this->getQuery()->from('users')->where($col ,'=',$credentials[$col])->update(['last_login' => $now,'updated_at' =>  $now]);
 	}
 
 	/**
