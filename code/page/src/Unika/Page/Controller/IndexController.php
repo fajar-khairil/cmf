@@ -15,8 +15,7 @@ class IndexController extends \Unika\Controller
 { 
 	public function indexAction()
 	{
-		$response = $this->app->createResponse($this->app['view']->make('home')->render());
-		return $response;
+		return $this->view('home');
 	}
 
 	public function testAction()

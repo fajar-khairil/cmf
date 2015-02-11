@@ -15,7 +15,7 @@ class Console extends \Symfony\Component\Console\Application
 	protected $container;
 
 	public function setContainer(\Pimple\Container $container)
-	{
+	{	
         if( null === $container )
 		  $this->container = $container;
 	}

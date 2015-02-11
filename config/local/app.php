@@ -1,7 +1,7 @@
 <?php
 return array(
 	// name of application
-	'name'			=> 'Kaoskeren',
+	'name'			=> 'UnikaCMF',
 
 	// are we on debug mode ?
 	'debug'			=> 	True,
@@ -15,7 +15,7 @@ return array(
 	// default theme to use
 	'default_theme'	=> 'default',
 
-	'base_url'		=> 'http://unikacmf.dev/',
+	'base_url'		=> '//unikacmf.dev/',
 
 	// supported localizations
 	'locales'		=> array('id','en','fr'),

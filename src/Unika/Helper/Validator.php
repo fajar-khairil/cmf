@@ -1,7 +1,7 @@
 <?php 
 /**
  *	This file is part of the UnikaCMF project
- *	this class at as Factory for Valitron\Validator	
+ *	this class act as Factory for Valitron\Validator	
  *
  *	@license MIT
  *	@author Fajar Khairil <fajar.khairil@gmail.com>

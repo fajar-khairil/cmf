@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4a78687cbbc97456e6e376b6195b85b1",
+    "hash": "33ef454d3ecca338b29819528df9d2e1",
     "packages": [
         {
             "name": "anahkiasen/underscore-php",
@@ -1637,6 +1637,52 @@
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
             "time": "2015-01-25 04:39:35"
+        },
+        {
+            "name": "vlucas/valitron",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vlucas/valitron.git",
+                "reference": "d09596881bab793736deee668c872df0856342dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vlucas/valitron/zipball/d09596881bab793736deee668c872df0856342dd",
+                "reference": "d09596881bab793736deee668c872df0856342dd",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Valitron": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD"
+            ],
+            "authors": [
+                {
+                    "name": "Vance Lucas",
+                    "email": "vance@vancelucas.com",
+                    "homepage": "http://www.vancelucas.com"
+                }
+            ],
+            "description": "Simple, elegant, stand-alone validation library with NO dependencies",
+            "homepage": "http://github.com/vlucas/valitron",
+            "keywords": [
+                "valid",
+                "validation",
+                "validator"
+            ],
+            "time": "2014-12-27 16:32:29"
         }
     ],
     "packages-dev": [],
@@ -1658,7 +1704,8 @@
         "illuminate/database": 20,
         "brandonwamboldt/utilphp": 20,
         "passwordlib/passwordlib": 20,
-        "anahkiasen/underscore-php": 20
+        "anahkiasen/underscore-php": 20,
+        "vlucas/valitron": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

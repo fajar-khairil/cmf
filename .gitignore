@@ -2,3 +2,4 @@
 vendor
 config/testing/*
 var/logs/*
+cmf.sublime-project

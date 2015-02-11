@@ -14,7 +14,7 @@
     "autoload": {
         "psr-0": {
             "Unika\\": "src/",
-            "Unika\\Page\\": "code/page/src"
+            "Unika\\Page\\": "code/page/src/"
         },
         "classmap": [
             "var/database/migrations"
@@ -30,12 +30,13 @@
         "symfony/process": "2.7.*@dev",
         "symfony/config": "2.7.*@dev",
         "monolog/monolog": "1.12.*@dev",
-    	"illuminate/view": "4.2.*@dev",
-    	"illuminate/cache": "4.2.*@dev",
-    	"illuminate/config": "4.2.*@dev",
+        "illuminate/view": "4.2.*@dev",
+        "illuminate/cache": "4.2.*@dev",
+        "illuminate/config": "4.2.*@dev",
         "illuminate/database": "4.2.*@dev",
         "brandonwamboldt/utilphp": "dev-master",
         "PasswordLib/PasswordLib": "dev-master",
-        "anahkiasen/underscore-php": "dev-master"
+        "anahkiasen/underscore-php": "dev-master",
+        "vlucas/valitron": "dev-master"
     }
 }

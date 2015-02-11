@@ -18,7 +18,8 @@ class CommonServiceProvider implements ServiceProviderInterface
         /** register console if we are on cli mode */
         if( 'cli' === PHP_SAPI ){
             $app['console'] = new \Unika\Console('UnikaCommander','0.1-dev');
-            $app['console']->setContainer($this);
+            //dd(get_class( $app ));
+            $app['console']->setContainer($app);
         }
 
         $app['util'] = new \Unika\Util;
