@@ -519,6 +519,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "code/page/src/Unika/Page/Controller/IndexController.php",
+			"settings":
+			{
+				"buffer_size": 434,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "composer.json",
+			"settings":
+			{
+				"buffer_size": 1323,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -575,10 +591,24 @@
 	},
 	"expanded_folders":
 	[
-		"/home/fajar/www/cmf"
+		"/home/fajar/www/cmf",
+		"/home/fajar/www/cmf/code",
+		"/home/fajar/www/cmf/code/page",
+		"/home/fajar/www/cmf/code/page/src",
+		"/home/fajar/www/cmf/code/page/src/Unika",
+		"/home/fajar/www/cmf/code/page/src/Unika/Page",
+		"/home/fajar/www/cmf/code/page/src/Unika/Page/Provider",
+		"/home/fajar/www/cmf/config/local",
+		"/home/fajar/www/cmf/config/staging",
+		"/home/fajar/www/cmf/config/testing"
 	],
 	"file_history":
 	[
+		"/home/fajar/www/cmf/config/staging/app.php",
+		"/home/fajar/www/cmf/config/app.php",
+		"/home/fajar/www/cmf/config/local/app.php",
+		"/home/fajar/www/cmf/config/testing/app.php",
+		"/home/fajar/www/cmf/.gitignore",
 		"/home/fajar/www/kaoskeren/.gitignore",
 		"/home/fajar/www/kaoskeren/code/kaoskeren/src/Unika/Kaoskeren/Controller/Backend/ProductsController.php",
 		"/home/fajar/www/kaoskeren/src/Unika/Model/Eav.php",
@@ -701,12 +731,7 @@
 		"/home/fajar/php/fatfree/lib/db/jig/mapper.php",
 		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/base-env.js",
 		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/basics.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/dom.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/functions.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/modularity.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/control.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/ObjectTools.js",
-		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/TestModule.js"
+		"/home/fajar/Ebooks/javascript/Eloquent JavaScript/js/chapter/dom.js"
 	],
 	"find":
 	{
@@ -968,8 +993,67 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "code/page/src/Unika/Page/Controller/IndexController.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 434,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								298,
+								298
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "composer.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1323,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								486,
+								486
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

@@ -104,6 +104,15 @@ class Application extends SilexApp
 		return new \Symfony\Component\HttpFoundation\Response($body,$code);
 	}
 
+	/**
+	 *	add an Illuminate event listener
+	 *
+	 */
+	public function event($eventName,$callback)
+	{
+		$this['Illuminate.events']->listen($eventName,$this['callback_resolver']->resolveCallback($callback));		
+	}
+
 	public static function detectEnvironment($detectfunct)
 	{
         if (!is_object($detectfunct) || !method_exists($detectfunct, '__invoke')) {

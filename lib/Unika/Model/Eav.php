@@ -38,12 +38,15 @@ abstract class Eav extends Model
 	 */
 	public function getAttributesInfo()
 	{		
+		if( False === $this->exists )
+			throw new \RuntimeException("cannot getAttributesInfo on not exists model.");
+
 		if( null === $this->attributes_info )
 		{
 			$self = $this;
-			$this->attributes_info = static::$app['cache']->remember('attributes_'.$this->getTable(),10,function()use($self){
+			$this->attributes_info = static::$app['cache']->remember('attributes_#'.$this->id.'_'.$this->getTable(),10,function()use($self){
 				$entity_type_id = $self->getEavInfo()['id'];
-				$_sql = 'SELECT * FROM eav_entity_attributes WHERE entity_type_id = '.$entity_type_id;
+				$_sql = 'SELECT * FROM eav_entity_attributes WHERE entity_type_id = '.$entity_type_id.' AND entity_id = '.$self->id;
 
 				return $self->getConnection()->select($_sql);
 			});
@@ -105,11 +108,21 @@ NOW;
 						$append_join .= 'LEFT JOIN eav_value_string ON (eav_entity_attributes.id = eav_value_string.attribute_id) ';
 						$cached_entity_type[] = 'string';
 						break;
+					case 'text':
+						$append_case .= '(eav_entity_attributes.entity_value = "string") THEN eav_value_text.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_text ON (eav_entity_attributes.id = eav_value_text.attribute_id) ';
+						$cached_entity_type[] = 'text';
+						break;
 					case 'integer':
 						$append_case .= '(eav_entity_attributes.entity_value = "integer") THEN eav_value_integer.value WHEN ';
 						$append_join .= 'LEFT JOIN eav_value_integer ON (eav_entity_attributes.id = eav_value_integer.attribute_id) ';
 						$cached_entity_type[] = 'integer';
 						break;	
+					case 'decimal':
+						$append_case .= '(eav_entity_attributes.entity_value = "decimal") THEN eav_value_decimal.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_decimal ON (eav_entity_attributes.id = eav_value_decimal.attribute_id) ';
+						$cached_entity_type[] = 'decimal';
+						break;							
 					case 'boolean':
 						$append_case .= '(eav_entity_attributes.entity_value = "boolean") THEN eav_value_boolean.value WHEN ';
 						$append_join .= 'LEFT JOIN eav_value_boolean ON (eav_entity_attributes.id = eav_value_boolean.attribute_id) ';
@@ -119,7 +132,27 @@ NOW;
 						$append_case .= '(eav_entity_attributes.entity_value = "options") THEN CONCAT(eav_value_options.value,"|",eav_value_options.text) WHEN ';
 						$append_join .= 'LEFT JOIN eav_value_options ON (eav_entity_attributes.id = eav_value_options.attribute_id) ';
 						$cached_entity_type[] = 'options';
-						break;												
+						break;		
+					case 'datetime':
+						$append_case .= '(eav_entity_attributes.entity_value = "datetime") THEN eav_value_datetime.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_datetime ON (eav_entity_attributes.id = eav_value_datetime.attribute_id) ';
+						$cached_entity_type[] = 'datetime';
+						break;								
+					case 'date':
+						$append_case .= '(eav_entity_attributes.entity_value = "date") THEN eav_value_date.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_date ON (eav_entity_attributes.id = eav_value_date.attribute_id) ';
+						$cached_entity_type[] = 'date';
+						break;	
+					case 'time':
+						$append_case .= '(eav_entity_attributes.entity_value = "time") THEN eav_value_time.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_time ON (eav_entity_attributes.id = eav_value_time.attribute_id) ';
+						$cached_entity_type[] = 'time';
+						break;	
+					case 'timestamp':
+						$append_case .= '(eav_entity_attributes.entity_value = "timestamp") THEN eav_value_timestamp.value WHEN ';
+						$append_join .= 'LEFT JOIN eav_value_timestamp ON (eav_entity_attributes.id = eav_value_timestamp.attribute_id) ';
+						$cached_entity_type[] = 'timestamp';
+						break;																	
 					default:
 						continue;
 						break;
@@ -129,14 +162,19 @@ NOW;
 		
 		$append_case = rtrim($append_case,' WHEN ');
 		$append_case .= ' END) as value';
+
+		if( empty($attributes_info) )
+			$append_case = '';
 		
 		$_sql = sprintf($_sql, $append_case,$append_join);
+
+		static::$app['logger']->addDebug('entity_id : '.$this->id);
 		return $this->getConnection()->select($_sql,[$entity_type_id,$this->id]);	
 	}
 
 	public function getAttributeSet(array $attributes = null)
 	{
-		$_key = 'eav_attributes_'.$this->getTable();
+		$_key = 'eav_attributes_'.$this->getTable().'_#'.$this->id.'_';
 		if( is_array($attributes) )
 			$_key .= '_'.implode(',',$attributes);
 
@@ -161,8 +199,57 @@ NOW;
 		return $attributeSets;
 	}
 
-	public function setAttributeSet(array $attributes)
+	/**
+	 *	expected arguments $attribute :
+	 *	[
+	 *		'name'	=> 'color',
+	 *		'label'	=> 'Color',
+	 *		'entity_value'	=> 'string', // data type
+	 *		'showable'	=> 0, // boolean 1 | 0
+	 *		'searchable'	=> 0, // boolean 1 | 0
+	 *		'value  => 'Example',
+	 *		'options'	=> array(['value' => 'satu','text' => 'Satu'],['value' => 'dua' ,'text' => 'Dua']) /affect if entity_value is "options"
+	 *	]
+	 *
+	 */
+	public function setAttributeSet(array $attribute)
 	{
+		if( False === $this->exists )
+			throw new \RuntimeException("cannot setAttributeSet on non exists model.");
 
+		$db = static::$app['database'];
+
+		$entity_type_id = $this->getEavInfo()['id'];
+
+		$attribute_id = $db->table('eav_entity_attributes')->insertGetId([
+			'name'	=>	$attribute['name'],
+			'entity_type_id'	=>	$this->getEavInfo()['id'],
+			'entity_id'	=>	$this->id,
+			'entity_value'	=>	$attribute['entity_value'],
+			'label'	=> $attribute['label'],
+			'showable'	=> $attribute['showable'],
+			'searchable'	=> $attribute['searchable']
+		]);
+
+		if( 'options' != $attribute['entity_value'] )
+		{
+			$db->table('eav_value_'.$attribute['entity_value'])
+			->insert([
+				'attribute_id'	=> $attribute_id,
+				'value'		=> $attribute['value']
+			]);
+		}
+		else
+		{
+			$options = $attribute['options'];
+
+			foreach ($options as $key => $option) 
+			{
+				$options[$key]['attribute_id'] = $attribute_id;
+			}
+
+			$db->table('eav_value_'.$attribute['entity_value'])
+			->insert($options);
+		}
 	}
 }

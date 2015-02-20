@@ -19,6 +19,22 @@ class IlluminateServiceProvider implements ServiceProviderInterface
     	$app['Illuminate.filesystem'] = new \Illuminate\Filesystem\Filesystem();
     	$app['Illuminate.memcached'] = new \Illuminate\Cache\MemcachedConnector();
     	$app['Illuminate.events'] = new \Illuminate\Events\Dispatcher($app['Illuminate.container']);
+        
+        $app['paginator'] = function($app){
+            $paginator = new \Illuminate\Pagination\Factory(
+                \Illuminate\Http\Request::createFromBase($app['request_stack']->getCurrentRequest()), 
+                $app['view'], 
+                $app['translator']
+            );
+
+            $paginator->setViewName('pagination::simple');
+
+            return $paginator;
+        };
+
+        $app['Illuminate.container']->bindShared('paginator',function($illuminateContainer) use($app){
+            return $app['paginator'];
+        });
     }	
 
     /**
@@ -27,7 +43,7 @@ class IlluminateServiceProvider implements ServiceProviderInterface
      */
     public function getDescription()
     {
-        return 'Ussefull Illuminate Components';
+        return 'Ussefull Illuminate(laravel) Components';
     }
 
     /**
@@ -40,7 +56,8 @@ class IlluminateServiceProvider implements ServiceProviderInterface
             'Illuminate.container'	=> 'Illuminate\Container\Container',
             'Illuminate.filesystem' => 'Illuminate\Filesystem\Filesystem', 
             'Illuminate.memcached'	=> 'Illuminate\Cache\MemcachedConnector',
-            'Illuminate.events'		=> 'Illuminate\Events\Dispatcher'
+            'Illuminate.events'		=> 'Illuminate\Events\Dispatcher',
+            'paginator'             => 'Illuminate\Pagination\Factory'
         );
     }
 
